@@ -1,0 +1,13 @@
+useDynLib(imptree, .registration = TRUE, .fixes = "C_")
+export(accuracy, impbag, imptree, predclass, imptree_control)
+
+importFrom(stats, model.frame, predict)
+
+S3method(impbag, formula)
+S3method(impbag, default)
+S3method(print,impbag)
+S3method(imptree, formula)
+S3method(imptree, default)
+S3method(print,imptree)
+S3method(predict,imptree)
+S3method(predict,impbag)

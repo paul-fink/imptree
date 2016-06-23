@@ -1,0 +1,101 @@
+\documentclass[a4paper]{article}
+\usepackage{amsmath}
+% \usepackage[ngerman]{babel}
+\usepackage{amssymb}
+
+\begin{document}
+In this short paper the properties of the measure for the \emph{optimism} in an interval based entropy comparison are displayed.\\
+
+\section{Definition}
+
+Let the base interval be $[a,b]$ and the one that it is compared to $[c,d]$. The measure for the optimisim is then defined to
+\begin{displaymath}
+o = \frac{a-c}{d+ |a-c|}
+\end{displaymath}
+Furthermore to ensure a proper value we define 
+\begin{displaymath}
+o = 0 :\Leftrightarrow a - c = 0
+\end{displaymath}
+
+\section{Properties}
+
+
+\subsection{Varying c and fixed a and d}
+Let us assume that we have the borders $a$ and $d$ fixed and $c$ is varying. There are three different cases for special values of c.\\
+
+The most simple case is for $c = a$,
+\begin{displaymath}
+o = \frac{a-c}{d+ |a-c|} = \frac{a-a}{d+a-a} = 0 \quad \textrm{.}
+\end{displaymath}\\
+
+Another case of interest is when $c \approx d$, i.e. the compared to interval almost collapses to a point. In this case we also need to consider the relation between $a$ and $d$.
+
+Let us first have a look at the absolute value of $o$
+\begin{eqnarray*}
+|o| & = & \left| \frac{a-d}{d+|a-d|} \right|\\
+& =& \frac{|a-d|}{d+|a-d|}\\
+& = & \left\{ 
+\begin{array}{rl}
+\frac{a-d}{a} & \text{if } a > d,\\
+\frac{d-a}{2d-a} & \text{if } a \leq d.
+\end{array}
+\right.\\
+& \leq & 1 \quad \forall a,d \quad \textrm{.} 
+\end{eqnarray*}
+
+With this in mind we are able to derive bounds for $o$ 
+\begin{displaymath}
+-1 \leq \frac{a-d}{2d-a} \leq o \leq \frac{a-d}{a} \leq 1
+\end{displaymath}
+For this view the addition to the definition is necessary to avoid 0-valued denominators.\\
+
+
+Finally the extreme case when $ c = 0 $ is worth pointing out. As we already covered the point where $c = d$ in the above we assume that $c < d$.
+\begin{displaymath}
+ o = \frac{a-c}{d+|a-c|} = \frac{a}{d+a}
+\end{displaymath}
+
+Again we can derive bounds for $o$ depending on the values of $a$ and $d$.
+\begin{displaymath}
+0 \leq o < 1.
+\end{displaymath}
+The lower bound is met for $a=0$ and the upper holds for $a=1$ and $d$ very close to $0$.
+
+\subsection{Varying a and fixed c and d}
+There are 3 different case which need to be considered, excluding the trivial of $a \to c$:
+\begin{itemize}
+\item $a \to 0$
+\item $a \to d$
+\item $a \to 1$
+\end{itemize}
+Also the case when the compared to interval collapses to a single point is excluded. However, the results still apply yet the strict inequalities do not longer hold and they change to equalities instead.
+
+For the first case we have
+\begin{displaymath}
+0 > o \to \frac{-c}{d+c} > -1 \quad \textrm{for } a \to 0\textrm{,}
+\end{displaymath}
+
+while the second one is not more complicated as we get
+\begin{displaymath}
+0 < o \to \frac{d-c}{2d-c} < 1 \quad \textrm{for } a \to d \textrm{,}
+\end{displaymath}
+
+and finally for $a \to ent^*$, with $ent^*$ being the entropy of the uniform distribution, we obtain
+\begin{displaymath}
+\frac{d-c}{2d-c} < o \to \frac{ent^*-c}{d+ent^*-c} < 1 \quad \textrm{for } a \to 1 \textrm{.}
+\end{displaymath}
+
+\subsection{Varying d and fixed a and c}
+At first we consider the case when $d \to c$, i.e. the interval is going to collapse. It is very similar to the case of $c \to d$ which is reflected in the results:
+\begin{displaymath}
+-1 \leq \frac{a-c}{2c-a} \leq o \leq \frac{a-c}{a} \leq 1 \quad \textrm{,}
+\end{displaymath}
+where $o$ is only negative for $a<c$ and positive for $a > c$.\\
+
+Another quite interesting aspect is when $d \to a$ as with $a>d$ the intervals do not overlap,
+\begin{displaymath}
+0 < o \to \frac{a-c}{2a-c} < 1 \quad \textrm{for } d \to a \textrm{.}
+\end{displaymath} 
+The last case worth considering is when $d$ is nearing $ent^*$, then the value of $o$ increases as we like to penalize broad intervals
+
+\end{document}
