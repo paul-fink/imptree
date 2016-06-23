@@ -1,0 +1,14 @@
+*.aux
+*.log
+*.nav
+*.toc
+*.out
+*.snm
+.Rhistory
+.RData
+imptree/*
+imptree
+*.so
+imptree_*
+imptree.Rcheck
+imptree.source.tar.gz
