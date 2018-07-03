@@ -207,7 +207,7 @@ NumericVector NPINode::minEntropy(ProbInterval probint) {
   return lower / nobs;
 }
 
-double NPINode::correctionEntropy(NumericVector probs, int n, EntropyCorrection ec, double /*s*/) {
+double NPINode::correctionEntropy(NumericVector probs, int n, EntropyCorrection ec) {
   if(n > 0) {
     double ent = entropy(probs);
     switch(ec) {
@@ -222,7 +222,7 @@ double NPINode::correctionEntropy(NumericVector probs, int n, EntropyCorrection 
 }
 
 
-ProbInterval NPINode::probabilityInterval(IntegerVector observations, double /*s*/) {
+ProbInterval NPINode::probabilityInterval(IntegerVector observations) {
   IntegerVector frequency = table(observations);
   ProbInterval prob;
   NumericVector gupper(frequency);
@@ -233,8 +233,3 @@ ProbInterval NPINode::probabilityInterval(IntegerVector observations, double /*s
   prob.lower = pmax(glower - 1.0, 0.0) / (prob.obs);
   return prob;
 }
-
-// [[Rcpp::Export]]
-NumericVector calcTValueR(IntegerVector classvals, IntegerMatrix matx, std::vector<int> vidx, double gamma, EntropyCorrection ec, double s, bool exact) {
-  NPINode mynode = 
-} 

@@ -1,6 +1,9 @@
 #include "utils.h"
 #include "node.h"
 
+IDMNode::IDMNode(Node *parent, double s) : Node(parent), s_(s) {
+}
+
 IntegerVector minInSet(NumericVector array, LogicalVector set) {
 	
 /* Initianlizing the minimal values with a not reachable one in the array */
@@ -99,7 +102,7 @@ NumericVector IDMNode::minEntropy(ProbInterval probint) {
   NumericVector lower(clone(probint.lower));
   NumericVector upper(probint.upper);
   // get the index with the (first) maximum
-	int index = maxIndex(lower);
+	int index = which_max(lower);
   // if valid index then set the value of the lower boundary to the 
   // value of the upper one
 	if ( index > -1 && index < lower.size() ) {
@@ -108,15 +111,15 @@ NumericVector IDMNode::minEntropy(ProbInterval probint) {
 	return lower;
 }
 
-double IDMNode::correctionEntropy(NumericVector probs, int n, EntropyCorrection ec, double s) {
-  if(s > 0 && n > 0) {
+double IDMNode::correctionEntropy(NumericVector probs, int n, EntropyCorrection ec) {
+  if(s_ > 0 && n > 0) {
     double ent = entropy(probs);
     switch(ec) {
     case ABELLAN:
-      ent += (s * log2(probs.size())) / (n + s);
+      ent += (s_ * log2(probs.size())) / (n + s_);
       break;
     case STROBL:
-      ent += ((probs.size() + 1) / (2 * n + s));
+      ent += ((probs.size() + 1) / (2 * n + s_));
       break;
     default:;
     }
@@ -125,19 +128,14 @@ double IDMNode::correctionEntropy(NumericVector probs, int n, EntropyCorrection 
   return -1;
 }
 
-ProbInterval IDMNode::probabilityInterval(IntegerVector observations, double s) {
+ProbInterval IDMNode::probabilityInterval(IntegerVector observations) {
   IntegerVector frequency = table(observations);
   ProbInterval prob;
   NumericVector gupper(frequency);
   NumericVector glower(frequency);
   prob.obs = sum(frequency);
   prob.freq = frequency;
-  prob.upper = (gupper + s) / (prob.obs + s);
-  prob.lower = glower / (prob.obs + s);
+  prob.upper = (gupper + s_) / (prob.obs + s_);
+  prob.lower = glower / (prob.obs + s_);
   return prob;
 }
-
-
-
-
-

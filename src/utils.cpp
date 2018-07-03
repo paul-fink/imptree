@@ -5,22 +5,14 @@
 */
 
 #include "utils.h"
-#define LOG2E 1.442695040888963
+#define LOG2E 0.693147180559945
 
-/*
-** get the index with the (first) maximum value
-** in an array
-*/
-
-int maxIndex(NumericVector array) {
-	return which_max(array);
-}
 
 /*
 ** get the index with the (first) maximum value
 ** in an array based on a selection defined in set
 */
-
+// [[Rcpp::export]]
 int maxIndexInSet(NumericVector array, LogicalVector set) {
 
 	int index = -1;
@@ -35,22 +27,20 @@ int maxIndexInSet(NumericVector array, LogicalVector set) {
 	return index;
 }
 
-
-
 /*
 ** resort an array according to a given index
 **
-** index may be in any order and array is sorted
+** index may be in any order and x is sorted
 ** along with the index being sorted in increasing order 
 */
 NumericVector re_sort_by_index(NumericVector x, IntegerVector index) {
+  
+  NumericVector res(index.size());
 
-        NumericVector res(index.size());
-
-        for(int i = 0; i < index.size(); i++) {
-                res[index[i]] = x[i];
-        }
-        return res;
+  for(int i = 0; i < index.size(); i++) {
+    res[index[i]] = x[i];
+  }
+  return res;
 }
 
 /*
@@ -64,6 +54,7 @@ NumericVector re_sort_by_index(NumericVector x, IntegerVector index) {
 ** Volume 2: Seminumerical Algorithms. 3rd ed. Addison-Wesley.
 ** Section 4.2.2, p. 233. ISBN 0-201-89684-2.
 */
+// [[Rcpp::export]]
 int fcmp(double x, double y) {
 	
 	int exponent;
@@ -93,18 +84,19 @@ double entropy(NumericVector x) {
 	double sum = 0;
 	for(int i = 0; i < x.size(); ++i) {
 		if(x[i] > 0.0) {
-			sum -= log2(x[i]);
+			sum -= x[i] * log2(x[i]);
 		}
 	}
 	return sum;
 }
 
+/* calculate logarithm to base 2*/
 double log2(double x) {
-  return log(x) * LOG2E;
+  return log(x) / LOG2E;
 }
 
-
 double calcT(double maxE, double minE, double maxEbase, double minEbase, double maxEposs, double gamma) {
+  
   double T = 2;
   if(maxE < maxEbase) {
     double pessimism = (maxEposs - maxEbase) / (maxEposs - maxE);

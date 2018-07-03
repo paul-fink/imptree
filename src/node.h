@@ -12,12 +12,10 @@ struct ProbInterval {
   NumericVector upper;
 };
 
+enum EntropyCorrection {NO = 0, ABELLAN, STROBL};
 
 class Node {
-  
-public:
-  enum EntropyCorrection {NO = 0, ABELLAN, STROBL};
-  
+
 private:
   Node *parent;
   std::vector<Node*> children;
@@ -29,12 +27,12 @@ private:
   NumericVector upper;
   virtual NumericVector maxEntropy(ProbInterval probint, bool exact);
   virtual NumericVector minEntropy(ProbInterval probint);
-  virtual double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec, double s);
-  virtual ProbInterval probabilityInterval(IntegerVector observations, double s);
+  virtual double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec);
+  virtual ProbInterval probabilityInterval(IntegerVector observations);
   
   NumericVector calcTValue(IntegerVector classvals, IntegerMatrix matx, 
                            std::vector<int> vidx, double gamma,
-                           EntropyCorrection ec, double s, bool exact = true);
+                           EntropyCorrection ec, bool exact = true);
 
 public:
   Node(Node *parent = 0);
@@ -47,16 +45,16 @@ public:
 class IDMNode : Node {
   
 private:
-  double s;
+  double s_;
   
   NumericVector maxEntropy(ProbInterval probint, bool exact = true);
   NumericVector minEntropy(ProbInterval probint);
-  double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec, double s);
-  ProbInterval probabilityInterval(IntegerVector observations, double s);
+  double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec);
+  ProbInterval probabilityInterval(IntegerVector observations);
   IntegerVector minInSet(NumericVector array, LogicalVector set);
   
 public:
-  IDMNode(Node* parent = 0);
+  IDMNode(Node* parent = 0, double s = 1.0);
 };
 
 class NPINode : Node {
@@ -69,8 +67,8 @@ private:
   NumericVector maxEntropyApprox(ProbInterval probint);
   NumericVector maxEntropyExact(ProbInterval probint);
   
-  double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec, double s = 0);
-  ProbInterval probabilityInterval(IntegerVector observations, double s = 0);
+  double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec);
+  ProbInterval probabilityInterval(IntegerVector observations);
   
 public:
   NPINode(Node* parent = 0);

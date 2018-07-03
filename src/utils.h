@@ -16,7 +16,6 @@ using namespace Rcpp;
 
 
 /* functions dealing with min and max */
-int maxIndex(NumericVector array);
 int maxIndexInSet(NumericVector array, LogicalVector set);
 
 /* sorting an array according to an int array*/
@@ -27,6 +26,9 @@ int fcmp(double, double);
 
 /* calculate the Shannon entropy */
 double entropy(NumericVector array);
+
+/* calculate logarithm to base 2 */
+double log2(double x);
 
 double calcT(double maxE, double minE, double maxEbase, double minEbase, double maxEposs, double gamma);
 
