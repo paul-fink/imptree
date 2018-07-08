@@ -55,7 +55,7 @@ NumericVector re_sort_by_index(NumericVector x, IntegerVector index) {
 ** Section 4.2.2, p. 233. ISBN 0-201-89684-2.
 */
 // [[Rcpp::export]]
-int fcmp(double x, double y) {
+int fcmp(const double x, const double y) {
 	
 	int exponent;
 	double delta, difference;
@@ -91,23 +91,24 @@ double entropy(NumericVector x) {
 }
 
 /* calculate logarithm to base 2*/
-double log2(double x) {
+double log2(const double x) {
   return log(x) / LOG2E;
 }
 
-double calcT(double maxE, double minE, double maxEbase, double minEbase, double maxEposs, double gamma) {
-  
+/* entropy values here are all negative */
+double calcT(const double maxE, const double minE,
+                   const double maxEbase, const double minEbase, 
+                   const double maxEposs, const double gamma) {
   double T = 2;
   if(maxE < maxEbase) {
     double pessimism = (maxEposs - maxEbase) / (maxEposs - maxE);
     double optimism = (minEbase - minE) / (maxE + fabs(minE - minEbase));
+    // Minus in Hurvitz-like value due to negative entropy values
     double T =  gamma * pessimism - (1 - gamma) * optimism;
     if(maxE < minEbase) {
-// T may get at minimum -1 so with -3 we are guaranteed to have it as splitting candidate
+      // T may get at minimum -1 so with -3 we are guaranteed to have it as splitting candidate
       T -= 3;
     }
   }
   return T;
 }
-
-

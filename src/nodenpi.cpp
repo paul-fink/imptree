@@ -2,19 +2,23 @@
 #include "node.h"
 
 
+NPINode::NPINode(Iptree* tree, int depth, Node* parent) : Node(tree, depth, parent)
+{
+}
+
 /*
 *
 *  Function bodies follow
 *
 */
 
-NumericVector NPINode::maxEntropy(ProbInterval probint, bool exact) {
+NumericVector NPINode::maxEntropy(const ProbInterval &probint, const bool exact) {
   if(exact) return maxEntropyExact(probint);
   return maxEntropyApprox(probint);
 }
 
 
-NumericVector NPINode::maxEntropyApprox(ProbInterval probint) {
+NumericVector NPINode::maxEntropyApprox(const ProbInterval &probint) {
 	
 	IntegerVector freq(probint.freq);
   int ksize = probint.freq.size();
@@ -76,7 +80,7 @@ NumericVector NPINode::maxEntropyApprox(ProbInterval probint) {
 	return prob;
 }
 
-NumericVector NPINode::maxEntropyExact(ProbInterval probint) {
+NumericVector NPINode::maxEntropyExact(const ProbInterval &probint) {
 
   IntegerVector freq(probint.freq);
   int ksize = probint.freq.size();
@@ -173,7 +177,7 @@ NumericVector NPINode::maxEntropyExact(ProbInterval probint) {
 	return NumericVector();
 }
 
-NumericVector NPINode::minEntropy(ProbInterval probint) {
+NumericVector NPINode::minEntropy(const ProbInterval &probint) {
 	
 	int ksize = probint.freq.size();
 	int nobs = probint.obs;
@@ -207,11 +211,12 @@ NumericVector NPINode::minEntropy(ProbInterval probint) {
   return lower / nobs;
 }
 
-double NPINode::correctionEntropy(NumericVector probs, int n, EntropyCorrection ec) {
+double NPINode::correctionEntropy(NumericVector probs, const int n) {
   if(n > 0) {
     double ent = entropy(probs);
+    EntropyCorrection::Enum ec = tree_->getConfig()->ec;
     switch(ec) {
-    case STROBL:
+    case EntropyCorrection::strobl:
       ent += ((probs.size() - 1) / (2 * n));
       break;
     default:;

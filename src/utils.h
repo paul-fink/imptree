@@ -22,14 +22,15 @@ int maxIndexInSet(NumericVector array, LogicalVector set);
 NumericVector re_sort_by_index(NumericVector array, IntegerVector index); 
 
 /* compare floats */
-int fcmp(double, double);
+int fcmp(const double x, const double y);
 
 /* calculate the Shannon entropy */
 double entropy(NumericVector array);
 
 /* calculate logarithm to base 2 */
-double log2(double x);
+double log2(const double x);
 
-double calcT(double maxE, double minE, double maxEbase, double minEbase, double maxEposs, double gamma);
-
+double calcT(const double maxE, const double minE,
+             const double maxEbase, const double minEbase, 
+             const double maxEposs, const double gamma);
 #endif /* RCPP_IMPTREE_UTILS_H */

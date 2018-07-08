@@ -1,8 +1,13 @@
 #ifndef RCPP_IMPTREE_NODE_H
 #define RCPP_IMPTREE_NODE_H
 
+class Iptree;
+
+#include <vector>
 #include <Rcpp.h>
 #include "utils.h"
+#include "tree.h"
+#include "enums.h"
 using namespace Rcpp;
 
 struct ProbInterval {
@@ -12,66 +17,80 @@ struct ProbInterval {
   NumericVector upper;
 };
 
-enum EntropyCorrection {NO = 0, ABELLAN, STROBL};
 
 class Node {
 
-private:
-  Node *parent;
-  std::vector<Node*> children;
+  Node *parent_;
+  int depth_;
+  std::vector<Node*> children_;
+  ProbInterval probInt_;
   
-  std::vector<int> obsidx;
-  std::vector<int> attidx;
+  std::vector<int> obsidxs_;
   
-  NumericVector lower;
-  NumericVector upper;
-  virtual NumericVector maxEntropy(ProbInterval probint, bool exact);
-  virtual NumericVector minEntropy(ProbInterval probint);
-  virtual double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec);
+  int splitvaridx_;
+  std::vector<int> splitset_;
+  
+  virtual NumericVector maxEntropy(const ProbInterval &probint, const bool exact);
+  virtual NumericVector minEntropy(const ProbInterval &probint);
+  virtual double correctionEntropy(NumericVector probs, const int n);
   virtual ProbInterval probabilityInterval(IntegerVector observations);
   
-  NumericVector calcTValue(IntegerVector classvals, IntegerMatrix matx, 
-                           std::vector<int> vidx, double gamma,
-                           EntropyCorrection ec, bool exact = true);
-
+  IntegerVector getNodeObservations(const int variableIndex);
+  NumericVector calcTValue(std::vector<int> vidx);
+  
+protected:
+  Iptree *tree_;
+  
 public:
-  Node(Node *parent = 0);
+  Node(Iptree *tree, int depth, Node *parent = 0);
   ~Node();
-  inline bool hasParent() const {return (!!(this->parent));}
-  Node* getChild(int i) {return children.at(i);}
-  int size() const {return children.size();}
+  
+  inline bool hasParent() const {return (!!(this->parent_));}
+  
+  inline int getDepth() {return depth_;}
+
+  Node* getChild(const int i) {return children_.at(i);}
+  int size() const {return children_.size();}
+  void setSplitVariable(const int idx);
+  
+  void setSplitObs(std::vector<int> obs) {obsidxs_ = obs;}
+  void addSplitObs(const int obsidx) {obsidxs_.push_back(obsidx);}
+  
+  static Node* createNode(IpType::Enum ipt, Iptree *tree, int depth, Node* parent);
+  
+  void makeChildren();
 };
 
-class IDMNode : Node {
+class IDMNode : public Node {
   
 private:
   double s_;
   
-  NumericVector maxEntropy(ProbInterval probint, bool exact = true);
-  NumericVector minEntropy(ProbInterval probint);
-  double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec);
+  NumericVector maxEntropy(const ProbInterval &probint, const bool exact = true);
+  NumericVector minEntropy(const ProbInterval &probint);
+  double correctionEntropy(NumericVector probs, const int n);
   ProbInterval probabilityInterval(IntegerVector observations);
   IntegerVector minInSet(NumericVector array, LogicalVector set);
   
 public:
-  IDMNode(Node* parent = 0, double s = 1.0);
+  IDMNode(Iptree *tree, int depth, Node* parent = 0);
 };
 
-class NPINode : Node {
+class NPINode : public Node {
   
 private:
   
-  NumericVector maxEntropy(ProbInterval probint, bool exact = true);
-  NumericVector minEntropy(ProbInterval probint);
+  NumericVector maxEntropy(const ProbInterval &probint, const bool exact = true);
+  NumericVector minEntropy(const ProbInterval &probint);
   
-  NumericVector maxEntropyApprox(ProbInterval probint);
-  NumericVector maxEntropyExact(ProbInterval probint);
+  NumericVector maxEntropyApprox(const ProbInterval &probint);
+  NumericVector maxEntropyExact(const ProbInterval &probint);
   
-  double correctionEntropy(NumericVector probs, int n, EntropyCorrection ec);
+  double correctionEntropy(NumericVector probs, const int n);
   ProbInterval probabilityInterval(IntegerVector observations);
   
 public:
-  NPINode(Node* parent = 0);
+  NPINode(Iptree *tree, int depth, Node* parent = 0);
 };
 
 

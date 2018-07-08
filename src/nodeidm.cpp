@@ -1,7 +1,9 @@
 #include "utils.h"
 #include "node.h"
 
-IDMNode::IDMNode(Node *parent, double s) : Node(parent), s_(s) {
+IDMNode::IDMNode(Iptree* tree, int depth, Node* parent) : Node(tree, depth, parent)
+{
+  s_ = tree_->getConfig() -> s;
 }
 
 IntegerVector minInSet(NumericVector array, LogicalVector set) {
@@ -46,7 +48,7 @@ IntegerVector minInSet(NumericVector array, LogicalVector set) {
 
 /* Functions called by R, see description above */
 
-NumericVector IDMNode::maxEntropy(ProbInterval probint, bool /*exact*/) {
+NumericVector IDMNode::maxEntropy(const ProbInterval &probint, const bool /*exact*/) {
   
   NumericVector lower(clone(probint.lower));
   NumericVector upper(probint.upper);
@@ -97,7 +99,7 @@ NumericVector IDMNode::maxEntropy(ProbInterval probint, bool /*exact*/) {
 }
 
 
-NumericVector IDMNode::minEntropy(ProbInterval probint) {
+NumericVector IDMNode::minEntropy(const ProbInterval &probint) {
 
   NumericVector lower(clone(probint.lower));
   NumericVector upper(probint.upper);
@@ -111,14 +113,15 @@ NumericVector IDMNode::minEntropy(ProbInterval probint) {
 	return lower;
 }
 
-double IDMNode::correctionEntropy(NumericVector probs, int n, EntropyCorrection ec) {
+double IDMNode::correctionEntropy(NumericVector probs, const int n) {
   if(s_ > 0 && n > 0) {
     double ent = entropy(probs);
+    EntropyCorrection::Enum ec = tree_->getConfig()->ec;
     switch(ec) {
-    case ABELLAN:
+    case EntropyCorrection::abellan:
       ent += (s_ * log2(probs.size())) / (n + s_);
       break;
-    case STROBL:
+    case EntropyCorrection::strobl:
       ent += ((probs.size() + 1) / (2 * n + s_));
       break;
     default:;

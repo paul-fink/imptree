@@ -1,14 +1,22 @@
+# LaTeX-Files
 *.aux
 *.log
 *.nav
 *.toc
 *.out
 *.snm
+
+# Basic R_files
 .Rhistory
 .RData
+
+# Generated Files
+*.so
+*.o
+*.a
+
 imptree/*
 imptree
-*.so
 imptree_*
 imptree.Rcheck
 imptree.source.tar.gz
