@@ -1,4 +1,3 @@
-#include "utils.h"
 #include "node.h"
 
 IDMNode::IDMNode(Iptree* tree, int depth, Node* parent) : Node(tree, depth, parent)
@@ -6,7 +5,7 @@ IDMNode::IDMNode(Iptree* tree, int depth, Node* parent) : Node(tree, depth, pare
   s_ = tree_->getConfig() -> s;
 }
 
-IntegerVector minInSet(NumericVector array, LogicalVector set) {
+Rcpp::IntegerVector IDMNode::minInSet(Rcpp::NumericVector array, Rcpp::LogicalVector set) {
 	
 /* Initianlizing the minimal values with a not reachable one in the array */
   int nmin = 0;
@@ -40,20 +39,22 @@ IntegerVector minInSet(NumericVector array, LogicalVector set) {
 	  imin2 = imin1;
 	}
 /* return the minimum and second minimal */
-  return IntegerVector::create(_["min1"] = imin1, 
-                               _["min2"] = imin2,
-                               _["nmin"] = nmin);
+  return Rcpp::IntegerVector::create(
+    Rcpp::Named("min1", imin1), 
+    Rcpp::Named("min2", imin2),
+    Rcpp::Named("nmin", nmin)
+	);
 }
 
 
 /* Functions called by R, see description above */
 
-NumericVector IDMNode::maxEntropy(const ProbInterval &probint, const bool /*exact*/) {
+Rcpp::NumericVector IDMNode::maxEntropy(const ProbInterval &probint, const bool /*exact*/) {
   
-  NumericVector lower(clone(probint.lower));
-  NumericVector upper(probint.upper);
+  Rcpp::NumericVector lower(clone(probint.lower));
+  Rcpp::NumericVector upper(probint.upper);
   int lsize = lower.size();
-  LogicalVector set(lsize, true);
+  Rcpp::LogicalVector set(lsize, true);
 	double minv;
 	int nmin, imin, ismin;
 	
@@ -66,14 +67,14 @@ NumericVector IDMNode::maxEntropy(const ProbInterval &probint, const bool /*exac
 	}
 	
   // Summing up all lower values
-	double suml = sum(lower);
+	double suml = Rcpp::sum(lower);
   // we only proceed into the adjustment, when the sum is lower than 1,
   // i.e. not allready a probability distribution
 	while (fcmp(suml, 1.0) < 0) {
 
     // obtainig the minimal and second minimal value, as well as the
     // number of times the minimal value is attained
-    IntegerVector mins = minInSet(lower, set);
+    Rcpp::IntegerVector mins = minInSet(lower, set);
 		imin = mins["min1"];
 		ismin = mins["min2"];
 		nmin = mins["nmin"];
@@ -83,7 +84,7 @@ NumericVector IDMNode::maxEntropy(const ProbInterval &probint, const bool /*exac
       // adjustment takes place only for minimal values
 			if(fcmp(lower[j], minv) == 0) {
 			  
-			  lower[j] += min(NumericVector::create((upper[j] - lower[j]),
+			  lower[j] += min(Rcpp::NumericVector::create((upper[j] - lower[j]),
                                            ((1.0 - suml) / nmin),
                                            ((ismin != imin) ? (lower[ismin] - minv) : 1.0) ));
         // adjusting the set
@@ -93,18 +94,18 @@ NumericVector IDMNode::maxEntropy(const ProbInterval &probint, const bool /*exac
 			}
 		}
 		// updating the sum value
-		suml = sum(lower);
+		suml = Rcpp::sum(lower);
 	}
 	return lower;
 }
 
 
-NumericVector IDMNode::minEntropy(const ProbInterval &probint) {
+Rcpp::NumericVector IDMNode::minEntropy(const ProbInterval &probint) {
 
-  NumericVector lower(clone(probint.lower));
-  NumericVector upper(probint.upper);
+  Rcpp::NumericVector lower(Rcpp::clone(probint.lower));
+  Rcpp::NumericVector upper(probint.upper);
   // get the index with the (first) maximum
-	int index = which_max(lower);
+	int index = Rcpp::which_max(lower);
   // if valid index then set the value of the lower boundary to the 
   // value of the upper one
 	if ( index > -1 && index < lower.size() ) {
@@ -113,10 +114,10 @@ NumericVector IDMNode::minEntropy(const ProbInterval &probint) {
 	return lower;
 }
 
-double IDMNode::correctionEntropy(NumericVector probs, const int n) {
+double IDMNode::correctionEntropy(Rcpp::NumericVector probs, const int n) {
   if(s_ > 0 && n > 0) {
     double ent = entropy(probs);
-    EntropyCorrection::Enum ec = tree_->getConfig()->ec;
+    EntropyCorrection ec = tree_->getConfig()->ec;
     switch(ec) {
     case EntropyCorrection::abellan:
       ent += (s_ * log2(probs.size())) / (n + s_);
@@ -131,12 +132,12 @@ double IDMNode::correctionEntropy(NumericVector probs, const int n) {
   return -1;
 }
 
-ProbInterval IDMNode::probabilityInterval(IntegerVector observations) {
-  IntegerVector frequency = table(observations);
+ProbInterval IDMNode::probabilityInterval(Rcpp::IntegerVector observations) {
+  Rcpp::IntegerVector frequency = Rcpp::table(observations);
   ProbInterval prob;
-  NumericVector gupper(frequency);
-  NumericVector glower(frequency);
-  prob.obs = sum(frequency);
+  Rcpp::NumericVector gupper(frequency);
+  Rcpp::NumericVector glower(frequency);
+  prob.obs = Rcpp::sum(frequency);
   prob.freq = frequency;
   prob.upper = (gupper + s_) / (prob.obs + s_);
   prob.lower = glower / (prob.obs + s_);

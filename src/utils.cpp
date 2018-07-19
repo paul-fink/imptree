@@ -3,45 +3,25 @@
 * File containing various array-based functions
 *
 */
-
 #include "utils.h"
+
 #define LOG2E 0.693147180559945
 
-
-/*
-** get the index with the (first) maximum value
-** in an array based on a selection defined in set
-*/
-// [[Rcpp::export]]
-int maxIndexInSet(NumericVector array, LogicalVector set) {
-
-	int index = -1;
-	int max = -1;
-
-	for(int i = 0; i < array.size(); i++) {
-		if(set[i] && array[i] > max) {
-			max = array[i];
-			index = i;
-		}
-	}
-	return index;
-}
-
-/*
+/* UNUSED
 ** resort an array according to a given index
 **
 ** index may be in any order and x is sorted
 ** along with the index being sorted in increasing order 
-*/
-NumericVector re_sort_by_index(NumericVector x, IntegerVector index) {
-  
-  NumericVector res(index.size());
-
-  for(int i = 0; i < index.size(); i++) {
-    res[index[i]] = x[i];
-  }
-  return res;
-}
+*/ 
+// Rcpp::NumericVector re_sort_by_index(Rcpp::NumericVector x, Rcpp::IntegerVector index) {
+//   
+//   Rcpp::NumericVector res(index.size());
+// 
+//   for(int i = 0; i < index.size(); i++) {
+//     res[index[i]] = x[i];
+//   }
+//   return res;
+// }
 
 /*
 ** compare two double values for equality
@@ -54,7 +34,6 @@ NumericVector re_sort_by_index(NumericVector x, IntegerVector index) {
 ** Volume 2: Seminumerical Algorithms. 3rd ed. Addison-Wesley.
 ** Section 4.2.2, p. 233. ISBN 0-201-89684-2.
 */
-// [[Rcpp::export]]
 int fcmp(const double x, const double y) {
 	
 	int exponent;
@@ -79,36 +58,38 @@ int fcmp(const double x, const double y) {
 }
 
 /* Calculation of Shannon's Entropy, if only using values larger than 0 */
-double entropy(NumericVector x) {
+double entropy(Rcpp::NumericVector x) {
 
 	double sum = 0;
 	for(int i = 0; i < x.size(); ++i) {
 		if(x[i] > 0.0) {
-			sum -= x[i] * log2(x[i]);
+			sum -= x[i] * log(x[i]);
 		}
 	}
-	return sum;
-}
-
-/* calculate logarithm to base 2*/
-double log2(const double x) {
-  return log(x) / LOG2E;
+	return sum / LOG2E;
 }
 
 /* entropy values here are all negative */
 double calcT(const double maxE, const double minE,
                    const double maxEbase, const double minEbase, 
                    const double maxEposs, const double gamma) {
-  double T = 2;
+  double T = 2.0;
   if(maxE < maxEbase) {
     double pessimism = (maxEposs - maxEbase) / (maxEposs - maxE);
     double optimism = (minEbase - minE) / (maxE + fabs(minE - minEbase));
-    // Minus in Hurvitz-like value due to negative entropy values
-    double T =  gamma * pessimism - (1 - gamma) * optimism;
+    // Minus in Hurvitz-like value due to partial negative entropy values in fraction
+    double T =  gamma * pessimism - (1.0 - gamma) * optimism;
     if(maxE < minEbase) {
       // T may get at minimum -1 so with -3 we are guaranteed to have it as splitting candidate
-      T -= 3;
+      T -= 3.0;
     }
   }
   return T;
+}
+
+Rcpp::NumericMatrix asMatrixProbinterval(const ProbInterval & probint) {
+  Rcpp::NumericMatrix result = Rcpp::NumericMatrix(2, probint.freq.size());
+  result(0, Rcpp::_) = probint.upper;
+  result(1, Rcpp::_) = probint.lower;
+  return result;
 }

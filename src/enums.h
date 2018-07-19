@@ -1,27 +1,26 @@
 #ifndef RCPP_IMPTREE_ENUMS_H
 #define RCPP_IMPTREE_ENUMS_H
 
-namespace EntropyCorrection {
-enum Enum {
+enum class EntropyCorrection {
   no = 0,
   abellan,
   strobl,
 };
-}
 
-namespace SplitMetric {
-enum Enum {
-  entropyMax,
+enum class SplitMetric {
+  entropyMax = 0,
   entropyRange,
 }; 
-}
 
-namespace IpType {
-enum Enum {
-  idm,
+enum class IpType {
+  idm = 0,
   npi,
   npiapprox,
 };
-}
+
+enum class Dominance {
+  interval = 0,
+  maximality
+};
 
 #endif /*RCPP_IMPTREE_ENUMS_H*/
