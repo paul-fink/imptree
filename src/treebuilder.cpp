@@ -45,3 +45,13 @@ Rcpp::IntegerMatrix treeInformation_cpp(Rcpp::XPtr<Iptree> ptree) {
   Rcpp::colnames(result) = Rcpp::CharacterVector::create("Depth", "No. Leaves", "No. Nodes");
   return result;
 }
+
+// [[Rcpp::export]]
+void treePrint_cpp(Rcpp::XPtr<Iptree> ptree, const int nsmall, const std::string &sep) {
+  ptree->printTree(nsmall, sep);
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericMatrix probInterval_cpp(Rcpp::XPtr<Iptree> ptree, Rcpp::IntegerVector idxs) {
+  
+}

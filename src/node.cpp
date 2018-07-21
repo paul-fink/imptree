@@ -241,7 +241,14 @@ void Node::addDepth(std::vector<int> * depths) const {
 }
 
 
-void Node::printNode(int parentIdx) const {
+void Node::printNode(int parentIdx, const int nsmall, const std::string & sep) const {
+  
+  int nodedepth = depth_;
+  
+  while(nodedepth > 0) {
+    Rcpp::Rcout << "  ";
+    --nodedepth;
+  }
   //Print the depth
   Rcpp::Rcout << "(" << depth_ << ") ";
   
@@ -255,16 +262,23 @@ void Node::printNode(int parentIdx) const {
   }
   
   //Print size of observations and probabilities
-  Rcpp::Rcout << "n=" << obsidxs_.size() << " (" << probInt_.to_string() << ")";
+  Rcpp::Rcout << "n=" << obsidxs_.size() << " (" << probInt_.to_string(nsmall, sep) << ")";
   
   // Print end of line (stared for leave) and recurse
   if(splitvaridx_ > -1) {
     Rcpp::Rcout << std::endl;
     for (size_t i = 0; i < size(); ++i) {
-      children_[i]->printNode(i);
+      children_[i]->printNode(i, nsmall, sep);
     }
   } else {
     Rcpp::Rcout << " *" << std::endl;
   }
 }
 
+ProbInterval getIndexProbInterval(std::vector<int> idxs) {
+  
+  
+  if(idxs.size() > 0) {
+    return getIndexProbInterval(idxs);  
+  }
+}

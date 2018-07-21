@@ -61,7 +61,7 @@ public:
   int numNodes() const;
   void addDepth(std::vector<int> * depths) const;
   
-  void printNode(int parentIdx) const;
+  void printNode(const int parentIdx, const int nsmall, const std::string &sep) const;
 };
 
 class IDMNode : public Node {

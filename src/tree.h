@@ -34,6 +34,8 @@ public:
   int getNumberOfNodes() const;
   int getNumberofLeaves() const;
   int getDepth() const;
+  
+  void printTree(const int nsmall, const std::string &sep) const;
 };
 
 #endif /*RCPP_IMPTREE_TREE_H*/

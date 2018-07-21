@@ -91,3 +91,11 @@ int Iptree::getDepth() const {
   return *result;
 }
 
+void Iptree::printTree(const int nsmall, const std::string &sep) const {
+  if(nullptr == root_) {
+    Rcpp::Rcout << "Tree does not have a root node";
+  }
+  this->root_->printNode(-1, nsmall, sep);
+  
+}
+
