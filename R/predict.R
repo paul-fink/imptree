@@ -14,13 +14,12 @@
 #' @param \dots Additional arguments for data. May be \code{"weights"},
 #' \code{"subset"}, \code{"na.action"}, any further are discarded.
 #' 
-#' @return A named list containing predicted classes, predicted 
+#' @return Invisibly a named list containing predicted classes, predicted 
 #' probability distribution and accuracy evaluation
-#' \itemize{
-#' \item{probintlist}{: List of the Imprecise Probability Distribution of the
+#' \item{probintlist}{List of the Imprecise Probability Distribution of the
 #' class variable. One matrix per observation.}
-#' \item{classes}{: Predicted class(es) of the observations as boolean matrix}
-#' \item{evaluation}{: Result of accuracy evaluation
+#' \item{classes}{Predicted class(es) of the observations as boolean matrix}
+#' \item{evaluation}{Result of accuracy evaluation
 #' \itemize{
 #' \item{nObs}{: Number of observations}
 #' \item{deter}{: Determinacy}
@@ -33,7 +32,6 @@
 #' \item{acc_disc}{: Discounted-accuracy}
 #' \item{acc_util}{: Utility based (discounted) accuracy}
 #' }}
-#' }
 #' 
 #' @details
 #' This function carries out the prediction of an imprecise tree. 
@@ -41,21 +39,20 @@
 #' at first. If the reference is not valid the original call
 #' for \code{"object"} is printed as error.
 #' 
-#' There are currently 2 different dominance criteria available.
-#' \itemize{
-#' \item{\code{max}}{: Maximum frequency criterion. Dominance is decided only
+#' There are currently 2 different dominance criteria available:
+#' \describe{
+#' \item{max}{Maximum frequency criterion. Dominance is decided only
 #' by the upper bound of the probability interval, ie. a state \eqn{C_i} is 
-#' dominated if there exists any \eqn{j \neq i}{j != i} with 
-#' \eqn{u(C_i) < u(C_j)}}.
-#' \item{\code{strong}}{: Interval dominance criterion. For the IDM it
+#' dominated if there exists any \eqn{j \neq i}{j != i} with
+#' \eqn{u(C_i) < u(C_j)}}
+#' \item{strong}{Interval dominance criterion. For the IDM it
 #' coincides with the strong dominance criterion. Here a state
 #' \eqn{C_i} is dominated if there exists any \eqn{j \neq i}{j != i} 
 #' with \eqn{u(C_i) < l(C_j)}}
 #' }
-#' 
 #' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}
 #' 
-#' @seealso \code{\link{imptree}}
+#' @seealso \code{\link{imptree}}, \code{\link{node_imptree}}
 #' 
 #' @keywords tree
 #' 
@@ -90,14 +87,22 @@ predict.imptree <- function(object, data, dominance = c("strong", "max"),
     
   }
   evaluation <- predict_cpp(object$tree, testdata, predcontrol)
-  
+
+  # Transposing the class matrix so observations are in rows
+  evaluation$classes <- t(evaluation$classes)  
+
   # Setting the classlabels on the prediction matrix and the Probinterval list
-  classlabels  <- attr(object$data, "labels")[[1]]
+  classlabels  <- attr(object$traindata, "labels")[[1]]
+
   colnames(evaluation$classes) <- classlabels
+	
   evaluation$probintlist <- lapply(evaluation$probintlist, function(o) {
-    dimnames(o) <- list(c("upper", "lower"), classlabels)
+    colnames(o) <- classlabels
     o
   })
-  
-  evaluation
+
+  # adding the call parameters
+  attr(evaluation, "dominance") <- dominance
+  attr(evaluation, "utility") <- utility
+  invisible(evaluation)
 }

@@ -50,26 +50,26 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   if(sm) {
 
     # dealing inconsitencies in 'tbase'
-    tbase <- as.double(clist$tbase)
+    tbase <- as.double(clist[["tbase"]])
     if(tbase > 2 || tbase < -1) {
       stop(paste("The maximal value 'tbase' a splitting variable may attain",
                   "to still qualify as candidate must be between [-1,2]!"))
     }
   
     # dealing inconsitencies in 'gamma'
-    gamma <- as.double(clist$gamma)
+    gamma <- as.double(clist[["gamma"]])
     if(gamma > 1 || gamma < 0) {
       stop("'gamma' as weight of the upper entropy comparison must be in [0,1]!")
     }
   } else {
   
     # if splitmetric is globalmax (i.e. 0L), then tbase and gamma are predefined
-    clist$gamma <- 1L
-    clist$tbase <- 2L
+    clist$gamma <- 1
+    clist$tbase <- 2
   }
   
   # dealing inconsitencies in 'depth'
-  mydepth <- clist$depth
+  mydepth <- clist[["depth"]]
   if(!is.null(mydepth) && !is.na(mydepth) && mydepth < 1) {
     warning("Tree depth must be at least 1; ", "Using full depth instead")
     mydepth <- NA
@@ -80,11 +80,11 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   clist$depth <- as.integer(mydepth)
   
   # dealing with inconsistency in 'minbucket'
-  if((minbucket <- clist$minubucket) < 0) {
+  if((minbucket <- clist[["minbucket"]]) < 0) {
     warning(paste("Negative 'minbucket' not meaningful for minimal leaf size;",
                   "Setting to default 0"))
     minbucket <- 0L
   }
-  clist$minubucket <- as.integer(minbucket)
+  clist$minbucket <- as.integer(minbucket)
   clist
 }

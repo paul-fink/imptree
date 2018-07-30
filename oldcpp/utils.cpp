@@ -5,7 +5,6 @@
 */
 #include "utils.h"
 
-#define LOG2E 0.693147180559945
 
 /* UNUSED
 ** resort an array according to a given index
@@ -58,38 +57,12 @@ int fcmp(const double x, const double y) {
 }
 
 /* Calculation of Shannon's Entropy, if only using values larger than 0 */
-double entropy(Rcpp::NumericVector x) {
+double entropy(std::vector<double> x) {
 
-	double sum = 0;
-	for(int i = 0; i < x.size(); ++i) {
-		if(x[i] > 0.0) {
-			sum -= x[i] * log(x[i]);
-		}
-	}
-	return sum / LOG2E;
+	std::transform(x.begin(), x.end(), x.begin(),
+                [](double d) -> double {
+                return ((d > 0.0) ? (d * std::log2(d)) : 0.0);
+  });
+  return -std::accumulate(x.begin(), x.end(), 0.0);
 }
 
-/* entropy values here are all negative */
-double calcT(const double maxE, const double minE,
-                   const double maxEbase, const double minEbase, 
-                   const double maxEposs, const double gamma) {
-  double T = 2.0;
-  if(maxE < maxEbase) {
-    double pessimism = (maxEposs - maxEbase) / (maxEposs - maxE);
-    double optimism = (minEbase - minE) / (maxE + fabs(minE - minEbase));
-    // Minus in Hurvitz-like value due to partial negative entropy values in fraction
-    double T =  gamma * pessimism - (1.0 - gamma) * optimism;
-    if(maxE < minEbase) {
-      // T may get at minimum -1 so with -3 we are guaranteed to have it as splitting candidate
-      T -= 3.0;
-    }
-  }
-  return T;
-}
-
-Rcpp::NumericMatrix asMatrixProbinterval(const ProbInterval & probint) {
-  Rcpp::NumericMatrix result = Rcpp::NumericMatrix(2, probint.freq.size());
-  result(0, Rcpp::_) = probint.upper;
-  result(1, Rcpp::_) = probint.lower;
-  return result;
-}

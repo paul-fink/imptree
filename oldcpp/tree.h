@@ -36,6 +36,8 @@ public:
   int getDepth() const;
   
   void printTree(const int nsmall, const std::string &sep) const;
+  
+  ProbInterval getIndexProbInterval(std::vector<int>& idxs) const;
 };
 
 #endif /*RCPP_IMPTREE_TREE_H*/

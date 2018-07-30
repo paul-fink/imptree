@@ -7,7 +7,7 @@
 using namespace Rcpp;
 
 // treebuilder_cpp
-Rcpp::XPtr<Iptree> treebuilder_cpp(const Rcpp::IntegerMatrix& data, const Rcpp::List& config);
+Rcpp::XPtr<Node> treebuilder_cpp(const Rcpp::IntegerMatrix& data, const Rcpp::List& config);
 RcppExport SEXP _imptree_treebuilder_cpp(SEXP dataSEXP, SEXP configSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -18,59 +18,73 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// traindata_cpp
-Rcpp::IntegerMatrix traindata_cpp(Rcpp::XPtr<Iptree> ptree);
-RcppExport SEXP _imptree_traindata_cpp(SEXP ptreeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<Iptree> >::type ptree(ptreeSEXP);
-    rcpp_result_gen = Rcpp::wrap(traindata_cpp(ptree));
-    return rcpp_result_gen;
-END_RCPP
-}
 // hasRoot_cpp
-bool hasRoot_cpp(Rcpp::XPtr<Iptree> ptree);
-RcppExport SEXP _imptree_hasRoot_cpp(SEXP ptreeSEXP) {
+bool hasRoot_cpp(Rcpp::XPtr<Node> prootnode);
+RcppExport SEXP _imptree_hasRoot_cpp(SEXP prootnodeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<Iptree> >::type ptree(ptreeSEXP);
-    rcpp_result_gen = Rcpp::wrap(hasRoot_cpp(ptree));
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Node> >::type prootnode(prootnodeSEXP);
+    rcpp_result_gen = Rcpp::wrap(hasRoot_cpp(prootnode));
     return rcpp_result_gen;
 END_RCPP
 }
 // predict_cpp
-Rcpp::List predict_cpp(Rcpp::XPtr<Iptree> ptree, const Rcpp::IntegerMatrix& newdata, const Rcpp::List& evalconfig);
-RcppExport SEXP _imptree_predict_cpp(SEXP ptreeSEXP, SEXP newdataSEXP, SEXP evalconfigSEXP) {
+Rcpp::List predict_cpp(Rcpp::XPtr<Node> prootnode, const Rcpp::IntegerMatrix& newdata, const Rcpp::List& evalconfig);
+RcppExport SEXP _imptree_predict_cpp(SEXP prootnodeSEXP, SEXP newdataSEXP, SEXP evalconfigSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<Iptree> >::type ptree(ptreeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Node> >::type prootnode(prootnodeSEXP);
     Rcpp::traits::input_parameter< const Rcpp::IntegerMatrix& >::type newdata(newdataSEXP);
     Rcpp::traits::input_parameter< const Rcpp::List& >::type evalconfig(evalconfigSEXP);
-    rcpp_result_gen = Rcpp::wrap(predict_cpp(ptree, newdata, evalconfig));
+    rcpp_result_gen = Rcpp::wrap(predict_cpp(prootnode, newdata, evalconfig));
     return rcpp_result_gen;
 END_RCPP
 }
 // treeInformation_cpp
-Rcpp::IntegerMatrix treeInformation_cpp(Rcpp::XPtr<Iptree> ptree);
-RcppExport SEXP _imptree_treeInformation_cpp(SEXP ptreeSEXP) {
+Rcpp::IntegerMatrix treeInformation_cpp(Rcpp::XPtr<Node> prootnode);
+RcppExport SEXP _imptree_treeInformation_cpp(SEXP prootnodeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::XPtr<Iptree> >::type ptree(ptreeSEXP);
-    rcpp_result_gen = Rcpp::wrap(treeInformation_cpp(ptree));
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Node> >::type prootnode(prootnodeSEXP);
+    rcpp_result_gen = Rcpp::wrap(treeInformation_cpp(prootnode));
+    return rcpp_result_gen;
+END_RCPP
+}
+// treePrint_cpp
+void treePrint_cpp(Rcpp::XPtr<Node> prootnode, const int nsmall, const std::string& sep);
+RcppExport SEXP _imptree_treePrint_cpp(SEXP prootnodeSEXP, SEXP nsmallSEXP, SEXP sepSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Node> >::type prootnode(prootnodeSEXP);
+    Rcpp::traits::input_parameter< const int >::type nsmall(nsmallSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type sep(sepSEXP);
+    treePrint_cpp(prootnode, nsmall, sep);
+    return R_NilValue;
+END_RCPP
+}
+// getNode_cpp
+Rcpp::List getNode_cpp(Rcpp::XPtr<Node> prootnode, Rcpp::IntegerVector idxs);
+RcppExport SEXP _imptree_getNode_cpp(SEXP prootnodeSEXP, SEXP idxsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Node> >::type prootnode(prootnodeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type idxs(idxsSEXP);
+    rcpp_result_gen = Rcpp::wrap(getNode_cpp(prootnode, idxs));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_imptree_treebuilder_cpp", (DL_FUNC) &_imptree_treebuilder_cpp, 2},
-    {"_imptree_traindata_cpp", (DL_FUNC) &_imptree_traindata_cpp, 1},
     {"_imptree_hasRoot_cpp", (DL_FUNC) &_imptree_hasRoot_cpp, 1},
     {"_imptree_predict_cpp", (DL_FUNC) &_imptree_predict_cpp, 3},
     {"_imptree_treeInformation_cpp", (DL_FUNC) &_imptree_treeInformation_cpp, 1},
+    {"_imptree_treePrint_cpp", (DL_FUNC) &_imptree_treePrint_cpp, 3},
+    {"_imptree_getNode_cpp", (DL_FUNC) &_imptree_getNode_cpp, 2},
     {NULL, NULL, 0}
 };
 

@@ -1,6 +1,6 @@
 Package: imptree
 Type: Package
-Title: Classification trees with imprecise probabilities
+Title: Classification Trees with Imprecise Probabilities
 Version: 1.0
 Date: 2016-06-23
 Author: Paul Fink

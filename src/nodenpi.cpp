@@ -1,6 +1,7 @@
 #include "node.h"
 
-NPINode::NPINode(Iptree* tree, int depth, Node* parent) : Node(tree, depth, parent)
+NPINode::NPINode(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> configp, int depth, Node* parent)
+  : Node(datap, configp, depth, parent)
 {
 }
 
@@ -8,12 +9,13 @@ NPINode::NPINode(Iptree* tree, int depth, Node* parent) : Node(tree, depth, pare
  ** get the index with the (first) maximum value
  ** in an array based on a selection defined in set
  */
-int NPINode::maxIndexInSet(Rcpp::NumericVector array, Rcpp::LogicalVector set) {
+int NPINode::maxIndexInSet(std::vector<int> array, std::vector<bool> set) {
   
   int index = -1;
   int max = -1;
+  int asize = array.size();
   
-  for(int i = 0; i < array.size(); i++) {
+  for(int i = 0; i < asize; i++) {
     if(set[i] && array[i] > max) {
       max = array[i];
       index = i;
@@ -22,41 +24,44 @@ int NPINode::maxIndexInSet(Rcpp::NumericVector array, Rcpp::LogicalVector set) {
   return index;
 }
 
-Rcpp::NumericVector NPINode::maxEntropy(const ProbInterval &probint, const bool exact) {
-  if(exact) return maxEntropyExact(probint);
-  return maxEntropyApprox(probint);
+std::vector<double> NPINode::maxEntropyDist(const ProbInterval &probint, const bool exact) {
+  if(exact) return maxEntropyDistExact(probint);
+  return maxEntropyDistApprox(probint);
 }
 
 
-Rcpp::NumericVector NPINode::maxEntropyApprox(const ProbInterval &probint) {
-	
-	Rcpp::IntegerVector freq(probint.freq);
+std::vector<double> NPINode::maxEntropyDistApprox(const ProbInterval &probint) {
+  
   int ksize = probint.freq.size();
-  Rcpp::NumericVector prob(ksize, 0.0);
-  Rcpp::IntegerVector ks(ksize, 0);
+  int maxobs = (*std::max_element(probint.freq.begin(), probint.freq.end())) + 1;
+  
+  std::vector<int> ks(maxobs, 0);
+  std::vector<double> prob(ksize, 0.0);
   for(int i = 0; i < ksize; ++i) {
-    ++ks[freq[i]];
+    ++ks[probint.freq[i]];
   }
   int k0 = ks[0];
   int k1 = ks[1];
   int krem = ksize - k0 - k1;
   int mass = 0;
 
-	int nobs = probint.obs;
+	int dnobs = static_cast<double>(probint.obs);
 
 	int ni;
 	if( krem < k0) {
 		for(int i = 0; i < ksize; ++i) {
-			ni = freq[i];
+			ni = probint.freq[i];
 			if(ni == 0 || ni == 1) {
-				prob[i] = ((krem + (double)k1) / (nobs * (k0 + k1)));
+				prob[i] = ((krem + (double)k1) / (dnobs * (k0 + k1)));
 			} else {
-				prob[i] = ((ni - 1.0) / nobs);
+				prob[i] = ((ni - 1.0) / dnobs);
 			}
 		}
 	} else {
 		mass = krem - k0;
-	  prob = pmax(freq - 1.0, 1.0) / nobs;
+	  for(int i = 0; i < ksize; ++i) {
+	    prob[i] = std::max(probint.freq[i] - 1.0, 1.0) / dnobs;
+	  }
 	  
 		int j = 1, kj, kj1;
 		while (mass > 0) {
@@ -65,143 +70,151 @@ Rcpp::NumericVector NPINode::maxEntropyApprox(const ProbInterval &probint) {
 			kj1 = ks[j + 1];
 			if((kj + kj1) < mass) {
 				for(int i = 0; i < ksize; ++i){
-					ni = freq[i];
+					ni = probint.freq[i];
 					if(ni == j || ni == j + 1) {
-						prob[i] += 1.0/nobs;
+						prob[i] += 1.0/dnobs;
 						mass--;
 					}
 				}
 			} else {
 				for(int i = 0; i < ksize; ++i) {
-					ni = freq[i];
+					ni = probint.freq[i];
 					if(ni == j || ni == j + 1) {
-						prob[i] += (mass/((double)nobs * (kj + kj1)));
+						prob[i] += (mass/(dnobs * (kj + kj1)));
 					}
 				}
 				mass = 0;
+			  break;
 			}
 			++j;
-			if(j == ksize) {
-			  Rcpp::warning("After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, mass / (nobs * 1.0));	
+			if(j == maxobs) {
+			  Rcpp::stop("MaxAppox: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, mass / dnobs);	
 			  break;
-			} 
+			}
 		}
 	}
 	return prob;
 }
 
-Rcpp::NumericVector NPINode::maxEntropyExact(const ProbInterval &probint) {
+std::vector<double> NPINode::maxEntropyDistExact(const ProbInterval &probint) {
 
-  Rcpp::IntegerVector freq(probint.freq);
   int ksize = probint.freq.size();
+  int maxobs = (*std::max_element(probint.freq.begin(), probint.freq.end())) + 1;
   
-  Rcpp::IntegerVector ks(ksize, 0);
-  Rcpp::NumericVector prob(ksize, 0.0);
+  std::vector<int> ks(maxobs, 0);
+  std::vector<double> prob(ksize, 0.0);
   
   for(int i = 0; i < ksize; ++i) {
-    ++ks[freq[i]];
+    ++ks[probint.freq[i]];
   }
   int k0 = ks[0];
   int k1 = ks[1];
   int k01 = k0 + k1;
   int krem = ksize - k01;
-	
-	int nobs = probint.obs;
+  
+	int dnobs = static_cast<double>(probint.obs);
 	
 
 	if(krem == 0) {
-	  prob = 1.0 / ksize;
-	  return prob;
+	  std::fill(prob.begin(), prob.end(), 1.0 / ksize);
 	} else if (k0 > krem) {
-	  
-    prob = (freq - 1.0) / nobs;
+    prob = probint.lower;
 		int beta = (k01) / (krem + k1);
 		int h = (k01) % (krem + k1);
 		
 		if( h < (k1 + 1)) {
 			for(int i = 0; i < ksize; ++i) {
 			  int j = 0;
-			  if(freq[i] <= 1) {
+			  if(probint.freq[i] <= 1) {
 				  if(j < (beta * (krem - 1))) {
-					  prob[i] = 1.0 / (nobs * beta);
+					  prob[i] = 1.0 / (dnobs * beta);
 				    ++j;
 				  } else if(j < k01) {
-					  prob[i] = (k1 + 1.0) / (nobs * (beta * (k1 + 1.0) + h));
+					  prob[i] = (k1 + 1.0) / (dnobs * (beta * (k1 + 1.0) + h));
 				    ++j;
 				  } else {
-				    Rcpp::warning("Something is wrong in calculation");
+				    Rcpp::stop("Something is wrong in calculation");
 				  }
 				}
 			}	
 		} else {
 			for(int i = 0; i < ksize; ++i) {
 			  int j = 0;
-			  if(freq[i] <= 1) {
+			  if(probint.freq[i] <= 1) {
 				  if(j < (h * (beta + 1))) {
-					  prob[i] = 1.0 / (nobs * (beta + 1.0));
+					  prob[i] = 1.0 / (dnobs * (beta + 1.0));
 				    ++j;
 				  } else if(j < k01) {
-					  prob[i] = 1.0 / (nobs * beta);
+					  prob[i] = 1.0 / (dnobs * beta);
 				    ++j;
 				  } else {
-				    Rcpp::warning("Something is wrong in calculation");
+				    Rcpp::stop("Something is wrong in calculation");
 				  }
 				}
 			}
 		}
-		return prob;
 	} else {
 		int mass = krem - k0;
-		prob = Rcpp::pmax(freq - 1.0, 1.0) / nobs;
+	  for(int i = 0; i < ksize; ++i) {
+	    prob[i] = std::max(probint.freq[i] - 1.0, 1.0) / dnobs;
+	  }
 		
 		int j = 1, Acc, W, ni;
 		while(mass > 0) {
 			if(ks[j] + ks[j + 1] < mass) {
 				for(int i = 0; i < ksize; ++i) {
-					ni = freq[i];
+					ni = probint.freq[i];
 					if((ni == j) || (ni == (j + 1))) {
-						prob[i] += 1.0 / nobs;
+						prob[i] += 1.0 / dnobs;
 					}
 				}
 				mass -= (ks[j] + ks[j + 1]);
 			} else {
-				W = min(Rcpp::IntegerVector::create((mass + 1 + ks[j]), (ks[j] + ks[j + 1])));
+				W = std::min((mass + 1 + ks[j]), (ks[j] + ks[j + 1]));
 				Acc = W;
-				for(int i = 0; i < ksize; ++i){
-					ni = freq[i];
-					if(((ni == j) || (ni == (j + 1))) && Acc > 0) {
-						prob[i] += (mass / (nobs * (double)W));
+				for(int i = 0; i < ksize && Acc > 0; ++i){
+					ni = probint.freq[i];
+					if((ni == j) || (ni == (j + 1))) {
+						prob[i] += (mass / (dnobs * W));
 						--Acc;
 					}
 				}
-				mass = 0.0;
+				mass = 0;
+				break;
 			}
 			++j;
-			if(j == ksize) {
-			  Rcpp::warning("After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, mass / (nobs * 1.0));	
+			if(j == maxobs) {
+			  Rcpp::stop("Max: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, static_cast<double>(mass)/dnobs);	
 			  break;
 			}
 		}
 		return prob;
 	}
-	return Rcpp::NumericVector();
+	return prob;
 }
 
-Rcpp::NumericVector NPINode::minEntropy(const ProbInterval &probint) {
+std::vector<double> NPINode::minEntropyDist(const ProbInterval &probint) {
 	
 	int ksize = probint.freq.size();
 	int nobs = probint.obs;
-	Rcpp::NumericVector lower(ksize);
-	Rcpp::NumericVector upper(ksize);
 	
-	lower = Rcpp::pmax(probint.freq - 1, 0);
-	upper = Rcpp::pmin(probint.freq + 1, 1);
+	std::vector<int> lower;
+	lower.reserve(ksize);
+	std::vector<int> upper;
+	upper.reserve(ksize);
+	std::vector<double> dlower;
+	dlower.reserve(ksize);
+	for(int const &freqi : probint.freq) {
+	  lower.push_back(std::max(freqi - 1, 0));
+	  upper.push_back(std::min(freqi + 1, nobs));
+	}
 	
-	Rcpp::LogicalVector set(ksize, true);
+	std::vector<bool> set = std::vector<bool>(ksize, true);
 	
-	int diff, idx, j, mass = nobs - sum(lower);
+	int diff, idx, j = 0, mass = nobs - std::accumulate(lower.rbegin(), lower.rend(), 0);
 	
 	while(mass > 0) {
+	  
 		idx = maxIndexInSet(lower, set);
 		diff = upper[idx] - lower[idx];
 		if(diff < mass) {
@@ -211,20 +224,26 @@ Rcpp::NumericVector NPINode::minEntropy(const ProbInterval &probint) {
 		} else {
 			lower[idx] = lower[idx] + mass;
 			mass = 0;
+			break;
 		}
 		++j;
 		if(j == ksize) {
-		  Rcpp::warning("After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, mass / (nobs * 1.0));	
+		  Rcpp::stop("Min: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, static_cast<double>(mass) / static_cast<double>(nobs));	
 		  break;
 		}
 	}
-  return lower / nobs;
+	
+	for(int i = 0; i < ksize; ++i) {
+	  dlower.push_back(lower[i] * 1.0 / static_cast<double>(nobs));
+	}
+	
+  return dlower;
 }
 
-double NPINode::correctionEntropy(Rcpp::NumericVector probs, const int n) {
+double NPINode::correctionEntropy(const std::vector<double>& probs, const int n) {
   if(n > 0) {
     double ent = entropy(probs);
-    EntropyCorrection ec = tree_->getConfig()->ec;
+    EntropyCorrection ec = configp_->ec;
     switch(ec) {
     case EntropyCorrection::strobl:
       ent += ((probs.size() - 1) / (2 * n));
@@ -236,15 +255,20 @@ double NPINode::correctionEntropy(Rcpp::NumericVector probs, const int n) {
   return -1;
 }
 
-
-ProbInterval NPINode::probabilityInterval(Rcpp::IntegerVector observations) {
-  Rcpp::IntegerVector frequency = Rcpp::table(observations);
+ProbInterval NPINode::probabilityInterval(const std::vector<int>& classtable) {
+  
   ProbInterval prob;
-  Rcpp::NumericVector gupper(frequency);
-  Rcpp::NumericVector glower(frequency);
-  prob.obs = sum(frequency);
-  prob.freq = frequency;
-  prob.upper = Rcpp::pmin(gupper + 1.0, 1.0) / (prob.obs);
-  prob.lower = Rcpp::pmax(glower - 1.0, 0.0) / (prob.obs);
+  prob.obs = std::accumulate(classtable.begin(), classtable.end(), 0);
+  prob.freq.clear();
+  prob.upper.clear();
+  prob.lower.clear();
+  double dobs = static_cast<double>(prob.obs);
+  for(int classObs : classtable) {
+    prob.freq.push_back(classObs);
+    prob.upper.push_back((std::min(classObs + 1.0, dobs) / dobs));
+    prob.lower.push_back((std::max(classObs - 1.0, 0.0) / dobs));
+  }
+  //Debug
+  //#Rcpp::Rcout << prob.to_string();
   return prob;
 }

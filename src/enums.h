@@ -18,6 +18,16 @@ enum class IpType {
   npiapprox,
 };
 
+namespace IpTypeLookup {
+  inline const char* toString(IpType v) {
+    switch (v) {
+      case IpType::idm:   return "IDM";
+      case IpType::npi:   return "NPI";
+      case IpType::npiapprox: return "NPIapprox";
+    }
+  }
+}
+
 enum class Dominance {
   interval = 0,
   maximality

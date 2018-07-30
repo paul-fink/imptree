@@ -5,19 +5,23 @@ treebuilder_cpp <- function(data, config) {
     .Call('_imptree_treebuilder_cpp', PACKAGE = 'imptree', data, config)
 }
 
-traindata_cpp <- function(ptree) {
-    .Call('_imptree_traindata_cpp', PACKAGE = 'imptree', ptree)
+hasRoot_cpp <- function(prootnode) {
+    .Call('_imptree_hasRoot_cpp', PACKAGE = 'imptree', prootnode)
 }
 
-hasRoot_cpp <- function(ptree) {
-    .Call('_imptree_hasRoot_cpp', PACKAGE = 'imptree', ptree)
+predict_cpp <- function(prootnode, newdata, evalconfig) {
+    .Call('_imptree_predict_cpp', PACKAGE = 'imptree', prootnode, newdata, evalconfig)
 }
 
-predict_cpp <- function(ptree, newdata, evalconfig) {
-    .Call('_imptree_predict_cpp', PACKAGE = 'imptree', ptree, newdata, evalconfig)
+treeInformation_cpp <- function(prootnode) {
+    .Call('_imptree_treeInformation_cpp', PACKAGE = 'imptree', prootnode)
 }
 
-treeInformation_cpp <- function(ptree) {
-    .Call('_imptree_treeInformation_cpp', PACKAGE = 'imptree', ptree)
+treePrint_cpp <- function(prootnode, nsmall, sep) {
+    invisible(.Call('_imptree_treePrint_cpp', PACKAGE = 'imptree', prootnode, nsmall, sep))
+}
+
+getNode_cpp <- function(prootnode, idxs) {
+    .Call('_imptree_getNode_cpp', PACKAGE = 'imptree', prootnode, idxs)
 }
 

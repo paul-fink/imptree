@@ -5,47 +5,57 @@
 #' @description \code{imptree} implements Abellan and Moral's tree 
 #' algorithm (based on Quinlans ID3) for classification. It
 #' employes either the Imprecise Dirichlet Model (IDM) or the 
-#' Nonparametric Predictive Inference (NPI) to generate the nodes'
-#' class probability distribution.
+#' Nonparametric Predictive Inference (NPI) to generate the
+#' imprecise probability distribution of the classification variable
+#' within a node.
 #' 
 #' @aliases imptree imptree.formula imptree.default
 #' 
 #' @param formula Formula describing the strucutre
-#'   (class variable ~ featutre variables).
-#'   Any interaction terms trigger an error. Must be supplied!
+#' (class variable ~ featutre variables).
+#' Any interaction terms trigger an error.
 #' @param data Data.frame to evaluate supplied formula on.
-#'  If not provided the the formula is evaluated 
-#'  on the calling environment
-#' @param epistemic if \code{TRUE} the variables are supposed to be of epistemic nature,
-#'  if \code{FALSE} then they are ontological. See details. 
-#' @param weights Individual weight for the observations(Default: 1 to each)
+#' If not provided the the formula is evaluated 
+#' on the calling environment
+#' @param weights Individual weight of the observations
+#' (default: 1 to each).
+#' \emph{This argument is ignored at the moment.}
 #' @param control A named (partial) list according to the result of
-#'  \code{\link{imptree_control}}.
-#' @param method Method applied for calculating the probability intervals of
-#'  the class probability. \code{"IDM"} for the Imprecise Dirichlet Model 
-#'  (Default), \code{"NPI"} for use of the Nonparametric Predictive
-#'  Inference approach and \code{"NPIapprox"} for use of the approximate 
-#'  algorithm obtaining maximal entropy of NPI generate probability intervals.
-#' @param method.param Named list specifying the mehtod specific parameter.
-#'  See details.
+#' \code{\link{imptree_control}}.
+#' @param method Method applied for calculating the probability
+#' intervals of the class probability. \code{"IDM"} for the Imprecise
+#' Dirichlet Model (default), \code{"NPI"} for use of the 
+#' Nonparametric Predictive Inference approach and \code{"NPIapprox"}
+#' for use of the approximate algorithm obtaining maximal entropy of
+#'  NPI generated probability intervals.
+#' @param method.param Named list providing the method specific 
+#' parameters. See \code{\link{imptree_params}}.
 #' @param \dots optional parameters to be passed to the main function
-#'  \code{imptree.formula} or to the call of \code{\link{imptree_control}}.
-#'  
-#' @details
-#'  A multi-state observation of a variable when treated epistemically, all
-#'  the states are possible values of the observations, however in case of
-#'  ontological interpretation each unique multi-state is assumed as a further
-#'  single state. The a multi-state observation is characterized by a factor
-#'  with the levels for a multi-state consisting of the unique single stated
-#'  separated by a colon \code{":"}.
-#'  
-#' @return An object of class \code{imptree}, which is a list with the
-#'  following components:
-#'  \item{call}{Original call to \code{imptree}}
-#'  \item{tree}{Object reference to the Java tree object.}
-#'  \item{train}{Named list of training data containing the Java Object
-#'    reference to the training data and the R model.frame}
-#'  \item{formula}{The formula describing the data structure}
+#' \code{imptree.formula} or to the call of
+#' \code{\link{imptree_control}}.
+#'
+# This part is not yet implemented. Will be done hopefully in a later version
+# @details
+# A multi-state observation of a variable when treated epistemically, all 
+# the states are possible values of the observations, however in case of
+# ontological interpretation each unique multi-state is assumed as a further
+# single state. The a multi-state observation is characterized by a factor
+# with the levels for a multi-state consisting of the unique single stated
+# separated by a colon \code{":"}.
+#  
+#' @return An object of class \code{imptree}, which is a list
+#' with the following components:
+#' \item{call}{Original call to \code{imptree}}
+#' \item{tree}{Object reference to the underlying C++ tree object.}
+#' \item{train}{Training data in the form required by the 
+#' workhorse C++ function.\cr
+#' It is an integer matrix containing the internal factor
+#' representations, adjusted for the C++ specific indexing
+#' starting at 0 and not at 1 as in R.
+#' Further attributes of the matrix, hold the names of the variables,
+#' the C++ adjusted index of the classification variabe, as well as
+#' the levels and number of levels for each variable.}
+#' \item{formula}{The formula describing the data structure}
 #' 
 #' @references Abell\ifelse{latex}{\out{\'{a}}}{\ifelse{html}{\out{&aacute;}}{a}}n,
 #' J. and Moral, S. (2005), Upper entropy of credal sets. Applications to 
@@ -58,15 +68,18 @@
 #' @references Baker, R. M. (2010), \emph{Multinomial Nonparametric Predictive Inference:
 #' Selection, Classification and Subcategory Data}.
 #'  
-#' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}, based on
-#' algorithms by J. Abell\ifelse{latex}{\out{\'{a}}}{\ifelse{html}{\out{&aacute;}}{a}}n and
-#' S. Moral for the IDM and R. M. Baker for the NPI approach.
+#' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de},
+#' based on algorithms by 
+#' J. Abell\ifelse{latex}{\out{\'{a}}}{\ifelse{html}{\out{&aacute;}}{a}}n
+#' and S. Moral for the IDM and R. M. Baker for the NPI approach.
 #' 
-#' @seealso \code{\link{predict.imptree}}, \code{\link{summary.imptree}},
-#' \code{\link{imptree_params}}, \code{\link{imptree_control}}
+#' @seealso \code{\link{predict.imptree}},
+#' \code{\link{summary.imptree}}, \code{\link{imptree_params}}, 
+#' \code{\link{imptree_control}}, \code{\link{node_imptree}}
 #' 
 #' @keywords tree
 #'
+#' @importFrom stats terms
 #' @export
 imptree.formula <- function(formula, data = NULL,
                             weights, control, method = c("IDM", "NPI", "NPIapprox"),
@@ -91,12 +104,13 @@ imptree.formula <- function(formula, data = NULL,
   # checking for the method specific parameters
   method.param <- imptree_params(method.param, method)
   
-  # initializing the control arguements such as minbucket, depth, gamma
-  # and tbase, they may also be supplied via '...'
+  # initializing the control arguements such as minbucket, depth,
+  # gamma and tbase, they may also be supplied via '...'
   if (missing(control)) {
     control <- NULL
   }
-  controls <- imptree_control(splitmetric = method.param$splitmetric, controlList = control, ...)
+  controls <- imptree_control(splitmetric = method.param$splitmetric,
+                              controlList = control, ...)
 
   # combine all controls and method parameters into a single list
   controlslist <- c(controls, method.param)
@@ -120,8 +134,10 @@ imptree.formula <- function(formula, data = NULL,
 
 
 #' @rdname imptree
-#' @param x A data.frame or a matrix of feature variables. The columns are required to be named.
-#' @param y A response vector as a factor.
+#' @param x A data.frame or a matrix of feature variables.
+#' The columns are required to be named.
+#' @param y The classification variable as a factor.
+#' @importFrom stats as.formula
 #' @export
 imptree.default <- function(x, y, ...) {
   
@@ -134,7 +150,9 @@ imptree.default <- function(x, y, ...) {
   }
   formula <- as.formula(paste0(deparse(substitute(y)),"~",
                                paste(nam, collapse = "+")))
-  res <- imptree.formula(formula, data = x, ...)
+  res <- imptree.formula(formula,
+                         data = data.frame(deparse(substitute(y)) , x),
+                         ...)
   call <- match.call()
   call[[1]] <- as.name("imptree")
   res$Call <- call

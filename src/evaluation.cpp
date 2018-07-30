@@ -19,14 +19,14 @@ void Evaluation::evaluate() {
 
 Rcpp::List Evaluation::summary() const {
   return Rcpp::List::create(
-    Rcpp::Named("nObs", probInts_.size()),
-    Rcpp::Named("deter", obs_det_),
-    Rcpp::Named("nObsIndet", obs_indet_),
-    Rcpp::Named("indetSize", size_indet_),
-    Rcpp::Named("acc_single", acc_single_),
-    Rcpp::Named("acc_set", acc_set_),
-    Rcpp::Named("acc_disc", acc_disc_),
-    Rcpp::Named("acc_util", acc_util_)
+    Rcpp::Named("nObs") = probInts_.size(),
+    Rcpp::Named("deter") = obs_det_,
+    Rcpp::Named("nObsIndet") = obs_indet_,
+    Rcpp::Named("indetSize") = size_indet_,
+    Rcpp::Named("acc_single") = acc_single_,
+    Rcpp::Named("acc_set") = acc_set_,
+    Rcpp::Named("acc_disc") = acc_disc_,
+    Rcpp::Named("acc_util") = acc_util_
   );
 }
 
@@ -34,7 +34,7 @@ Rcpp::List Evaluation::probIntervalList() const {
   
   std::vector<Rcpp::NumericMatrix> res;
   for(ProbInterval probint : probInts_) {
-    res.push_back(asMatrixProbinterval(probint));
+    res.push_back(probint.toMatrix());
   }
   return Rcpp::wrap(res);
 }
@@ -50,15 +50,14 @@ double Evaluation::quadratic_utility(double acc_disc) {
 }
 
 // true means it is not dominated
-Rcpp::LogicalVector Evaluation::computeNonDominatedSet(const ProbInterval &probint) {
+std::vector<bool> Evaluation::computeNonDominatedSet(const ProbInterval &probint) {
   
   int n = probint.freq.size();
-  Rcpp::LogicalVector set(n, false);
+  std::vector<bool> set(n, false);
   if (dominance_ == Dominance::maximality) {
     
-    int idx = which_max(probint.upper);
+    int idx = std::distance(probint.upper.begin(), std::min_element(probint.upper.begin(), probint.upper.end()));
     set[idx] = true;
-    return set;
     
   } else if (dominance_ == Dominance::interval) {
     
@@ -72,7 +71,7 @@ Rcpp::LogicalVector Evaluation::computeNonDominatedSet(const ProbInterval &probi
         }
       }
     }
-    return !set;
+    std::transform (set.begin(), set.end(), set.begin(), std::logical_not<bool>());
   }
   
   return set;
@@ -80,7 +79,7 @@ Rcpp::LogicalVector Evaluation::computeNonDominatedSet(const ProbInterval &probi
 
 void Evaluation::updateCredalStatistics(int obsIdx) {
   
-  Rcpp::LogicalVector ndset = computeNonDominatedSet(probInts_.at(obsIdx));
+  Rcpp::LogicalVector ndset = Rcpp::wrap(computeNonDominatedSet(probInts_.at(obsIdx)));
   bool inset = ndset[observations_.data(obsIdx, observations_.classidx)];
   
   int ndset_size = sum(ndset);

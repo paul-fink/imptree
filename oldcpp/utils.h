@@ -7,7 +7,7 @@
 ** It contains all the basic auxiliary functions
 **
 */
-#include<Rcpp.h>
+#include <Rcpp.h>
 #include "structs.h"
 
 
@@ -18,11 +18,6 @@
 int fcmp(const double x, const double y);
 
 /* calculate the Shannon entropy */
-double entropy(Rcpp::NumericVector array);
+double entropy(std::vector<double> x);
 
-double calcT(const double maxE, const double minE,
-             const double maxEbase, const double minEbase, 
-             const double maxEposs, const double gamma);
-
-Rcpp::NumericMatrix asMatrixProbinterval(const ProbInterval & probint);
 #endif /* RCPP_IMPTREE_UTILS_H */

@@ -2,7 +2,6 @@
 % Please edit documentation in R/summary.R
 \name{summary.imptree}
 \alias{summary.imptree}
-\alias{summary.imptree,}
 \alias{print.summary.imptree}
 \alias{print.summary.imptree}
 \title{Classification with Imprecise Probabilities}
@@ -15,46 +14,46 @@
 \arguments{
 \item{object, x}{An object of class \code{imptree}. See details.}
 
-\item{utility}{Utility for the utility based accuracy measure for a 
-vacuous prediction result (default: 0.65).}
+\item{utility}{Utility for the utility based accuracy measure for
+a vacuous prediction result (default: 0.65).}
 
 \item{dominance}{Dominace criterion to be applied when predicting
-classes. This may either be \code{"strong"} (default) or \code{"max"}.
-See details at \code{\link{predict.imptree}}.}
+classes. This may either be \code{"strong"} (default) or
+\code{"max"}. See details at \code{\link{predict.imptree}}.}
 
-\item{\dots}{Further arguments are ignored at the moment}
+\item{\dots}{Further arguments are ignored at the moment.}
 }
 \value{
-A named list of class \code{summary.imptree} containing the tree
-creation call, accuracy on the training data, meta data and supplied
-utility and dominance criterion.
-\itemize{
-\item{call}{: Call to create the tree}
-\item{utility}{: Supplied utility, or its default value}
-\item{dominance}{: Supplied dominace criterion, or its default value}
-\item{sizes}{: List containing the overall number and number of 
+A named list of class \code{summary.imptree} containing
+the tree creation call, accuracy on the training data, meta data
+and supplied the utility and dominance criterion for evaluation.
+\item{call}{Call to create the tree}
+\item{utility}{Supplied utility, or its default value}
+\item{dominance}{Supplied dominace criterion, or its 
+default value}
+\item{sizes}{List containing the overall number and number of 
 indeterminate predictions on training data}
-\item{acc}{: 1-column matrix containing the accuracy measures 
+\item{acc}{1-column matrix containing the accuracy measures 
 on training data with nicer names (without size information)
 (see \code{\link{predict.imptree}})}
-\item{meta}{: 1-column matrix containing the tree's, depth, number of 
-leaves and number of nodes}
-}
+\item{meta}{1-column matrix containing the tree's depth, 
+number of leaves and number of nodes}
 
-The printing function returns the \code{summary.imptree} object
- invisible
+The printing function returns the
+\code{summary.imptree} object invisibly,
 }
 \description{
-summary function for an imptree object, assesses accuracy
-achieved on training data and further tree properties
+Summary function for an imptree object, assesses 
+accuracy achieved on training data and further tree properties.
 }
 \details{
-An existence check on the stored C++ object reference is carried out 
-at first. If the reference is not valid the original call
+An existence check on the stored C++ object reference is carried
+out at first. If the reference is not valid the original call
 for \code{"object"} is printed as error.
 }
 \seealso{
-\code{\link{imptree}}, \code{\link{predict.imptree}}
+\code{\link{imptree}}, \code{\link{predict.imptree}},
+for information on a single node \code{\link{node_imptree}}
 }
 \author{
 Paul Fink \email{Paul.Fink@stat.uni-muenchen.de}

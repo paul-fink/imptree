@@ -5,17 +5,15 @@
 
 
 #include <Rcpp.h>
-#include "utils.h"
+#include <memory>
 #include "structs.h"
-#include "tree.h"
 #include "enums.h"
-
-class Iptree;
+#include "evaluation.h"
 
 class Node {
 
   Node *parent_ = nullptr;
-  int depth_ = 0;
+  int depth_;
   std::vector<Node*> children_;
   ProbInterval probInt_;
   
@@ -24,35 +22,46 @@ class Node {
   int splitvaridx_ = -1;
   std::vector<int> splitset_;
   
-  virtual Rcpp::NumericVector maxEntropy(const ProbInterval &probint, const bool exact) = 0;
-  virtual Rcpp::NumericVector minEntropy(const ProbInterval &probint) = 0;
-  virtual double correctionEntropy(Rcpp::NumericVector probs, const int n) = 0;
-  virtual ProbInterval probabilityInterval(Rcpp::IntegerVector observations) = 0;
+  virtual std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact) = 0;
+  virtual std::vector<double> minEntropyDist(const ProbInterval& probint) = 0;
+  virtual double correctionEntropy(const std::vector<double>& probs, const int n) = 0;
+  virtual ProbInterval probabilityInterval(const std::vector<int>& classtable) = 0;
   
   Rcpp::IntegerVector getNodeObservations(const int variableIndex);
+  void calculateProbinterval();
   int calcSplitVariable();
+  double calcT(const double maxE, const double minE,
+                      const double maxEbase, const double minEbase, 
+                      const double maxEposs, const double gamma) const;
   
 protected:
-  Iptree* tree_ = nullptr;
+  const std::shared_ptr<Data> datap_;
+  const std::shared_ptr<Config> configp_;
+  double entropy(std::vector<double> x) const;
   
 public:
-  Node(Iptree *tree, int depth = 0, Node *parent = nullptr);
+  Node(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> configp, 
+       int depth = 0, Node* parent = nullptr);
   virtual ~Node();
   
-  inline bool hasParent() const {return this->parent_ != nullptr;}
+  inline bool hasParent() const {return nullptr != this->parent_;}
   
-  inline int getDepth() {return depth_;}
+  const std::shared_ptr<Data> getData() const;
 
-  Node* getChild(const int i) {return children_.at(i);}
-  size_t size() const {return children_.size();}
+  inline Node* getChild(const size_t i) {return children_.at(i);}
+  inline Node* getChild(const size_t i) const {return children_.at(i);}
+  inline size_t size() const {return children_.size();}
   
   void setSplitVariable(const int idx);
-  void addSplitObs(const int obsidx) {obsidxs_.push_back(obsidx);}
+  void setSplitSet(std::vector<int> splitset);
+  inline void addSplitObs(const int obsidx) {obsidxs_.push_back(obsidx);}
   
+  Evaluation evaluate(const Rcpp::IntegerMatrix & newdata, const Rcpp::List & evalconfig);
   ProbInterval classify(Rcpp::IntegerVector observation);
   
   // Factory Method
-  static Node* createNode(IpType ipt, Iptree *tree, int depth, Node* parent = 0);
+  static Node* createNode(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> configp,
+                          int depth, Node* parent = 0);
   
   void makeChildren();
   
@@ -62,39 +71,37 @@ public:
   void addDepth(std::vector<int> * depths) const;
   
   void printNode(const int parentIdx, const int nsmall, const std::string &sep) const;
+  Rcpp::List getNodeByIndex(std::vector<int>& idxs) const;
 };
 
 class IDMNode : public Node {
   
-private:
-  double s_ = 0;
+  std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact = true);
+  std::vector<double> minEntropyDist(const ProbInterval& probint);
+  double correctionEntropy(const std::vector<double>& probs, const int n);
+  ProbInterval probabilityInterval(const std::vector<int>& classtable);
   
-  Rcpp::NumericVector maxEntropy(const ProbInterval &probint, const bool exact = true);
-  Rcpp::NumericVector minEntropy(const ProbInterval &probint);
-  double correctionEntropy(Rcpp::NumericVector probs, const int n);
-  ProbInterval probabilityInterval(Rcpp::IntegerVector observations);
-  
-  Rcpp::IntegerVector minInSet(Rcpp::NumericVector array, Rcpp::LogicalVector set);
+  std::vector<double> minVals(const std::vector<double>& array);
   
 public:
-  IDMNode(Iptree *tree, int depth, Node* parent = nullptr);
+  IDMNode(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> configp,
+          int depth, Node* parent = nullptr);
 };
 
 class NPINode : public Node {
   
-private:
+  std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact = true);
+  std::vector<double> maxEntropyDistApprox(const ProbInterval& probint);
+  std::vector<double> maxEntropyDistExact(const ProbInterval& probint);
+  std::vector<double> minEntropyDist(const ProbInterval& probint);
+  double correctionEntropy(const std::vector<double>& probs, const int n);
+  ProbInterval probabilityInterval(const std::vector<int>& classtable);
   
-  Rcpp::NumericVector maxEntropy(const ProbInterval &probint, const bool exact = true);
-  Rcpp::NumericVector maxEntropyApprox(const ProbInterval &probint);
-  Rcpp::NumericVector maxEntropyExact(const ProbInterval &probint);
-  Rcpp::NumericVector minEntropy(const ProbInterval &probint);
-  double correctionEntropy(Rcpp::NumericVector probs, const int n);
-  ProbInterval probabilityInterval(Rcpp::IntegerVector observations);
-  
-  int maxIndexInSet(Rcpp::NumericVector array, Rcpp::LogicalVector set);
+  int maxIndexInSet(std::vector<int> array, std::vector<bool> set);
   
 public:
-  NPINode(Iptree *tree, int depth, Node* parent = nullptr);
+  NPINode(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> configp,
+          int depth, Node* parent = nullptr);
 };
 
 

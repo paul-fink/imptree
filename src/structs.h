@@ -6,12 +6,14 @@
 
 struct ProbInterval {
   int obs;
-  Rcpp::IntegerVector freq;
-  Rcpp::NumericVector lower;
-  Rcpp::NumericVector upper;
+  std::vector<int> freq;
+  std::vector<double> lower;
+  std::vector<double> upper;
   
   std::string to_string(const int nsmall = 6, const std::string &sep = "\t") const;
+  Rcpp::NumericMatrix toMatrix() const;
 };
+
 
 struct Config {
   double s; // strictly positive

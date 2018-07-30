@@ -1,6 +1,7 @@
 # Prepare data by given formula or imptree object
 # In case of supplied imptree object its formula is used for creating the
-# metadata of the Dataset object  
+# metadata of the Dataset object
+#' @importFrom stats na.fail
 prepare_data <- function(object, data, weights, subset, ...) {
   
   # constructing a data.frame according to the supplied formula and na.action
@@ -42,7 +43,7 @@ prepare_data <- function(object, data, weights, subset, ...) {
   storage.mode(cpp_data) <- "integer"
   attr(cpp_data, "nlevels") <- sapply(mf, nlevels)
   attr(cpp_data, "labels") <- lapply(mf, levels)
-  attr(cpp_data, "classidx") <- 0
+  attr(cpp_data, "classidx") <- 0L
   attr(cpp_data, "wt") <- wt
   
   cpp_data

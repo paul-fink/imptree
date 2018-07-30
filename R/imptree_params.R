@@ -62,20 +62,20 @@ imptree_params <- function(args, method) {
     names(args) <- c("s", "correction", "splitmetric")[temp]
     
     # check for IDM s
-    if (is.null(args$s)) {
+    if (is.null(args[["s"]])) {
       args$s <- 1
-    } else if (method == "IDM" && args$s <= 0) {
+    } else if (method == "IDM" && args[["s"]] <= 0) {
       stop("IDM value 's' must be strictly positive")
     }
 
     # check for 'correction'
-    if (is.null(args$correction)) {
+    if (is.null(args[["correction"]])) {
       args$correction <- 0L
     } else {
       choices <- switch(substr(method, 1, 3), # remove the 'approx'
                         IDM = c("no", "strobl", "abellan"),
                         NPI = c("no", "strobl"))
-      temp <- args$correction[1]
+      temp <- args[["correction"]][1]
       i <- pmatch(temp, choices, nomatch = 0L)
       if (i == 0L) 
         stop(gettextf("'correction' should be one of %s",
@@ -84,13 +84,13 @@ imptree_params <- function(args, method) {
       args$correction <- as.integer(i - 1)
     }
     # check for 'splitmetric'
-    if (is.null(args$splitmetric)) {
+    if (is.null(args[["splitmetric"]])) {
       args$splitmetric <- 0L
     } else {
       choices <- switch(substr(method, 1, 3), # remove the 'approx'
                         IDM = c("globalmax", "range"),# "localmax"),
                         NPI = c("globalmax", "range"))
-      temp <- args$splitmetric[1]
+      temp <- args[["splitmetric"]][1]
       i <- pmatch(temp, choices, nomatch = 0L)
       if (i == 0L) 
         stop(gettextf("'splitmetric' should be one of %s",

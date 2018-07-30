@@ -4,7 +4,6 @@
 #include <Rcpp.h>
 #include "enums.h"
 #include "structs.h"
-#include "utils.h"
 
 class Evaluation {
   
@@ -14,21 +13,19 @@ class Evaluation {
   Rcpp::LogicalMatrix boolPrediction_;
   Data observations_;
   
-  int obs_det_ = 0;
+  double obs_det_ = 0.0;
   int obs_indet_ = 0;
   
-  double size_indet_ = 0;
+  double size_indet_ = 0.0;
   
-  double acc_disc_ = 0;
-  double acc_util_ = 0;
+  double acc_disc_ = 0.0;
+  double acc_util_ = 0.0;
   
-  double acc_single_ = 0;
-  double acc_set_ = 0;
-  
-  bool finalized_ = false;
+  double acc_single_ = 0.0;
+  double acc_set_ = 0.0;
   
   double quadratic_utility(double acc_disc);
-  Rcpp::LogicalVector computeNonDominatedSet(const ProbInterval &probint);
+  std::vector<bool> computeNonDominatedSet(const ProbInterval &probint);
   void updateCredalStatistics(int obsIdx);
   void finalizeCredalStatistics();
   void evaluate();

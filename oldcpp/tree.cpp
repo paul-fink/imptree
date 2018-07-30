@@ -35,7 +35,7 @@ void Iptree::growTree() {
   root_->makeChildren();
 }
 
-
+// Ueberfluessig
 Evaluation Iptree::evaluate(const Rcpp::IntegerMatrix & newdata, const Rcpp::List & evalconfig) {
   
   int nObs = newdata.rows();
@@ -53,34 +53,40 @@ Evaluation Iptree::evaluate(const Rcpp::IntegerMatrix & newdata, const Rcpp::Lis
   return eval;
 }
 
+// Ueberfluessig
 /**
  * Number of nodes in tree
  * @return positive int with number of nodes in full tree structure
  */
 int Iptree::getNumberOfNodes() const {
+  
   if(nullptr == root_) {
     return 0;
   }
   return root_->numNodes();
 }
 
+// Ueberfluessig
 /**
  * Number of leaves in tree
  * @return positive int of number of leaves in full tree structure
  */
 int Iptree::getNumberofLeaves() const {
+  
   if(nullptr == root_) {
     return 0;
   }
   return root_->numLeaves();
 }
 
+// Ueberfluessig
 /**
  * Depth of tree
  *
  * @return maximal depth of tree
  */
 int Iptree::getDepth() const {
+  
   if(nullptr == root_) {
     return 0;
   }
@@ -91,7 +97,9 @@ int Iptree::getDepth() const {
   return *result;
 }
 
+// Ueberfluessig
 void Iptree::printTree(const int nsmall, const std::string &sep) const {
+  
   if(nullptr == root_) {
     Rcpp::Rcout << "Tree does not have a root node";
   }
@@ -99,3 +107,10 @@ void Iptree::printTree(const int nsmall, const std::string &sep) const {
   
 }
 
+// Ueberfluessig
+ProbInterval Iptree::getIndexProbInterval(std::vector<int>& idxs) const {
+  if(nullptr == root_) {
+    throw Rcpp::exception("Tree does not have a root node");
+  }
+  return root_->getIndexProbInterval(idxs);
+}
