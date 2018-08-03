@@ -1,5 +1,5 @@
 #' @docType data
-#' @name car_acceptance
+#' @name carEvaluation
 #' 
 #' @title Car Evaluation Database
 #' 
@@ -11,7 +11,7 @@
 #' of a car directly related to the six input attributes:
 #' buying, maint, doors, persons, lug_boot, safety.
 #' 
-#' @usage data(car_acceptance)
+#' @usage data(carEvaluation)
 #' 
 #' @format
 #' A data frame with 1728 observations on the following 7 variables,
@@ -58,15 +58,18 @@
 #' information removed, i.e., directly relates CAR to the six input 
 #' attributes: buying, maint, doors, persons, lug_boot, safety.
 #' 
-#' @source 
-#' The hierarchical decision model, from which this dataset is 
-#' derived, was first presented in 
-#' 
-#' M. Bohanec and V. Rajkovic (1988), Knowledge acquisition and explanation for 
+#' @source
+#' The original data were taken from the UCI Machine Learning repository 
+#' (\url{https://archive.ics.uci.edu/ml/datasets/Car+Evaluation}) and were 
+#' converted into R format by Paul Fink.
+#'
+#' @references M. Bohanec and V. Rajkovic (1988), Knowledge acquisition and explanation for 
 #' multi-attribute decision making, \emph{8th Intl. Workshop on Expert 
 #' Systems and their Applications}, Avignon, France, 59--78.
 #' 
-#' The original data is at \url{https://archive.ics.uci.edu/ml/datasets/Car+Evaluation}.
+#' @references D. Dua and E. Karra Taniskidou (2017), UCI Machine Learning Repository 
+#' \url{http://archive.ics.uci.edu/ml}. Irvine, CA: University of California, 
+#' School of Information and Computer Science.
 #' 
 #' @keywords datasets
 NULL

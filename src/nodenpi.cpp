@@ -88,7 +88,8 @@ std::vector<double> NPINode::maxEntropyDistApprox(const ProbInterval &probint) {
 			}
 			++j;
 			if(j == maxobs) {
-			  Rcpp::stop("MaxAppox: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, mass / dnobs);	
+			  Rcpp::stop(_tr("MaxAppox: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n"), 
+                ksize, mass / dnobs);	
 			  break;
 			}
 		}
@@ -133,7 +134,7 @@ std::vector<double> NPINode::maxEntropyDistExact(const ProbInterval &probint) {
 					  prob[i] = (k1 + 1.0) / (dnobs * (beta * (k1 + 1.0) + h));
 				    ++j;
 				  } else {
-				    Rcpp::stop("Something is wrong in calculation");
+				    Rcpp::stop(_tr("Something is wrong in calculation"));
 				  }
 				}
 			}	
@@ -148,7 +149,7 @@ std::vector<double> NPINode::maxEntropyDistExact(const ProbInterval &probint) {
 					  prob[i] = 1.0 / (dnobs * beta);
 				    ++j;
 				  } else {
-				    Rcpp::stop("Something is wrong in calculation");
+				    Rcpp::stop(_tr("Something is wrong in calculation"));
 				  }
 				}
 			}
@@ -184,7 +185,8 @@ std::vector<double> NPINode::maxEntropyDistExact(const ProbInterval &probint) {
 			}
 			++j;
 			if(j == maxobs) {
-			  Rcpp::stop("Max: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, static_cast<double>(mass)/dnobs);	
+			  Rcpp::stop(_tr("Max: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n"),
+                ksize, static_cast<double>(mass)/dnobs);	
 			  break;
 			}
 		}
@@ -228,7 +230,8 @@ std::vector<double> NPINode::minEntropyDist(const ProbInterval &probint) {
 		}
 		++j;
 		if(j == ksize) {
-		  Rcpp::stop("Min: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n", ksize, static_cast<double>(mass) / static_cast<double>(nobs));	
+		  Rcpp::stop(_tr("Min: After all iterations (%i) not all mass has been assigned!\n Remaining mass is: %f\n"), 
+               ksize, static_cast<double>(mass) / static_cast<double>(nobs));	
 		  break;
 		}
 	}

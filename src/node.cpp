@@ -20,7 +20,7 @@ Node* Node::createNode(const std::shared_ptr<Data> datap, const std::shared_ptr<
   case IpType::npiapprox:
     return new NPINode(datap, configp, depth, parent);
   default:
-    Rcpp::warning("Other IPType is not implemented");
+    Rcpp::warning(_tr("other IPType is not implemented"));
   }
   return nullptr;
 }
@@ -298,7 +298,7 @@ int Node::calcSplitVariable() {
 Evaluation Node::evaluate(const Rcpp::IntegerMatrix & newdata, const Rcpp::List & evalconfig) {
   
   if(hasParent()) {
-    Rcpp::stop("Evaluation only allowed from root node");
+    Rcpp::stop(_tr("evaluation only allowed from root node"));
   }
   int nObs = newdata.rows();
   std::vector<ProbInterval> probInts;
@@ -384,7 +384,7 @@ void Node::printNode(int parentIdx, const int nsmall, const std::string & sep) c
   
   // Print type of node
   if(nullptr == parent_) {
-    Rcpp::Rcout << "root: ";
+    Rcpp::Rcout << _tr("root: ");
   } else {
     int parent_splitIdx = parent_->splitvaridx_;
     Rcpp::CharacterVector parent_labels = Rcpp::as<Rcpp::CharacterVector>(datap_->labels.at(parent_splitIdx));
@@ -412,7 +412,7 @@ Rcpp::List Node::getNodeByIndex(std::vector<int>& idxs) const {
     idxs.pop_back();
     return this->getChild(idxc)->getNodeByIndex(idxs);
   } else if (idxs.size() > 0 && this->size() == 0) {
-    throw Rcpp::exception("Too deep recursion: No nodes available further down!");
+    throw Rcpp::exception(_tr("Too deep recursion: No nodes available further down!"));
   } else {
     Rcpp::NumericMatrix probint = this->probInt_.toMatrix();
     Rcpp::colnames(probint) = Rcpp::wrap<Rcpp::CharacterVector>(this->getData()->labels[this->getData()->classidx]);

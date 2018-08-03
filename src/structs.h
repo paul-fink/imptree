@@ -2,6 +2,7 @@
 #define RCPP_IMPTREE_STRUCTS_H
 
 #include <Rcpp.h>
+#include "translation.h"
 #include "enums.h"
 
 struct ProbInterval {

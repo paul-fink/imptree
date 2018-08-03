@@ -34,9 +34,8 @@ print.imptree <- function(x, digits = getOption("digits"), sep = "\t", ...){
       "\n\n", sep = "")
   # Are the C++ object references still stored in the R object?
   tryCatch({hasRoot_cpp(x$tree)},  error = function(e) {
-    stop(sprintf("Reference to tree is not valid!
-                 Please re-run tree creation!
-                 Tree call: %s", deparse(x$call)))
+    stop(sprintf("reference to tree is not valid; see element \"call\" of '%s' for recreation", 
+                 deparse(substitute(x))))
   })
   digits <- floor(digits);
   if(digits < 1 || digits > 17) {

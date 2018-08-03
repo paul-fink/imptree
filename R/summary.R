@@ -5,7 +5,7 @@
 #' 
 #' @aliases summary.imptree print.summary.imptree
 #' 
-#' @param object,x An object of class \code{imptree}. See details.
+#' @param object An object of class \code{imptree}. See details.
 #' @param dominance Dominace criterion to be applied when predicting
 #' classes. This may either be \code{"strong"} (default) or
 #' \code{"max"}. See details at \code{\link{predict.imptree}}.
@@ -47,9 +47,8 @@ summary.imptree <- function(object, utility = 0.65,
   
   # Are the C++ object references still stored in the R object?
   tryCatch({hasRoot_cpp(object$tree)},  error = function(e) {
-    stop(sprintf("Reference to tree is not valid!
-                 Please re-run tree creation!
-                 Tree call: %s", deparse(object$call)))
+    stop(sprintf("reference to tree is not valid; see element \"call\" of '%s' for recreation", 
+                 deparse(substitute(object))))
   })
   
   # get the tree information
@@ -64,14 +63,13 @@ summary.imptree <- function(object, utility = 0.65,
   teval <- trainresult$evaluation
   
   meval <- matrix(unlist(teval)[-c(1,3)], ncol = 1)
-  dimnames(meval) <- list(c("Determinacy", 
-                            "Average indeterminate size",
-                            "Single-Set Accuracy",
-                            "Set-Accuracy",
-                            "Discounted Accuracy",
-                            paste(format(utility, nsmall = 2), 
-                                  "utility based Accuracy")
-                            ),
+  dimnames(meval) <- list(c(gettext("Determinacy"), 
+                            gettext("Average indeterminate size"),
+                            gettext("Single-Set Accuracy"),
+                            gettext("Set-Accuracy"),
+                            gettext("Discounted Accuracy"),
+                            gettextf("%.2f utility based Accuracy",
+                                     attr(x, "utility"))),
                           "")
   res <- list(call = object$call,
               utilitty = utility,
@@ -85,22 +83,24 @@ summary.imptree <- function(object, utility = 0.65,
 
 #' @rdname summary.imptree
 #' @method print summary.imptree
+#' @param x an object of class \code{summary.imptree}
 #' @return The printing function returns the
-#' \code{summary.imptree} object invisibly,
+#' \code{summary.imptree} object invisibly.
 #' @export
 print.summary.imptree <- function(x, ...) {
-  cat("\nCall:  ", paste(deparse(x$call), sep = "\n", collapse = "\n"),
+  cat("\nCall:  ", paste(deparse(x$call),
+                         sep = "\n", collapse = "\n"),
       "\n\n", sep = "")  
-  cat(format(x$sizes$obs, digits = 0), "observations in training data\n\n")
+  cat(gettextf("%d observations in training data\n",
+               as.integer(x$sizes$obs)))
   print(x$meta)
-  cat("\nAccuracy achived on training data:\n")
-  cat("\tbased on", x$dominance, "dominance\n")
+  cat(gettextf(
+    "\nAccuracy achieved on training data, based on %s dominance:\n",
+    x$dominance))
   if(x$sizes$iobs > 0) {
-    cat("\t",
-        format(x$sizes$iobs, digits = 0), 
-        " indeterminate predictions\n", sep = "")
+    cat(gettextf("\t%d indeterminate predictions\n", 
+                 as.integer(x$sizes$iobs)))
   }
-  cat("\n")
   print(x$acc)
   invisible(x)
 }

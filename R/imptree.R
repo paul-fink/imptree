@@ -79,6 +79,26 @@
 #' 
 #' @keywords tree
 #'
+#' @examples
+#' data("carEvaluation")
+#' 
+#' ## create a tree with IDM (s=1) to full size
+#' ## carEvaluation, leaving the first 10 observations out
+#' ip <- imptree(acceptance~., data = carEvaluation[-(1:10),], 
+#'   method="IDM", method.param = list(splitmetric = "globalmax", s = 1), 
+#'   control = list(depth = NULL, minbucket = 1))
+#' 
+#' ## summarize the tree and show performance on training data
+#' summary(ip)
+#' 
+#' ## predict the first 10 observations
+#' ## Note: The result of the prediction is return invisibly
+#' pp <- predict(ip, dominance = "max", data = carEvaluation[(1:10),])
+#' ## print the general evaluation statistics
+#' print(pp)
+#' ## display the predicted class labels
+#' pp$classes
+#' 
 #' @importFrom stats terms
 #' @export
 imptree.formula <- function(formula, data = NULL,
@@ -87,7 +107,7 @@ imptree.formula <- function(formula, data = NULL,
 
   # making sure a valid formula is supplied  
   if(missing(formula) || !inherits(formula, "formula")) {
-    stop("Please supply a valid formula")
+    stop("'formula' is missing but mandatory")
   }
   
   # function call
@@ -142,11 +162,12 @@ imptree.formula <- function(formula, data = NULL,
 imptree.default <- function(x, y, ...) {
   
   if(missing(y) || missing(x)) {
-    stop("Both y and x need to be supplied")
+    stop("arguments 'y' and 'x' are mandatory")
   }
   
   if(is.null(nam <- colnames(x))) {
-    stop("x must contain column names")
+    stop(sprintf("'%s' must contain column names", 
+                 deparse(substitute(x))))
   }
   formula <- as.formula(paste0(deparse(substitute(y)),"~",
                                paste(nam, collapse = "+")))

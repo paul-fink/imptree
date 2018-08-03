@@ -4,8 +4,8 @@
 \alias{imptree_control}
 \title{Control parameters for generating imptree objects}
 \usage{
-imptree_control(splitmetric, controlList = NULL, tbase = 1, gamma = 1,
-  depth = .Machine$integer.max, minbucket = 0, ...)
+imptree_control(splitmetric, controlList = NULL, tbase = 1,
+  gamma = 1, depth = NULL, minbucket = 1L, ...)
 }
 \arguments{
 \item{splitmetric}{Choosen split metric. See \code{\link{imptree}}}
@@ -16,10 +16,11 @@ imptree_control(splitmetric, controlList = NULL, tbase = 1, gamma = 1,
 
 \item{gamma}{Weighting factor of the maximum entropy (Default: 1)}
 
-\item{depth}{Positive integer limiting the tree to the given depth. 
-If not supplied tree is grown to maximal size (Default)}
+\item{depth}{Integer limiting the tree to the given depth.
+If not supplied, \code{NULL} (default) or smaller than 1 the
+tree is grown to maximal size, the latter triggering a warning.}
 
-\item{minbucket}{Minimal leaf size (Default: 0)}
+\item{minbucket}{Positive integer as minimal leaf size (Default: 1)}
 
 \item{\dots}{Argument gobbling; will not processed}
 }

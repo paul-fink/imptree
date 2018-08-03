@@ -56,7 +56,7 @@ std::vector<bool> Evaluation::computeNonDominatedSet(const ProbInterval &probint
   std::vector<bool> set(n, false);
   if (dominance_ == Dominance::maximality) {
     
-    int idx = std::distance(probint.upper.begin(), std::min_element(probint.upper.begin(), probint.upper.end()));
+    int idx = std::distance(probint.upper.begin(), std::max_element(probint.upper.begin(), probint.upper.end()));
     set[idx] = true;
     
   } else if (dominance_ == Dominance::interval) {

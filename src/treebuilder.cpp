@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include "translation.h"
 #include "node.h"
 #include "structs.h"
 #include "evaluation.h"

@@ -9,7 +9,8 @@ Description: This package implements the methodology for growing
         classification trees using a local Imprecise Dirichlet Model
         or the Nonparametric Predictive Inference approach in each node.
 License: GPL (>= 2)
+Encoding: UTF-8
 Imports: Rcpp (>= 0.12.5)
 LinkingTo: Rcpp
 SystemRequirements: C++11
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

@@ -3,16 +3,15 @@
 \name{summary.imptree}
 \alias{summary.imptree}
 \alias{print.summary.imptree}
-\alias{print.summary.imptree}
 \title{Classification with Imprecise Probabilities}
 \usage{
-\method{summary}{imptree}(object, utility = 0.65, dominance = c("strong",
-  "max"), ...)
+\method{summary}{imptree}(object, utility = 0.65,
+  dominance = c("strong", "max"), ...)
 
 \method{print}{summary.imptree}(x, ...)
 }
 \arguments{
-\item{object, x}{An object of class \code{imptree}. See details.}
+\item{object}{An object of class \code{imptree}. See details.}
 
 \item{utility}{Utility for the utility based accuracy measure for
 a vacuous prediction result (default: 0.65).}
@@ -22,6 +21,8 @@ classes. This may either be \code{"strong"} (default) or
 \code{"max"}. See details at \code{\link{predict.imptree}}.}
 
 \item{\dots}{Further arguments are ignored at the moment.}
+
+\item{x}{an object of class \code{summary.imptree}}
 }
 \value{
 A named list of class \code{summary.imptree} containing
@@ -40,7 +41,7 @@ on training data with nicer names (without size information)
 number of leaves and number of nodes}
 
 The printing function returns the
-\code{summary.imptree} object invisibly,
+\code{summary.imptree} object invisibly.
 }
 \description{
 Summary function for an imptree object, assesses 

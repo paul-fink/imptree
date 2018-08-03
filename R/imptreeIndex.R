@@ -50,14 +50,13 @@
 node_imptree <- function(x, idx = NULL)  {
   # Are the C++ object references still stored in the R object?
   tryCatch({hasRoot_cpp(x$tree)},  error = function(e) {
-    stop(sprintf("Reference to tree is not valid!
-                 Please re-run tree creation!
-                 Tree call: %s", deparse(x$call)))
+	  stop(sprintf("reference to tree is not valid; see element \"call\" of '%s' for recreation", 
+	               deparse(substitute(x))))
   })
   if(is.null(idx)) {
-    message("Extracting probability information from root node")
+    message("extracting probability information from root node")
   } else if(!is.numeric(idx) || !is.null(dim(idx)) || any(idx < 1)) {
-    stop("'idx' needs to be a positive integer vector or NUll")
+    stop("'idx' needs to be a positive integer vector or NULL")
   }
   res <- getNode_cpp(x$tree, as.integer(c(1, idx) - 1))
   # Adjust the indices for ranges used in R (i.e. starting by 1)
@@ -72,26 +71,31 @@ node_imptree <- function(x, idx = NULL)  {
 #' \code{node_imptree} object invisibly.
 #' @export
 print.node_imptree <- function(x, ...) {
-  cat(if(x$depth == 0) {"Root n"} else {"N"},
-      "ode ", 
-      if(x$children == 0) {
-        "(leaf)"
-      } else {
-        c("with ", as.integer(x$children), " sub-nodes")
-      }, if(x$depth > 0) {
-        c(" at level ", as.integer(x$depth))
-      } else {NULL}, "\n\n", sep = "")
+  cat(
+    if(x$depth == 0L && x$children == 0L) {
+      gettext("Root node (leaf)")
+    } else if( x$children == 0L) {
+      gettextf("Node (leaf) at level %d", 
+               as.integer(x$depth))
+    } else if(x$depth == 0L) {
+      gettextf("Node with %d sub-nodes", 
+               as.integer(x$children))
+    } else {
+      gettextf("Node with %d sub-nodes at level %d", 
+               as.integer(x$children), as.integer(x$depth))
+    }, "\n\n", sep = "")
   if(!is.na(x$splitter)) {
-    cat("Splitting variable: ", x$splitter, "\n\n", sep = "")
+    cat(gettext("Splitting variable"), 
+        ": ", x$splitter, "\n\n", sep = "")
   }
-  cat("Probability Information:\n")
-  cat("\tModel: ", x$ipmodel$iptype, 
+  cat(gettext("Probability Information:\n"))
+  cat("\t", gettext("Model"), ": ", x$ipmodel$iptype, 
       if(!is.null(x$ipmodel$s)) {
         c(" (s=", format(x$ipmodel$s, ...), ")")
       } else {
         NULL
       }, "\n", sep = "")
-  cat("\tTable for classification variable:\n")
+  cat(gettext("\tTable for classification variable:\n"))
   print(x$probint, ...)
   invisible(x)
 }

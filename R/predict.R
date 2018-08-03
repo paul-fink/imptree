@@ -14,8 +14,10 @@
 #' @param \dots Additional arguments for data. May be \code{"weights"},
 #' \code{"subset"}, \code{"na.action"}, any further are discarded.
 #' 
-#' @return Invisibly a named list containing predicted classes, predicted 
-#' probability distribution and accuracy evaluation
+#' @return \code{predict.imptree()} return an object of class 
+#' \code{evaluation_imptree}, which is a named list containing 
+#' predicted classes, predicted probability distribution and  accuracy 
+#' evaluation
 #' \item{probintlist}{List of the Imprecise Probability Distribution of the
 #' class variable. One matrix per observation.}
 #' \item{classes}{Predicted class(es) of the observations as boolean matrix}
@@ -62,14 +64,13 @@ predict.imptree <- function(object, data, dominance = c("strong", "max"),
 
   # Are the C++ object references still stored in the R object?
   tryCatch({hasRoot_cpp(object$tree)},  error = function(e) {
-    stop(sprintf("Reference to tree is not valid!
-                 Please re-run tree creation!
-                 Tree call: %s", deparse(object$call)))
+    stop(sprintf("reference to tree is not valid; see element \"call\" of '%s' for recreation", 
+                 deparse(substitute(object))))
   })
   
   # checking for valid utility input
   if(0 >= utility || 1 <= utility) {
-    stop("Utility needs to be in (0,1)")
+    stop(sprintf("value of 'utility' (%f) needs to be in (0,1)", utility))
   }
   
   # matching dominance type to C++ as int 
@@ -104,5 +105,38 @@ predict.imptree <- function(object, data, dominance = c("strong", "max"),
   # adding the call parameters
   attr(evaluation, "dominance") <- dominance
   attr(evaluation, "utility") <- utility
+  class(evaluation) <- c("evaluation_imptree", class(evaluation))
   invisible(evaluation)
+}
+
+#' @rdname predict.imptree
+#' @param x an object of class \code{evaluation_imptree}
+#' @return The printing function returns the
+#' \code{evaluation_imptree} object invisibly.
+#' @export
+print.evaluation_imptree <- function(x, ...) {
+  
+  meval <- matrix(unlist(x$evaluation)[-c(1,3)], ncol = 1)
+  dimnames(meval) <- list(c(gettext("Determinacy"), 
+                            gettext("Average indeterminate size"),
+                            gettext("Single-Set Accuracy"),
+                            gettext("Set-Accuracy"),
+                            gettext("Discounted Accuracy"),
+                            gettextf("%.2f utility based Accuracy",
+                                     attr(x, "utility"))),
+  "")
+  cat(gettextf(
+    "Accuracy achieved on %d observations in testing data, based on %s dominance:\n",
+              x$evaluation$nObs,
+              attr(x, "dominance")))
+  if((detObs <- x$evaluation$nObs - x$evaluation$nObsIndet) > 0) {
+    cat(gettextf("\t%d determinate predictions\n", 
+                 as.integer(detObs)))
+  }
+  if(x$evaluation$nObsIndet > 0) {
+    cat(gettextf("\t%d indeterminate predictions\n",
+                 as.integer(x$evaluation$nObsIndet)))
+  }
+  print(meval)
+  invisible(x)
 }

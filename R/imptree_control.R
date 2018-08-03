@@ -6,9 +6,10 @@
 #' @param controlList Named list containing the processed arguments. See details.
 #' @param tbase Value that needs to be at least attained to qualify for splitting (Default: 2)
 #' @param gamma Weighting factor of the maximum entropy (Default: 1)
-#' @param depth Positive integer limiting the tree to the given depth. 
-#' If not supplied tree is grown to maximal size (Default)
-#' @param minbucket Minimal leaf size (Default: 0)
+#' @param depth Integer limiting the tree to the given depth.
+#' If not supplied, \code{NULL} (default) or smaller than 1 the
+#' tree is grown to maximal size, the latter triggering a warning.
+#' @param minbucket Positive integer as minimal leaf size (Default: 1)
 #' @param \dots Argument gobbling; will not processed
 #' 
 #' @return A list containing the options. Missing options are set to their default value.
@@ -32,7 +33,7 @@
 #' 
 #' @export
 imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 1,
-                            depth = .Machine$integer.max, minbucket = 0, ...) {
+                            depth = NULL, minbucket = 1L, ...) {
 
   # save the method parameter list
   sm <- splitmetric
@@ -52,14 +53,13 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
     # dealing inconsitencies in 'tbase'
     tbase <- as.double(clist[["tbase"]])
     if(tbase > 2 || tbase < -1) {
-      stop(paste("The maximal value 'tbase' a splitting variable may attain",
-                  "to still qualify as candidate must be between [-1,2]!"))
+      stop(sprintf("value of 'tbase' (%f) must be between [-1,2]", tbase))
     }
   
     # dealing inconsitencies in 'gamma'
     gamma <- as.double(clist[["gamma"]])
     if(gamma > 1 || gamma < 0) {
-      stop("'gamma' as weight of the upper entropy comparison must be in [0,1]!")
+      stop(sprintf("value of 'gamma' (%f) must be in [0,1]", gamma))
     }
   } else {
   
@@ -70,20 +70,19 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   
   # dealing inconsitencies in 'depth'
   mydepth <- clist[["depth"]]
-  if(!is.null(mydepth) && !is.na(mydepth) && mydepth < 1) {
-    warning("Tree depth must be at least 1; ", "Using full depth instead")
-    mydepth <- NA
+  if(!is.null(mydepth) && mydepth < 1L) {
+    warning(sprintf("ignoring supplied 'depth'=%d and use default instead", mydepth))
+    mydepth <- NULL
   }
-  if(is.null(mydepth) || is.na(mydepth)) {
+  if(is.null(mydepth)) {
     mydepth <- as.integer(.Machine$integer.max)
   }
   clist$depth <- as.integer(mydepth)
   
   # dealing with inconsistency in 'minbucket'
-  if((minbucket <- clist[["minbucket"]]) < 0) {
-    warning(paste("Negative 'minbucket' not meaningful for minimal leaf size;",
-                  "Setting to default 0"))
-    minbucket <- 0L
+  if((minbucket <- clist[["minbucket"]]) < 1L) {
+    warning(sprintf("ignoring supplied 'minbucket'=%d and use default instead", minbucket))
+    minbucket <- 1L
   }
   clist$minbucket <- as.integer(minbucket)
   clist

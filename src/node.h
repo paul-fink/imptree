@@ -6,6 +6,7 @@
 
 #include <Rcpp.h>
 #include <memory>
+#include "translation.h"
 #include "structs.h"
 #include "enums.h"
 #include "evaluation.h"

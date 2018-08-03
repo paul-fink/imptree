@@ -50,14 +50,16 @@ imptree_params <- function(args, method) {
 
   # we expect a list or missing or null for 'args'
   if(missing(args) || is.null(args)) {
-    args <- list(s = 1, correction = 0, splitmetric = 0)
+    args <- list(s = 1, correction = 0L, splitmetric = 0L)
   } else if (is.list(args)) {
-    if (is.null(names(args))) stop("The args list must have names")
+    if (is.null(names(args))) {
+      stop("the list supplied to 'method.param' must have names")
+    }
     temp <- pmatch(names(args), c("s", "correction", "splitmetric"),
                    nomatch = 0L)
     if (any(temp == 0L)) {
-      stop(gettextf("'method.param' component not matched: %s",
-        names(args)[temp == 0L]), domain = NA)
+      stop(sprintf("'method.param' component not matched: %s",
+        names(args)[temp == 0L]))
     }
     names(args) <- c("s", "correction", "splitmetric")[temp]
     
@@ -65,7 +67,7 @@ imptree_params <- function(args, method) {
     if (is.null(args[["s"]])) {
       args$s <- 1
     } else if (method == "IDM" && args[["s"]] <= 0) {
-      stop("IDM value 's' must be strictly positive")
+      stop(sprintf("value of 's' (%f) must be strictly positive", s))
     }
 
     # check for 'correction'
@@ -77,10 +79,10 @@ imptree_params <- function(args, method) {
                         NPI = c("no", "strobl"))
       temp <- args[["correction"]][1]
       i <- pmatch(temp, choices, nomatch = 0L)
-      if (i == 0L) 
-        stop(gettextf("'correction' should be one of %s",
-                      paste(dQuote(choices), collapse = ", ")),
-             domain = NA)
+      if (i == 0L) {
+        stop(sprintf("'correction' should be one of %s",
+                     paste(dQuote(choices), collapse = ",")))
+      }
       args$correction <- as.integer(i - 1)
     }
     # check for 'splitmetric'
@@ -92,14 +94,14 @@ imptree_params <- function(args, method) {
                         NPI = c("globalmax", "range"))
       temp <- args[["splitmetric"]][1]
       i <- pmatch(temp, choices, nomatch = 0L)
-      if (i == 0L) 
-        stop(gettextf("'splitmetric' should be one of %s",
-                      paste(dQuote(choices), collapse = ", ")),
-             domain = NA)
+      if (i == 0L) {
+        stop(sprintf("'splitmetric' should be one of %s",
+                      paste(dQuote(choices), collapse = ",")))
+      }
       args$splitmetric <- as.integer(i - 1)
     }
   } else {
-    stop("Parameter argument must be a list or NULL for default values")
+    stop("the argument supplied to 'method.param' must be a list or NULL for default values")
   }
   args
 }

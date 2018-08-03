@@ -4,7 +4,8 @@
 \alias{print.imptree}
 \title{Classification with Imprecise Probabilities}
 \usage{
-\method{print}{imptree}(x, digits = getOption("digits"), sep = "\\t", ...)
+\method{print}{imptree}(x, digits = getOption("digits"), sep = "\\t",
+  ...)
 }
 \arguments{
 \item{x}{Object of class \code{imptree}. See details.}

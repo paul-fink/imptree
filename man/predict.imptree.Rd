@@ -2,10 +2,13 @@
 % Please edit documentation in R/predict.R
 \name{predict.imptree}
 \alias{predict.imptree}
+\alias{print.evaluation_imptree}
 \title{Classification with Imprecise Probabilities}
 \usage{
 \method{predict}{imptree}(object, data, dominance = c("strong", "max"),
   utility = 0.65, ...)
+
+\method{print}{evaluation_imptree}(x, ...)
 }
 \arguments{
 \item{object}{An object of class \code{imptree}. See details.}
@@ -23,10 +26,14 @@ vacuous prediction result (default: 0.65).}
 
 \item{\dots}{Additional arguments for data. May be \code{"weights"},
 \code{"subset"}, \code{"na.action"}, any further are discarded.}
+
+\item{x}{an object of class \code{evaluation_imptree}}
 }
 \value{
-Invisibly a named list containing predicted classes, predicted 
-probability distribution and accuracy evaluation
+\code{predict.imptree()} return an object of class 
+\code{evaluation_imptree}, which is a named list containing 
+predicted classes, predicted probability distribution and  accuracy 
+evaluation
 \item{probintlist}{List of the Imprecise Probability Distribution of the
 class variable. One matrix per observation.}
 \item{classes}{Predicted class(es) of the observations as boolean matrix}
@@ -43,6 +50,9 @@ observation)}
 \item{acc_disc}{: Discounted-accuracy}
 \item{acc_util}{: Utility based (discounted) accuracy}
 }}
+
+The printing function returns the
+\code{evaluation_imptree} object invisibly.
 }
 \description{
 Prediction of \code{imptree} objects
