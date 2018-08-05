@@ -18,19 +18,19 @@ msgstr ""
 
 #: node.cpp:23
 msgid "other IPType is not implemented"
-msgstr "other IPType is not implemented"
+msgstr "anderer IPType ist nicht implementiert"
 
 #: node.cpp:301
 msgid "evaluation only allowed from root node"
-msgstr "evaluation only allowed from root node"
+msgstr "Evaluation nur auf Wurzelknoten zulässig"
 
 #: node.cpp:387
 msgid "root: "
-msgstr "root: "
+msgstr "Wurzel: "
 
 #: node.cpp:415
 msgid "Too deep recursion: No nodes available further down!"
-msgstr "Too deep recursion: No nodes available further down!"
+msgstr "Zu tiefe Rekursion: Keine Knoten mehr weiter unterhalb!"
 
 #: nodenpi.cpp:91
 #, c-format
@@ -38,12 +38,12 @@ msgid ""
 "MaxAppox: After all iterations (%i) not all mass has been assigned!\n"
 " Remaining mass is: %f\n"
 msgstr ""
-"MaxAppox: After all iterations (%i) not all mass has been assigned!\n"
-" Remaining mass is: %f\n"
+"MaxAppox: Nach allen Iterationen (%i) ist nicht alle Masse verteilt worden!\n"
+" Verbleibende Masse ist: %f\n"
 
 #: nodenpi.cpp:137 nodenpi.cpp:152
 msgid "Something is wrong in calculation"
-msgstr "Something is wrong in calculation"
+msgstr "Etwas ist in der Berechnung schief gelaufen"
 
 #: nodenpi.cpp:188
 #, c-format
@@ -51,8 +51,8 @@ msgid ""
 "Max: After all iterations (%i) not all mass has been assigned!\n"
 " Remaining mass is: %f\n"
 msgstr ""
-"Max: After all iterations (%i) not all mass has been assigned!\n"
-" Remaining mass is: %f\n"
+"Max: Nach allen Iterationen (%i) ist nicht alle Masse verteilt worden!\n"
+" Verbleibende Masse ist: %f\n"
 
 #: nodenpi.cpp:233
 #, c-format
@@ -60,5 +60,5 @@ msgid ""
 "Min: After all iterations (%i) not all mass has been assigned!\n"
 " Remaining mass is: %f\n"
 msgstr ""
-"Min: After all iterations (%i) not all mass has been assigned!\n"
-" Remaining mass is: %f\n"
+"Min: Nach allen Iterationen (%i) ist nicht alle Masse verteilt worden!\n"
+" Verbleibende Masse ist: %f\n"

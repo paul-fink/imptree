@@ -17,140 +17,140 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "'formula' is missing but mandatory"
-msgstr "'formula' is missing but mandatory"
+msgstr "Argument 'formula' fehlt ohne default"
 
 msgid "arguments 'y' and 'x' are mandatory"
-msgstr "arguments 'y' and 'x' are mandatory"
+msgstr "Argumente 'y' und 'x' müssen angegeben werden"
 
 msgid "'%s' must contain column names"
-msgstr "'%s' must contain column names"
+msgstr "'%s' muss Spaltenname enhalten"
 
 msgid ""
 "reference to tree is not valid; see element \"call\" of '%s' for recreation"
 msgstr ""
-"reference to tree is not valid; see element \"call\" of '%s' for recreation"
+"die Referenz auf den Baum ist nicht gültig; siehe Element \"call\" von '%s' für eine erneute Erstellung"
 
 msgid "extracting probability information from root node"
-msgstr "extracting probability information from root node"
+msgstr "Zugriff aud Wahrscheinlichkeitsinformationen im Wurzelknoten"
 
 msgid "'idx' needs to be a positive integer vector or NULL"
-msgstr "'idx' needs to be a positive integer vector or NULL"
+msgstr "'idx' muss ein Vektor von positiven ganzen Zahlen sein oder NULL"
 
 msgid "Root node (leaf)"
-msgstr "Root node (leaf)"
+msgstr "Wurzelknoten (Blatt)"
 
 msgid "Node (leaf) at level %d"
-msgstr "Node (leaf) at level %d"
+msgstr "Knoten (Blatt) auf Ebene %d"
 
 msgid "Node with %d sub-nodes"
-msgstr "Node with %d sub-nodes"
+msgstr "Knoten mit %d Kind-Knoten"
 
 msgid "Node with %d sub-nodes at level %d"
-msgstr "Node with %d sub-nodes at level %d"
+msgstr "Knoten mit %d Kind-Knoten auf Ebene %d"
 
 msgid "Splitting variable"
-msgstr "Splitting variable"
+msgstr "Variable für Aufteilung"
 
 msgid "Probability Information:"
-msgstr "Probability Information:"
+msgstr "Wahrscheinlichkeitsinformationen:"
 
 msgid "Model"
-msgstr "Model"
+msgstr "Modell"
 
 msgid "Table for classification variable:"
-msgstr "Table for classification variable:"
+msgstr "Tabelle der Klassifikations-Variable:"
 
 msgid "value of 'tbase' (%f) must be between [-1,2]"
-msgstr "value of 'tbase' (%f) must be between [-1,2]"
+msgstr "Wert von 'tbase' (%f) muss in [-1,2] liegen"
 
 msgid "value of 'gamma' (%f) must be in [0,1]"
-msgstr "value of 'gamma' (%f) must be in [0,1]"
+msgstr "Wert von 'gamma' (%f) muss in [0,1] liegen"
 
 msgid "ignoring supplied 'depth'=%d and use default instead"
-msgstr "ignoring supplied 'depth'=%d and use default instead"
+msgstr "verwende den Standardwert statt des angegebenen Werts von 'depth'=%d"
 
 msgid "ignoring supplied 'minbucket'=%d and use default instead"
-msgstr "ignoring supplied 'minbucket'=%d and use default instead"
+msgstr "verwende den Standardwert statt des angegebenen Werts von 'minbucket'=%d"
 
 msgid "the list supplied to 'method.param' must have names"
-msgstr "the list supplied to 'method.param' must have names"
+msgstr "die an 'method.param' übergebene Liste muss benamte Elemente enthalten"
 
 msgid "'method.param' component not matched: %s"
-msgstr "'method.param' component not matched: %s"
+msgstr "'method.param' Komponente konnte nicht zugeordnet werden: %s"
 
 msgid "value of 's' (%f) must be strictly positive"
-msgstr "value of 's' (%f) must be strictly positive"
+msgstr "Wert von 's' (%f) muss strikt positiv sein"
 
 msgid "'correction' should be one of %s"
-msgstr "'correction' should be one of %s"
+msgstr "'correction' muss ein Wert aus %s sein"
 
 msgid ","
 msgstr ","
 
 msgid "'splitmetric' should be one of %s"
-msgstr "'splitmetric' should be one of %s"
+msgstr "'splitmetric' muss ein Wert aus %s sein"
 
 msgid ""
 "the argument supplied to 'method.param' must be a list or NULL for default "
 "values"
 msgstr ""
-"the argument supplied to 'method.param' must be a list or NULL for default "
-"values"
+"das Objekt für Argument 'method.param' muss eine Liste sein oder NULL für "
+"Standardwerte"
 
 msgid "value of 'utility' (%f) needs to be in (0,1)"
-msgstr "value of 'utility' (%f) needs to be in (0,1)"
+msgstr "der Wert von  'utility' (%f) muss in (0,1) liegen"
 
 msgid "Determinacy"
-msgstr "Determinacy"
+msgstr "Anteil präziser Vorhersagen"
 
 msgid "Average indeterminate size"
-msgstr "Average indeterminate size"
+msgstr "Durchschnittliche Größe der impräzisen Vorhersagen"
 
 msgid "Single-Set Accuracy"
-msgstr "Single-Set Accuracy"
+msgstr "Genauigkeit der präzisen Vorhersagen"
 
 msgid "Set-Accuracy"
-msgstr "Set-Accuracy"
+msgstr "Genauigkeit der mengenwertigen Vorhersagen"
 
 msgid "Discounted Accuracy"
-msgstr "Discounted Accuracy"
+msgstr "Gewichtete Genauigkeit"
 
 msgid "%.2f utility based Accuracy"
-msgstr "%.2f utility based Accuracy"
+msgstr "Genauigkeit basierend auf %.2f utility"
 
 msgid ""
 "Accuracy achieved on %d observations in testing data, based on %s dominance:"
 msgstr ""
-"Accuracy achieved on %d observations in testing data, based on %s dominance:"
+"erhaltene Genauigkeit der %d Beobachtungen in den test datan, basierend auf %s Dominanz:"
 
 msgid "%d determinate predictions"
-msgstr "%d determinate predictions"
+msgstr "%d präzise Vorhersagen"
 
 msgid "%d indeterminate predictions"
-msgstr "%d indeterminate predictions"
+msgstr "%d mengenwertige Vorhersagen"
 
 msgid "argument 'object' must be a formula or of class \"imptree\""
-msgstr "argument 'object' must be a formula or of class \"imptree\""
+msgstr "Argeumnt 'object' muss von der Klasse \"formula\" oder \"imptree\" sein"
 
 msgid "argument 'data' must be of class \"data.frame\""
-msgstr "argument 'data' must be of class \"data.frame\""
+msgstr "Argument 'data' muss von der Klasse \"data.frame\" sein"
 
 msgid "trees cannot handle interaction terms"
-msgstr "trees cannot handle interaction terms"
+msgstr "Bäume können nicht mit Interaktionen umgehen"
 
 msgid ""
 "all variables in the resulting model frame must to be of class \"factor\""
 msgstr ""
-"all variables in the resulting model frame must to be of class \"factor\""
+"All Variablen des sich ergebenen Modell-Datensatzes müssen von der Klasse \"factor\" sein"
 
 msgid "negative weights not allowed"
-msgstr "negative weights not allowed"
+msgstr "Negative Gewichte sind nicht zulässig"
 
 msgid "invalid 'digits' argument"
-msgstr "invalid 'digits' argument"
+msgstr "ungültiges 'digits' Argument"
 
 msgid "%d observations in training data"
-msgstr "%d observations in training data"
+msgstr "%d Beobachtungen in den Trainingsdaten"
 
 msgid "Accuracy achieved on training data, based on %s dominance:"
-msgstr "Accuracy achieved on training data, based on %s dominance:"
+msgstr "Genauigkeit auf den Trainingsdaten, basierend auf %s Dominanz:"
