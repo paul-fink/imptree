@@ -106,7 +106,7 @@ predict.imptree <- function(object, data, dominance = c("strong", "max"),
   attr(evaluation, "dominance") <- dominance
   attr(evaluation, "utility") <- utility
   class(evaluation) <- c("evaluation_imptree", class(evaluation))
-  invisible(evaluation)
+  evaluation
 }
 
 #' @rdname predict.imptree

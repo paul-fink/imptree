@@ -67,7 +67,8 @@ imptree_params <- function(args, method) {
     if (is.null(args[["s"]])) {
       args$s <- 1
     } else if (method == "IDM" && args[["s"]] <= 0) {
-      stop(sprintf("value of 's' (%f) must be strictly positive", s))
+      stop(sprintf("value of 's' (%f) must be strictly positive", 
+                   args$s))
     }
 
     # check for 'correction'

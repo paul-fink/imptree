@@ -66,7 +66,7 @@ Rcpp::IntegerMatrix treeInformation_cpp(Rcpp::XPtr<Node> prootnode) {
   tmpres[2] = prootnode->numNodes();
   
   Rcpp::IntegerMatrix result = Rcpp::IntegerMatrix(3,1, tmpres.begin());
-  Rcpp::rownames(result) = Rcpp::CharacterVector::create("Depth", "No. Leaves", "No. Nodes");
+  Rcpp::rownames(result) = Rcpp::CharacterVector::create("depth", "nleaves", "nnodes");
   return result;
 }
 

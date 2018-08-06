@@ -15,6 +15,9 @@
 *.o
 *.a
 
+# Backup-files
+*~
+
 imptree/*
 imptree
 imptree_*

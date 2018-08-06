@@ -53,7 +53,10 @@ summary.imptree <- function(object, utility = 0.65,
   
   # get the tree information
   metaresult <- treeInformation_cpp(object$tree)
-  colnames(metaresult) <- ""
+  dimnames(metaresult) <- list(c(gettext("Depth"),
+                                 gettext("Leaves"),
+                                 gettext("Nodes")),
+                               "")
 
   dominance <- match.arg(dominance)
   
@@ -69,7 +72,7 @@ summary.imptree <- function(object, utility = 0.65,
                             gettext("Set-Accuracy"),
                             gettext("Discounted Accuracy"),
                             gettextf("%.2f utility based Accuracy",
-                                     attr(x, "utility"))),
+                                     utility)),
                           "")
   res <- list(call = object$call,
               utilitty = utility,

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: imptree 1.0\n"
-"POT-Creation-Date: 2018-08-03 22:58\n"
+"POT-Creation-Date: 2018-08-06 16:49\n"
 "PO-Revision-Date: 2018-08-03 22:43+0200\n"
 "Last-Translator:  Paul Fink <Paul.Fink@stat.uni-muenchen.de>\n"
 "Language-Team: imptree-German\n"
@@ -28,7 +28,8 @@ msgstr "'%s' muss Spaltenname enhalten"
 msgid ""
 "reference to tree is not valid; see element \"call\" of '%s' for recreation"
 msgstr ""
-"die Referenz auf den Baum ist nicht gültig; siehe Element \"call\" von '%s' für eine erneute Erstellung"
+"die Referenz auf den Baum ist nicht gültig; siehe Element \"call\" von '%s' "
+"für eine erneute Erstellung"
 
 msgid "extracting probability information from root node"
 msgstr "Zugriff aud Wahrscheinlichkeitsinformationen im Wurzelknoten"
@@ -60,6 +61,12 @@ msgstr "Modell"
 msgid "Table for classification variable:"
 msgstr "Tabelle der Klassifikations-Variable:"
 
+msgid "no 'NA' permitted in %s"
+msgstr "kein NA zulässig für %s"
+
+msgid ","
+msgstr ","
+
 msgid "value of 'tbase' (%f) must be between [-1,2]"
 msgstr "Wert von 'tbase' (%f) muss in [-1,2] liegen"
 
@@ -70,7 +77,8 @@ msgid "ignoring supplied 'depth'=%d and use default instead"
 msgstr "verwende den Standardwert statt des angegebenen Werts von 'depth'=%d"
 
 msgid "ignoring supplied 'minbucket'=%d and use default instead"
-msgstr "verwende den Standardwert statt des angegebenen Werts von 'minbucket'=%d"
+msgstr ""
+"verwende den Standardwert statt des angegebenen Werts von 'minbucket'=%d"
 
 msgid "the list supplied to 'method.param' must have names"
 msgstr "die an 'method.param' übergebene Liste muss benamte Elemente enthalten"
@@ -83,9 +91,6 @@ msgstr "Wert von 's' (%f) muss strikt positiv sein"
 
 msgid "'correction' should be one of %s"
 msgstr "'correction' muss ein Wert aus %s sein"
-
-msgid ","
-msgstr ","
 
 msgid "'splitmetric' should be one of %s"
 msgstr "'splitmetric' muss ein Wert aus %s sein"
@@ -121,7 +126,8 @@ msgstr "Genauigkeit basierend auf %.2f utility"
 msgid ""
 "Accuracy achieved on %d observations in testing data, based on %s dominance:"
 msgstr ""
-"erhaltene Genauigkeit der %d Beobachtungen in den test datan, basierend auf %s Dominanz:"
+"erhaltene Genauigkeit der %d Beobachtungen in den test datan, basierend auf "
+"%s Dominanz:"
 
 msgid "%d determinate predictions"
 msgstr "%d präzise Vorhersagen"
@@ -130,7 +136,8 @@ msgid "%d indeterminate predictions"
 msgstr "%d mengenwertige Vorhersagen"
 
 msgid "argument 'object' must be a formula or of class \"imptree\""
-msgstr "Argeumnt 'object' muss von der Klasse \"formula\" oder \"imptree\" sein"
+msgstr ""
+"Argeumnt 'object' muss von der Klasse \"formula\" oder \"imptree\" sein"
 
 msgid "argument 'data' must be of class \"data.frame\""
 msgstr "Argument 'data' muss von der Klasse \"data.frame\" sein"
@@ -141,13 +148,23 @@ msgstr "Bäume können nicht mit Interaktionen umgehen"
 msgid ""
 "all variables in the resulting model frame must to be of class \"factor\""
 msgstr ""
-"All Variablen des sich ergebenen Modell-Datensatzes müssen von der Klasse \"factor\" sein"
+"All Variablen des sich ergebenen Modell-Datensatzes müssen von der Klasse "
+"\"factor\" sein"
 
 msgid "negative weights not allowed"
 msgstr "Negative Gewichte sind nicht zulässig"
 
 msgid "invalid 'digits' argument"
 msgstr "ungültiges 'digits' Argument"
+
+msgid "Depth"
+msgstr "Tiefe"
+
+msgid "Leaves"
+msgstr "Blätter"
+
+msgid "Nodes"
+msgstr "Knoten"
 
 msgid "%d observations in training data"
 msgstr "%d Beobachtungen in den Trainingsdaten"

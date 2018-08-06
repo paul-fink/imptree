@@ -2,44 +2,56 @@
 % Please edit documentation in R/imptree_control.R
 \name{imptree_control}
 \alias{imptree_control}
-\title{Control parameters for generating imptree objects}
+\title{Control parameters for generating
+imptree objects}
 \usage{
 imptree_control(splitmetric, controlList = NULL, tbase = 1,
   gamma = 1, depth = NULL, minbucket = 1L, ...)
 }
 \arguments{
-\item{splitmetric}{Choosen split metric. See \code{\link{imptree}}}
+\item{splitmetric}{Choosen split metric. 
+See \code{\link{imptree}}}
 
-\item{controlList}{Named list containing the processed arguments. See details.}
+\item{controlList}{Named list containing the processed arguments.
+See details.}
 
-\item{tbase}{Value that needs to be at least attained to qualify for splitting (Default: 2)}
+\item{tbase}{Value that needs to be at least attained to qualify
+for splitting (Default: 2)}
 
-\item{gamma}{Weighting factor of the maximum entropy (Default: 1)}
+\item{gamma}{Weighting factor of the maximum entropy
+(default: 1)}
 
 \item{depth}{Integer limiting the tree to the given depth.
 If not supplied, \code{NULL} (default) or smaller than 1 the
 tree is grown to maximal size, the latter triggering a warning.}
 
-\item{minbucket}{Positive integer as minimal leaf size (Default: 1)}
+\item{minbucket}{Positive integer as minimal leaf size
+(default: 1)}
 
 \item{\dots}{Argument gobbling; will not processed}
 }
 \value{
-A list containing the options. Missing options are set to their default value.
+A list containing the options. Missing options are set
+to their default value.
 }
 \description{
-Initializing and validating the tree generation parameters
+Initializing and validating 
+the tree generation parameters
 }
 \details{
-The argument \code{controlList} may be a named list with names in 
+The argument \code{controlList} may be a named list with names in
 \code{c("tbase", "gamma", "depth", "minbucket")}
-Any values in this list will overwrite those supplied in named arguments.
-When \code{controlList = NULL} (default) only the supplied arguments are checked.
+Any values in this list will overwrite those supplied in 
+named arguments.
+When \code{controlList = NULL} (default) only the supplied 
+arguments are checked.
 
-In case \code{controlList} contains an argument named \code{splitmetric},
-this will be ignored.
-If \code{splitmetric} is 0L, i.e. \code{globalmax}, the values for \code{gamma} and \code{tbase} 
-are set to their default values, even if the user supplied different values.
+In case \code{controlList} contains an argument named
+\code{splitmetric}, this will be ignored.
+If \code{splitmetric} is 0L, i.e. \code{globalmax}, the values 
+for \code{gamma} and \code{tbase} 
+are set to their default values, even if the user supplied 
+different values.
 }
 \seealso{
 \code{\link{imptree}}, \code{\link{imptree_params}}

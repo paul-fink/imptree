@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: imptree 1.0\n"
-"POT-Creation-Date: 2018-08-03 22:58\n"
+"POT-Creation-Date: 2018-08-06 16:49\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,6 +52,12 @@ msgstr ""
 msgid "Table for classification variable:"
 msgstr ""
 
+msgid "no 'NA' permitted in %s"
+msgstr ""
+
+msgid ","
+msgstr ""
+
 msgid "value of 'tbase' (%f) must be between [-1,2]"
 msgstr ""
 
@@ -74,9 +80,6 @@ msgid "value of 's' (%f) must be strictly positive"
 msgstr ""
 
 msgid "'correction' should be one of %s"
-msgstr ""
-
-msgid ","
 msgstr ""
 
 msgid "'splitmetric' should be one of %s"
@@ -131,6 +134,15 @@ msgid "negative weights not allowed"
 msgstr ""
 
 msgid "invalid 'digits' argument"
+msgstr ""
+
+msgid "Depth"
+msgstr ""
+
+msgid "Leaves"
+msgstr ""
+
+msgid "Nodes"
 msgstr ""
 
 msgid "%d observations in training data"

@@ -1,29 +1,41 @@
-#' @title Control parameters for generating imptree objects
+#' @title Control parameters for generating
+#' imptree objects
 #' 
-#' @description Initializing and validating the tree generation parameters
+#' @description Initializing and validating 
+#' the tree generation parameters
 #' 
-#' @param splitmetric Choosen split metric. See \code{\link{imptree}}
-#' @param controlList Named list containing the processed arguments. See details.
-#' @param tbase Value that needs to be at least attained to qualify for splitting (Default: 2)
-#' @param gamma Weighting factor of the maximum entropy (Default: 1)
+#' @param splitmetric Choosen split metric. 
+#' See \code{\link{imptree}}
+#' @param controlList Named list containing the processed arguments.
+#' See details.
+#' @param tbase Value that needs to be at least attained to qualify
+#' for splitting (Default: 2)
+#' @param gamma Weighting factor of the maximum entropy
+#' (default: 1)
 #' @param depth Integer limiting the tree to the given depth.
 #' If not supplied, \code{NULL} (default) or smaller than 1 the
 #' tree is grown to maximal size, the latter triggering a warning.
-#' @param minbucket Positive integer as minimal leaf size (Default: 1)
+#' @param minbucket Positive integer as minimal leaf size
+#' (default: 1)
 #' @param \dots Argument gobbling; will not processed
 #' 
-#' @return A list containing the options. Missing options are set to their default value.
+#' @return A list containing the options. Missing options are set
+#' to their default value.
 #' 
 #' @details
-#' The argument \code{controlList} may be a named list with names in 
+#' The argument \code{controlList} may be a named list with names in
 #' \code{c("tbase", "gamma", "depth", "minbucket")}
-#' Any values in this list will overwrite those supplied in named arguments.
-#' When \code{controlList = NULL} (default) only the supplied arguments are checked.
+#' Any values in this list will overwrite those supplied in 
+#' named arguments.
+#' When \code{controlList = NULL} (default) only the supplied 
+#' arguments are checked.
 #' 
-#' In case \code{controlList} contains an argument named \code{splitmetric},
-#' this will be ignored.
-#' If \code{splitmetric} is 0L, i.e. \code{globalmax}, the values for \code{gamma} and \code{tbase} 
-#' are set to their default values, even if the user supplied different values.
+#' In case \code{controlList} contains an argument named
+#' \code{splitmetric}, this will be ignored.
+#' If \code{splitmetric} is 0L, i.e. \code{globalmax}, the values 
+#' for \code{gamma} and \code{tbase} 
+#' are set to their default values, even if the user supplied 
+#' different values.
 #' 
 #' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}
 #' 
@@ -39,12 +51,18 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   sm <- splitmetric
   
   # generation of the bare returned list
-  clist <- list(depth = depth, minbucket = minbucket, tbase = tbase, gamma = gamma)
+  clist <- list(depth = depth, minbucket = minbucket,
+                tbase = tbase, gamma = gamma)
   
   # first we process add the agruments supplied in controlList
   if(!is.null(controlList)) {	
     clist[names(controlList)[names(controlList) %in% names(clist)]] <- 
       controlList[names(controlList) %in% names(clist)]
+  }
+  
+  if(any(nal <- is.na(clist))) {
+    stop(sprintf("no 'NA' permitted in %s", 
+                 paste(sQuote(names(clist)[nal]), collapse = ", ")))
   }
 
   # heading off now to test for inconsistencies
@@ -59,7 +77,8 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
     # dealing inconsitencies in 'gamma'
     gamma <- as.double(clist[["gamma"]])
     if(gamma > 1 || gamma < 0) {
-      stop(sprintf("value of 'gamma' (%f) must be in [0,1]", gamma))
+      stop(sprintf("value of 'gamma' (%f) must be in [0,1]",
+                   gamma))
     }
   } else {
   
@@ -71,7 +90,8 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   # dealing inconsitencies in 'depth'
   mydepth <- clist[["depth"]]
   if(!is.null(mydepth) && mydepth < 1L) {
-    warning(sprintf("ignoring supplied 'depth'=%d and use default instead", mydepth))
+    warning(sprintf("ignoring supplied 'depth'=%d and use default instead",
+                    mydepth))
     mydepth <- NULL
   }
   if(is.null(mydepth)) {
@@ -81,7 +101,8 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   
   # dealing with inconsistency in 'minbucket'
   if((minbucket <- clist[["minbucket"]]) < 1L) {
-    warning(sprintf("ignoring supplied 'minbucket'=%d and use default instead", minbucket))
+    warning(sprintf("ignoring supplied 'minbucket'=%d and use default instead",
+                    minbucket))
     minbucket <- 1L
   }
   clist$minbucket <- as.integer(minbucket)
