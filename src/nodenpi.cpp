@@ -45,7 +45,7 @@ std::vector<double> NPINode::maxEntropyDistApprox(const ProbInterval &probint) {
   int krem = ksize - k0 - k1;
   int mass = 0;
 
-	int dnobs = static_cast<double>(probint.obs);
+	double dnobs = static_cast<double>(probint.obs);
 
 	int ni;
 	if( krem < k0) {
@@ -73,7 +73,7 @@ std::vector<double> NPINode::maxEntropyDistApprox(const ProbInterval &probint) {
 					ni = probint.freq[i];
 					if(ni == j || ni == j + 1) {
 						prob[i] += 1.0/dnobs;
-						mass--;
+						--mass;
 					}
 				}
 			} else {
@@ -249,7 +249,10 @@ double NPINode::correctionEntropy(const std::vector<double>& probs, const int n)
     EntropyCorrection ec = configp_->ec;
     switch(ec) {
     case EntropyCorrection::strobl:
-      ent += ((probs.size() - 1) / (2 * n));
+      ent += ((probs.size() - 1.0) / (2.0 * n));
+      break;
+    case EntropyCorrection::abellan:
+      Rcpp::stop(_("Entropy correction 'abellan' not permitted for NPI\n"));
       break;
     default:;
     }

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: imptree 1.0\n"
-"POT-Creation-Date: 2018-08-06 16:49\n"
+"Project-Id-Version: imptree 1.0.0\n"
+"POT-Creation-Date: 2018-08-09 22:54\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,9 +55,6 @@ msgstr ""
 msgid "no 'NA' permitted in %s"
 msgstr ""
 
-msgid ","
-msgstr ""
-
 msgid "value of 'tbase' (%f) must be between [-1,2]"
 msgstr ""
 
@@ -109,7 +106,7 @@ msgstr ""
 msgid "%.2f utility based Accuracy"
 msgstr ""
 
-msgid "Accuracy achieved on %d observations in testing data, based on %s dominance:"
+msgid "Accuracy achieved on %d observations in testing data, based on '%s' dominance:"
 msgstr ""
 
 msgid "%d determinate predictions"
@@ -136,6 +133,15 @@ msgstr ""
 msgid "invalid 'digits' argument"
 msgstr ""
 
+msgid "'iptype' should be one of %s"
+msgstr ""
+
+msgid ","
+msgstr ""
+
+msgid "%d observations in training data"
+msgstr ""
+
 msgid "Depth"
 msgstr ""
 
@@ -145,8 +151,5 @@ msgstr ""
 msgid "Nodes"
 msgstr ""
 
-msgid "%d observations in training data"
-msgstr ""
-
-msgid "Accuracy achieved on training data, based on %s dominance:"
+msgid "Accuracy achieved on training data, based on '%s' dominance:"
 msgstr ""

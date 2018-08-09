@@ -108,7 +108,7 @@ double IDMNode::correctionEntropy(const std::vector<double>& probs, const int n)
       ent += (s * log2(probs.size())) / (n + s);
       break;
     case EntropyCorrection::strobl:
-      ent += ((probs.size() + 1) / (2 * n + s));
+      ent += ((probs.size() + 1.0) / (2.0 * n + s));
       break;
     default:;
     }

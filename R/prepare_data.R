@@ -6,10 +6,12 @@ prepare_data <- function(object, data, weights, subset, ...) {
   
   # constructing a data.frame according to the supplied formula and na.action
   if(missing(object) || (!inherits(object, "imptree")  && !inherits(object, "formula"))) {
-    stop("argument 'object' must be a formula or of class \"imptree\"")
+    stop("argument 'object' must be a formula or of class \"imptree\"",
+         domain = "R-imptree")
   }
   if(!inherits(data, "data.frame")) {
-    stop("argument 'data' must be of class \"data.frame\"")
+    stop("argument 'data' must be of class \"data.frame\"", 
+         domain ="R-imptree")
   }
   isTree <- inherits(object, "imptree")
   Call <- match.call()
@@ -24,17 +26,19 @@ prepare_data <- function(object, data, weights, subset, ...) {
   mfCall[[1L]] <- as.name("model.frame")
   mf <- eval(mfCall, parent.frame())
   if (any(attr(attr(mf, "terms"), "order") > 1L)) {
-    stop("trees cannot handle interaction terms")
+    stop("trees cannot handle interaction terms",
+         domain = "R-imptree")
   }
   
   if(!all(sapply(mf, is.factor))) {
-    stop("all variables in the resulting model frame must to be of class \"factor\"")
+    stop("all variables in the resulting model frame must to be of class \"factor\"",
+         domain = "R-imptree")
   }
   
   if(missing(weights) || !(length(weights)>0)) {
     wt <- rep(1, nrow(mf))
   } else if(any(weights < 0)) {
-    stop("negative weights not allowed")
+    stop("negative weights not allowed", domain = "R-imptree")
   } else {
     wt <- weights
   }

@@ -107,7 +107,7 @@ imptree.formula <- function(formula, data = NULL,
 
   # making sure a valid formula is supplied  
   if(missing(formula) || !inherits(formula, "formula")) {
-    stop("'formula' is missing but mandatory")
+    stop("'formula' is missing but mandatory", domain ="R-imptree")
   }
   
   # function call
@@ -162,12 +162,13 @@ imptree.formula <- function(formula, data = NULL,
 imptree.default <- function(x, y, ...) {
   
   if(missing(y) || missing(x)) {
-    stop("arguments 'y' and 'x' are mandatory")
+    stop("arguments 'y' and 'x' are mandatory", 
+         domain ="R-imptree")
   }
   
   if(is.null(nam <- colnames(x))) {
-    stop(sprintf("'%s' must contain column names", 
-                 deparse(substitute(x))))
+    stop(gettextf("'%s' must contain column names", 
+                 deparse(substitute(x)), domain ="R-imptree"))
   }
   formula <- as.formula(paste0(deparse(substitute(y)),"~",
                                paste(nam, collapse = "+")))

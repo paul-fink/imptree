@@ -61,8 +61,9 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   }
   
   if(any(nal <- is.na(clist))) {
-    stop(sprintf("no 'NA' permitted in %s", 
-                 paste(sQuote(names(clist)[nal]), collapse = ", ")))
+    stop(gettextf("no 'NA' permitted in %s", 
+                 paste(sQuote(names(clist)[nal]), collapse = ", "),
+                 domain ="R-imptree"))
   }
 
   # heading off now to test for inconsistencies
@@ -71,14 +72,15 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
     # dealing inconsitencies in 'tbase'
     tbase <- as.double(clist[["tbase"]])
     if(tbase > 2 || tbase < -1) {
-      stop(sprintf("value of 'tbase' (%f) must be between [-1,2]", tbase))
+      stop(gettextf("value of 'tbase' (%.3f) must be between [-1,2]", 
+                    tbase, domain ="R-imptree"))
     }
   
     # dealing inconsitencies in 'gamma'
     gamma <- as.double(clist[["gamma"]])
     if(gamma > 1 || gamma < 0) {
-      stop(sprintf("value of 'gamma' (%f) must be in [0,1]",
-                   gamma))
+      stop(gettextf("value of 'gamma' (%.3f) must be in [0,1]",
+                   gamma, domain ="R-imptree"))
     }
   } else {
   
@@ -90,8 +92,8 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   # dealing inconsitencies in 'depth'
   mydepth <- clist[["depth"]]
   if(!is.null(mydepth) && mydepth < 1L) {
-    warning(sprintf("ignoring supplied 'depth'=%d and use default instead",
-                    mydepth))
+    warning(gettextf("ignoring supplied 'depth'=%d and use default instead",
+                    mydepth, domain ="R-imptree"))
     mydepth <- NULL
   }
   if(is.null(mydepth)) {
@@ -101,8 +103,8 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   
   # dealing with inconsistency in 'minbucket'
   if((minbucket <- clist[["minbucket"]]) < 1L) {
-    warning(sprintf("ignoring supplied 'minbucket'=%d and use default instead",
-                    minbucket))
+    warning(gettextf("ignoring supplied 'minbucket'=%d and use default instead",
+                    minbucket, domain ="R-imptree"))
     minbucket <- 1L
   }
   clist$minbucket <- as.integer(minbucket)

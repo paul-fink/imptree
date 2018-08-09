@@ -64,13 +64,14 @@ predict.imptree <- function(object, data, dominance = c("strong", "max"),
 
   # Are the C++ object references still stored in the R object?
   tryCatch({hasRoot_cpp(object$tree)},  error = function(e) {
-    stop(sprintf("reference to tree is not valid; see element \"call\" of '%s' for recreation", 
-                 deparse(substitute(object))))
+    stop(gettextf("reference to tree is not valid; see element \"call\" of '%s' for recreation", 
+                 deparse(substitute(object)), domain = "R-imptree"))
   })
   
   # checking for valid utility input
   if(0 >= utility || 1 <= utility) {
-    stop(sprintf("value of 'utility' (%f) needs to be in (0,1)", utility))
+    stop(gettextf("value of 'utility' (%f) needs to be in (0,1)", 
+                  utility, domain = "R-imptree"))
   }
   
   # matching dominance type to C++ as int 
@@ -97,7 +98,8 @@ predict.imptree <- function(object, data, dominance = c("strong", "max"),
 
   colnames(evaluation$classes) <- classlabels
 	
-  evaluation$probintlist <- lapply(evaluation$probintlist, function(o) {
+  evaluation$probintlist <- lapply(evaluation$probintlist, 
+                                   function(o) {
     colnames(o) <- classlabels
     o
   })
@@ -117,25 +119,28 @@ predict.imptree <- function(object, data, dominance = c("strong", "max"),
 print.evaluation_imptree <- function(x, ...) {
   
   meval <- matrix(unlist(x$evaluation)[-c(1,3)], ncol = 1)
-  dimnames(meval) <- list(c(gettext("Determinacy"), 
-                            gettext("Average indeterminate size"),
-                            gettext("Single-Set Accuracy"),
-                            gettext("Set-Accuracy"),
-                            gettext("Discounted Accuracy"),
-                            gettextf("%.2f utility based Accuracy",
-                                     attr(x, "utility"))),
+  dimnames(meval) <- list(gettextf(c("Determinacy",
+                                     "Average indeterminate size",
+                                     "Single-Set Accuracy",
+                                     "Set-Accuracy",
+                                     "Discounted Accuracy",
+                                     "%.2f utility based Accuracy"),
+                                   attr(x, "utility"), 
+                                   domain ="R-imptree"),
   "")
   cat(gettextf(
-    "Accuracy achieved on %d observations in testing data, based on %s dominance:\n",
+    "Accuracy achieved on %d observations in testing data, based on '%s' dominance:\n",
               x$evaluation$nObs,
-              attr(x, "dominance")))
+              attr(x, "dominance"), domain = "R-imptree"))
   if((detObs <- x$evaluation$nObs - x$evaluation$nObsIndet) > 0) {
     cat(gettextf("\t%d determinate predictions\n", 
-                 as.integer(detObs)))
+                 as.integer(detObs), 
+                 domain ="R-imptree"))
   }
   if(x$evaluation$nObsIndet > 0) {
     cat(gettextf("\t%d indeterminate predictions\n",
-                 as.integer(x$evaluation$nObsIndet)))
+                 as.integer(x$evaluation$nObsIndet), 
+                 domain ="R-imptree"))
   }
   print(meval)
   invisible(x)

@@ -6,8 +6,8 @@
 
 enum class EntropyCorrection {
   no = 0,
-  abellan,
   strobl,
+  abellan,
 };
 
 enum class SplitMetric {

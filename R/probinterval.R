@@ -40,13 +40,14 @@ probInterval <- function(table,
   choices <- c("IDM", "NPI", "NPIapprox")
   ipt <- pmatch(iptype[1], choices, nomatch = 0L)
   if(ipt == 0L) {
-    stop(sprintf("'iptype' should be one of %s", 
-         paste(dQuote(choices), collapse = ", ")))
+    stop(sprintf(gettext("'iptype' should be one of %s"), 
+                 paste(dQuote(choices), collapse = ", ")))
   }
   ipt <- as.integer(ipt - 1)
   
   if (ipt == 0L && s <= 0) {
-    stop(sprintf("value of 's' (%f) must be strictly positive", s))
+    stop(sprintf(
+      gettext("value of 's' (%f) must be strictly positive"), s))
   }
   
   choices <- if(ipt == 0L) {
@@ -56,8 +57,9 @@ probInterval <- function(table,
   }
   entcorr <- pmatch(correction[1], choices, nomatch = 0L)
   if (entcorr == 0L) {
-    stop(sprintf("'correction' should be one of %s",
-                 paste(dQuote(choices), collapse = ",")))
+    stop(sprintf(gettext("'correction' should be one of %s"),
+                 paste(dQuote(choices), collapse = ", ")),
+         domain = "imptree")
   }
   entcorr <- as.integer(entcorr - 1)
   

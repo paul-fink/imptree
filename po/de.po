@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: imptree 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-06 16:06+0200\n"
+"POT-Creation-Date: 2018-08-09 21:07+0200\n"
 "PO-Revision-Date: 2018-08-03 22:55+0200\n"
 "Last-Translator: Paul Fink <Paul.Fink@stat.uni-muenchen.de>\n"
 "Language-Team: imptree-German\n"
@@ -42,7 +42,7 @@ msgstr ""
 "MaxAppox: Nach allen Iterationen (%i) ist nicht alle Masse verteilt worden!\n"
 " Verbleibende Masse ist: %f\n"
 
-#: nodenpi.cpp:137 nodenpi.cpp:152
+#: nodenpi.cpp:138 nodenpi.cpp:152
 msgid "Something is wrong in calculation"
 msgstr "Etwas ist in der Berechnung schief gelaufen"
 
@@ -63,3 +63,7 @@ msgid ""
 msgstr ""
 "Min: Nach allen Iterationen (%i) ist nicht alle Masse verteilt worden!\n"
 " Verbleibende Masse ist: %f\n"
+
+#: nodenpi.cpp:255
+msgid "Entropy correction 'abellan' not permitted for NPI\n"
+msgstr "Entropie-Korrektur 'abellan' nicht zulässig für NPI\n"

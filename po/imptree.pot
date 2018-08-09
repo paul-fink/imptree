@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: imptree 1.0\n"
+"Project-Id-Version: imptree 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-06 16:06+0200\n"
+"POT-Creation-Date: 2018-08-09 21:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgid ""
 " Remaining mass is: %f\n"
 msgstr ""
 
-#: nodenpi.cpp:137 nodenpi.cpp:152
+#: nodenpi.cpp:138 nodenpi.cpp:152
 msgid "Something is wrong in calculation"
 msgstr ""
 
@@ -56,4 +56,8 @@ msgstr ""
 msgid ""
 "Min: After all iterations (%i) not all mass has been assigned!\n"
 " Remaining mass is: %f\n"
+msgstr ""
+
+#: nodenpi.cpp:255
+msgid "Entropy correction 'abellan' not permitted for NPI\n"
 msgstr ""

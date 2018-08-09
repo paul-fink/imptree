@@ -47,35 +47,34 @@ summary.imptree <- function(object, utility = 0.65,
   
   # Are the C++ object references still stored in the R object?
   tryCatch({hasRoot_cpp(object$tree)},  error = function(e) {
-    stop(sprintf("reference to tree is not valid; see element \"call\" of '%s' for recreation", 
-                 deparse(substitute(object))))
+    stop(gettextf(
+      "reference to tree is not valid; see element \"call\" of '%s' for recreation", 
+                 deparse(substitute(object)), domain = "R-imptree"))
   })
   
   # get the tree information
   metaresult <- treeInformation_cpp(object$tree)
-  dimnames(metaresult) <- list(c(gettext("Depth"),
-                                 gettext("Leaves"),
-                                 gettext("Nodes")),
-                               "")
+  dimnames(metaresult) <- list(c("Depth", "Leaves", "Nodes"),"")
 
   dominance <- match.arg(dominance)
   
   # prediction on training data
-  trainresult <- predict(object, utility = utility, dominance = dominance)
+  trainresult <- predict(object, utility = utility, 
+                         dominance = dominance)
   
   teval <- trainresult$evaluation
   
   meval <- matrix(unlist(teval)[-c(1,3)], ncol = 1)
-  dimnames(meval) <- list(c(gettext("Determinacy"), 
-                            gettext("Average indeterminate size"),
-                            gettext("Single-Set Accuracy"),
-                            gettext("Set-Accuracy"),
-                            gettext("Discounted Accuracy"),
-                            gettextf("%.2f utility based Accuracy",
+  dimnames(meval) <- list(c("Determinacy",
+                            "Average indeterminate size",
+                            "Single-Set Accuracy",
+                            "Set-Accuracy",
+                            "Discounted Accuracy",
+                            sprintf("%.2f utility based Accuracy",
                                      utility)),
                           "")
   res <- list(call = object$call,
-              utilitty = utility,
+              utility = utility,
               dominance = dominance,
               sizes = list(obs = teval$nObs, iobs = teval$nObsIndet),
               acc = meval,
@@ -95,15 +94,30 @@ print.summary.imptree <- function(x, ...) {
                          sep = "\n", collapse = "\n"),
       "\n\n", sep = "")  
   cat(gettextf("%d observations in training data\n",
-               as.integer(x$sizes$obs)))
-  print(x$meta)
+               as.integer(x$sizes$obs), domain = "R-imptree"))
+  meta <- x$meta
+  dimnames(meta) <- list(gettext("Depth", "Leaves", "Nodes", 
+                                 domain ="R-imptree"),
+                         "")
+  print(meta)
   cat(gettextf(
-    "\nAccuracy achieved on training data, based on %s dominance:\n",
-    x$dominance))
+    "\nAccuracy achieved on training data, based on '%s' dominance:\n",
+    x$dominance, domain = "R-imptree"))
   if(x$sizes$iobs > 0) {
     cat(gettextf("\t%d indeterminate predictions\n", 
-                 as.integer(x$sizes$iobs)))
+                 as.integer(x$sizes$iobs), domain = "R-imptree"))
   }
-  print(x$acc)
+  acc <- x$acc
+  
+  dimnames(acc) <- list(gettextf(c("Determinacy", 
+                                   "Average indeterminate size", 
+                                   "Single-Set Accuracy", 
+                                   "Set-Accuracy", 
+                                   "Discounted Accuracy",
+                                   "%.2f utility based Accuracy"),
+                                 x$utility, 
+                                 domain = "R-imptree"),
+                        "")
+  print(acc)
   invisible(x)
 }
