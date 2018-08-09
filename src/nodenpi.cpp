@@ -122,10 +122,11 @@ std::vector<double> NPINode::maxEntropyDistExact(const ProbInterval &probint) {
     prob = probint.lower;
 		int beta = (k01) / (krem + k1);
 		int h = (k01) % (krem + k1);
+		int j = 0;
 		
 		if( h < (k1 + 1)) {
 			for(int i = 0; i < ksize; ++i) {
-			  int j = 0;
+			  
 			  if(probint.freq[i] <= 1) {
 				  if(j < (beta * (krem - 1))) {
 					  prob[i] = 1.0 / (dnobs * beta);
@@ -140,7 +141,6 @@ std::vector<double> NPINode::maxEntropyDistExact(const ProbInterval &probint) {
 			}	
 		} else {
 			for(int i = 0; i < ksize; ++i) {
-			  int j = 0;
 			  if(probint.freq[i] <= 1) {
 				  if(j < (h * (beta + 1))) {
 					  prob[i] = 1.0 / (dnobs * (beta + 1.0));

@@ -74,14 +74,14 @@ void Node::makeChildren() {
   }
   
   // Assign the observations to the childs
-  for(uint i = 0; i < obsidxs_.size(); ++i) {
+  for(unsigned int i = 0; i < obsidxs_.size(); ++i) {
     int obsidx = obsidxs_[i];
     int splitval = datap_->data(obsidx, splitvaridx_);
     getChild(splitval)->addSplitObs(obsidx);
 
   }
   // Go into recursion
-  for(uint i = 0; i < size(); ++i) {
+  for(unsigned int i = 0; i < size(); ++i) {
     getChild(i)->makeChildren();
   }
 }

@@ -3,8 +3,8 @@
 #' @description Calculation of probability intervals, 
 #' and their maximal and minimal entropy
 #' 
-#' @param table: integer vector of absolute frequencies
-#' @param iptype: method for calculating the probability
+#' @param table integer vector of absolute frequencies
+#' @param iptype method for calculating the probability
 #' intervals of \code{table}. \code{"IDM"} for the Imprecise
 #' Dirichlet Model (default), \code{"NPI"} for use of the 
 #' Nonparametric Predictive Inference approach and \code{"NPIapprox"}

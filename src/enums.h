@@ -1,6 +1,9 @@
 #ifndef RCPP_IMPTREE_ENUMS_H
 #define RCPP_IMPTREE_ENUMS_H
 
+#include "translation.h"
+#include <Rcpp.h>
+
 enum class EntropyCorrection {
   no = 0,
   abellan,
@@ -25,6 +28,7 @@ namespace IpTypeLookup {
       case IpType::npi:   return "NPI";
       case IpType::npiapprox: return "NPIapprox";
     }
+    throw Rcpp::exception(_("Only 'IDM', 'NPI' and 'NPIapprox' are supported as IpType"));
   }
 }
 
