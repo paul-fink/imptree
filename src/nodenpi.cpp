@@ -113,7 +113,7 @@ std::vector<double> NPINode::maxEntropyDistExact(const ProbInterval &probint) {
   int k01 = k0 + k1;
   int krem = ksize - k01;
   
-	int dnobs = static_cast<double>(probint.obs);
+	double dnobs = static_cast<double>(probint.obs);
 	
 
 	if(krem == 0) {

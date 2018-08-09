@@ -27,7 +27,7 @@
 #' Dirichlet Model (default), \code{"NPI"} for use of the 
 #' Nonparametric Predictive Inference approach and \code{"NPIapprox"}
 #' for use of the approximate algorithm obtaining maximal entropy of
-#'  NPI generated probability intervals.
+#' NPI generated probability intervals.
 #' @param method.param Named list providing the method specific 
 #' parameters. See \code{\link{imptree_params}}.
 #' @param \dots optional parameters to be passed to the main function

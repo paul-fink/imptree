@@ -23,11 +23,6 @@ class Node {
   int splitvaridx_ = -1;
   std::vector<int> splitset_;
   
-  virtual std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact) = 0;
-  virtual std::vector<double> minEntropyDist(const ProbInterval& probint) = 0;
-  virtual double correctionEntropy(const std::vector<double>& probs, const int n) = 0;
-  virtual ProbInterval probabilityInterval(const std::vector<int>& classtable) = 0;
-  
   Rcpp::IntegerVector getNodeObservations(const int variableIndex);
   void calculateProbinterval();
   int calcSplitVariable();
@@ -53,6 +48,11 @@ public:
   inline Node* getChild(const size_t i) const {return children_.at(i);}
   inline size_t size() const {return children_.size();}
   
+  virtual ProbInterval probabilityInterval(const std::vector<int>& classtable) = 0;
+  virtual std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact) = 0;
+  virtual std::vector<double> minEntropyDist(const ProbInterval& probint) = 0;
+  virtual double correctionEntropy(const std::vector<double>& probs, const int n) = 0;
+  
   void setSplitVariable(const int idx);
   void setSplitSet(std::vector<int> splitset);
   inline void addSplitObs(const int obsidx) {obsidxs_.push_back(obsidx);}
@@ -77,32 +77,32 @@ public:
 
 class IDMNode : public Node {
   
-  std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact = true);
-  std::vector<double> minEntropyDist(const ProbInterval& probint);
-  double correctionEntropy(const std::vector<double>& probs, const int n);
-  ProbInterval probabilityInterval(const std::vector<int>& classtable);
-  
   std::vector<double> minVals(const std::vector<double>& array);
   
 public:
   IDMNode(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> configp,
           int depth, Node* parent = nullptr);
+  
+  ProbInterval probabilityInterval(const std::vector<int>& classtable);
+  std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact = true);
+  std::vector<double> minEntropyDist(const ProbInterval& probint);
+  double correctionEntropy(const std::vector<double>& probs, const int n);
 };
 
 class NPINode : public Node {
   
-  std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact = true);
   std::vector<double> maxEntropyDistApprox(const ProbInterval& probint);
   std::vector<double> maxEntropyDistExact(const ProbInterval& probint);
-  std::vector<double> minEntropyDist(const ProbInterval& probint);
-  double correctionEntropy(const std::vector<double>& probs, const int n);
-  ProbInterval probabilityInterval(const std::vector<int>& classtable);
-  
   int maxIndexInSet(std::vector<int> array, std::vector<bool> set);
   
 public:
   NPINode(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> configp,
           int depth, Node* parent = nullptr);
+  
+  ProbInterval probabilityInterval(const std::vector<int>& classtable);
+  std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact = true);
+  std::vector<double> minEntropyDist(const ProbInterval& probint);
+  double correctionEntropy(const std::vector<double>& probs, const int n);
 };
 
 

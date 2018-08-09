@@ -77,6 +77,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// createProbIntInformation_cpp
+Rcpp::List createProbIntInformation_cpp(const Rcpp::IntegerVector& vec, const Rcpp::List& config);
+RcppExport SEXP _imptree_createProbIntInformation_cpp(SEXP vecSEXP, SEXP configSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type vec(vecSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type config(configSEXP);
+    rcpp_result_gen = Rcpp::wrap(createProbIntInformation_cpp(vec, config));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_imptree_treebuilder_cpp", (DL_FUNC) &_imptree_treebuilder_cpp, 2},
@@ -85,6 +97,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_imptree_treeInformation_cpp", (DL_FUNC) &_imptree_treeInformation_cpp, 1},
     {"_imptree_treePrint_cpp", (DL_FUNC) &_imptree_treePrint_cpp, 3},
     {"_imptree_getNode_cpp", (DL_FUNC) &_imptree_getNode_cpp, 2},
+    {"_imptree_createProbIntInformation_cpp", (DL_FUNC) &_imptree_createProbIntInformation_cpp, 2},
     {NULL, NULL, 0}
 };
 

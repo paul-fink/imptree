@@ -84,3 +84,29 @@ Rcpp::List getNode_cpp(Rcpp::XPtr<Node> prootnode, Rcpp::IntegerVector idxs) {
   stdidxs.pop_back();
   return prootnode->getNodeByIndex(stdidxs);
 }
+
+// [[Rcpp::export]]
+Rcpp::List createProbIntInformation_cpp(const Rcpp::IntegerVector & vec, const Rcpp::List & config) {
+  std::shared_ptr<Config> configp = std::make_shared<Config>();
+  configp->s = Rcpp::as<double>(config["s"]);
+  configp->ec = static_cast<EntropyCorrection>(Rcpp::as<int>(config["correction"]));
+  configp->ip = static_cast<IpType>(Rcpp::as<int>(config["iptype"]));
+  Node* node = Node::createNode(nullptr, configp, 0, nullptr);
+ 
+  Rcpp::List result;
+  
+  ProbInterval probInt = node->probabilityInterval(Rcpp::as< std::vector<int> >(vec));
+  result["probint"] = probInt.toMatrix();
+  
+  std::vector<double> maxEntDist = node->maxEntropyDist(probInt, configp->ip != IpType::npiapprox);
+  result["maxEntDist"] = Rcpp::wrap(maxEntDist);
+  result["maxEntCorr"] = node->correctionEntropy(maxEntDist, probInt.obs);
+  
+  std::vector<double> minEntDist = node->minEntropyDist(probInt);
+  result["minEntDist"] = Rcpp::wrap(minEntDist);
+  result["minEntCorr"] = node->correctionEntropy(minEntDist, probInt.obs);
+  
+  delete node;
+  
+  return result;
+}

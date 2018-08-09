@@ -25,3 +25,7 @@ getNode_cpp <- function(prootnode, idxs) {
     .Call('_imptree_getNode_cpp', PACKAGE = 'imptree', prootnode, idxs)
 }
 
+createProbIntInformation_cpp <- function(vec, config) {
+    .Call('_imptree_createProbIntInformation_cpp', PACKAGE = 'imptree', vec, config)
+}
+

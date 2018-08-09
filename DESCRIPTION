@@ -1,16 +1,21 @@
 Package: imptree
 Type: Package
 Title: Classification Trees with Imprecise Probabilities
-Version: 1.0
+Version: 1.0.0
 Date: 2016-06-23
-Author: Paul Fink
-Maintainer: Paul Fink <Paul.Fink@stat.uni-muenchen.de>
-Description: This package implements the methodology for growing
-        classification trees using a local Imprecise Dirichlet Model
-        or the Nonparametric Predictive Inference approach in each node.
+Authors@R: person("Paul", "Fink",
+    email = "paul.fink@stat.uni-muenchen.de",
+    role = c("aut", "cre"))
+Description: This package implements the creation of imprecise
+    classification trees using a local Imprecise Dirichlet Model
+    or the Nonparametric Predictive Inference approach in each node.
+    The approach in Fink and Crossman (2013)
+    <http://www.sipta.org/isipta13/index.php?id=paper&paper=014.html>
+    is implemented, but it also covers the original approach of building.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports: Rcpp (>= 0.12.5)
 LinkingTo: Rcpp
 SystemRequirements: C++11
 RoxygenNote: 6.1.0
+Suggests: testthat
