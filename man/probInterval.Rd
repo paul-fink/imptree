@@ -5,7 +5,8 @@
 \title{Various method around IPIntervals}
 \usage{
 probInterval(table, iptype = c("IDM", "NPI", "NPIapprox"),
-  correction = c("no", "strobl", "abellan"), s = 1)
+  entropymin = TRUE, entropymax = TRUE, correction = c("no",
+  "strobl", "abellan"), s = 1)
 }
 \arguments{
 \item{table}{integer vector of absolute frequencies}
@@ -17,7 +18,16 @@ Nonparametric Predictive Inference approach and \code{"NPIapprox"}
 for use of the approximate algorithm obtaining maximal entropy of
 NPI generated probability intervals.}
 
-\item{correction}{Entropy correction to be carried out
+\item{entropymin}{Calculation of one distribution with minimal 
+entropy, including the actual value of the minimal entropy
+(default: \code{TRUE})}
+
+\item{entropymax}{Calculation of the distribution with maximal 
+entropy, including the actual value of the maximal entropy
+(default: \code{TRUE})}
+
+\item{correction}{Entropy correction to be carried out,
+ignorned if \code{(entropymin || entropymax) == FALSE}
 (default \code{"no"}), see \code{\link{imptree_params}}}
 
 \item{s}{Hyperparamter of the IDM (\code{s >= 0}),

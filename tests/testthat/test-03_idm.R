@@ -16,21 +16,7 @@ calcEntropyStrobl <- function(values, nobs, s) {
     (length(values) + 1) / (2 * nobs + s)
 }
 
-## test templates ####################################################
-### structure of the object
-structure_tests <- function(pI, nclass) {
-  expect_equal(length(pI), 5)
-  expect_named(pI,  c("probint", "maxEntDist", "maxEntCorr", 
-                      "minEntDist", "minEntCorr"))
-  
-  expect_equivalent(sapply(pI, length), c(3 * nclass, 
-                                          nclass, 1, 
-                                          nclass, 1))
-  expect_equal(rownames(pI$probint), c("Frequency", "Lower", "Upper"))
-  expect_null(colnames(pI$probint))
-  expect_equal(dim(pI$probint), c(3, nclass))
-}
-## value comparison
+## test template #####################################################
 value_tests <- function(pI, values, s, entropyfun) {
   expect_equal(pI$probint[1,],
                values[[1]])
@@ -60,29 +46,30 @@ context("IDM entropy calculation")
 test_that("IDM, nonsense 's'", {
   vec <- c(0,0,1,1)
   
-  expect_error(probInterval(vec, ip, correction = "no", s = -2),
+  expect_error(probInterval(vec, ip, correction = "no", s = -2, 
+                            entropymin = TRUE, entropymax = TRUE),
                "value of 's' \\(-2.000000\\) must be strictly positive")
 })
 
 test_that("IDM, direct", {
   vec <- c(0,0,1,1)
-  pI <- probInterval(vec, ip, correction = "no", s = 2)
+  pI <- probInterval(vec, ip, correction = "no", s = 2, 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec, 
                         rep(0.25, 4), 
                         c(0, 0, 0.75, 0.25))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, 2, calcEntropyBase)
 })
 
 test_that("IDM, more iterations", {
   vec <- c(2,3,1,2,0)
-  pI <- probInterval(vec, ip, correction = "no", s = 2)
+  pI <- probInterval(vec, ip, correction = "no", s = 2, 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(0.2, 0.3, 0.15, 0.2, 0.15), 
                         c(0.2, 0.5, 0.1, 0.2, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, 2, calcEntropyBase)
 })
 
@@ -92,39 +79,40 @@ context("IDM entropy correction")
 
 test_that("IDM, no correction", {
   vec <- c(2,3,1,2,0)
-  pI <- probInterval(vec, ip, correction = "no", s = 2)
+  pI <- probInterval(vec, ip, correction = "no", s = 2, 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(0.2, 0.3, 0.15, 0.2, 0.15), 
                         c(0.2, 0.5, 0.1, 0.2, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, 2, calcEntropyBase)
 })
 
 test_that("IDM, strobl correction", {
   vec <- c(2,3,1,2,0)
-  pI <- probInterval(vec, ip, correction = "strobl", s = 2)
+  pI <- probInterval(vec, ip, correction = "strobl", s = 2, 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(0.2, 0.3, 0.15, 0.2, 0.15), 
                         c(0.2, 0.5, 0.1, 0.2, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, 2, calcEntropyStrobl)
 })
 
 test_that("IDM, abellan correction", {
   vec <- c(2,3,1,2,0)
-  pI <- probInterval(vec, ip, correction = "abellan", s = 2)
+  pI <- probInterval(vec, ip, correction = "abellan", s = 2, 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(0.2, 0.3, 0.15, 0.2, 0.15), 
                         c(0.2, 0.5, 0.1, 0.2, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, 2, calcEntropyAbellan)
 })
 
-test_that("IDM, abellan correction", {
+test_that("IDM, nonsense correction", {
   vec <- c(2,3,1,2,0)
   
-  expect_error(probInterval(vec, ip, correction = "bla", s = 2))
+  expect_error(probInterval(vec, ip, correction = "bla", s = 2, 
+                            entropymin = TRUE, entropymax = TRUE))
 })

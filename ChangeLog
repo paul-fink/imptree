@@ -1,4 +1,4 @@
-2018-08-08
+2018-10-08
 * VERS:	0.5.0
 * CHG:	Rewritten most parts to C++:
 		entire tree creation algorithm (previously C + R)
@@ -11,7 +11,7 @@
 * ADD:	data set (carEvaluation)
 * ADD:	German translations
 * ADD:	Roxygen2 annotation
-* RM:	all tests
+* CHG:	Tests adapted to match new structure
 
 2014-12-02
 * VERS: 0.4.2

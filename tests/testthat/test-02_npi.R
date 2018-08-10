@@ -11,21 +11,7 @@ calcEntropyStrobl <- function(values, nobs) {
   ent + (length(values) - 1) / (2 * nobs)
 }
 
-## test templates ####################################################
-### structure of the object
-structure_tests <- function(pI, nclass) {
-  expect_equal(length(pI), 5)
-  expect_named(pI,  c("probint", "maxEntDist", "maxEntCorr", 
-                      "minEntDist", "minEntCorr"))
-  
-  expect_equivalent(sapply(pI, length), c(3 * nclass, 
-                                          nclass, 1, 
-                                          nclass, 1))
-  expect_equal(rownames(pI$probint), c("Frequency", "Lower", "Upper"))
-  expect_null(colnames(pI$probint))
-  expect_equal(dim(pI$probint), c(3, nclass))
-}
-## value comparison
+## test template #####################################################
 value_tests <- function(pI, values, entropyfun) {
   expect_equal(pI$probint[1,],
                values[[1]])
@@ -55,45 +41,45 @@ ip <- "NPI"
 
 test_that("Exact NPI, krem=0", {
   vec <- c(0,0,1,1)
-  pI <- probInterval(vec, ip, correction = "no")
+  pI <- probInterval(table = vec, iptype = ip, correction = "no", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec, 
                         rep(0.25, 4), 
                         c(0.5, 0.5, 0, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyBase)
 })
 
 test_that("Exact NPI, krem < k0; h < k1+1", {
   vec <- c(1,0,0,4)
-  pI <- probInterval(vec, ip, correction = "no")
+  pI <- probInterval(table = vec, iptype = ip, correction = "no", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec, 
                         c(rep(4/30, 3), 0.6),
                         c(0, 0, 0, 1))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyBase)
 })
 
 test_that("Exact NPI, krem < k0; h > k1+1", {
   vec <- c(rep(0,6), 1:4)
-  pI <- probInterval(vec, ip, correction = "no")
+  pI <- probInterval(table = vec, iptype = ip, correction = "no", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec, 
                         c(rep(0.05, 6), 0.1, 0.1, 0.2, 0.3),
                         c(rep(0, 7), 0.1, 0.4, 0.5))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyBase)
 })
 
 test_that("Exact NPI, krem >= k0", {
   vec <- c(3,3,2,3,4,5,0,0)
-  pI <- probInterval(vec, ip, correction = "no")
+  pI <- probInterval(table = vec, iptype = ip, correction = "no", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(rep(0.1375,4), 0.15, 0.2, 0.05, 0.05),
                         c(0.2, 0.1, 0.05, 0.1, 0.25, 0.3, 0, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyBase)
 })
 
@@ -105,23 +91,23 @@ ip <- "NPIapprox"
 
 test_that("Approx NPI, krem < k0", {
   vec <- c(0,0,1,3)
-  pI <- probInterval(vec, ip, correction = "no")
+  pI <- probInterval(table = vec, iptype = ip, correction = "no", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec, 
                         c(rep(1/6, 3), 0.5), 
                         c(rep(0, 3), 1))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyBase)
 })
 
 test_that("Approx NPI, krem >= k0", {
   vec <- c(3,3,2,3,4,5,0,0)
-  pI <- probInterval(vec, ip, correction = "no")
+  pI <- probInterval(vec, ip, correction = "no", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(rep(0.1375,4), 0.15, 0.2, 0.05, 0.05),
                         c(0.2, 0.1, 0.05, 0.1, 0.25, 0.3, 0, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyBase)
 })
 
@@ -131,32 +117,34 @@ context("NPI entropy correction")
 
 test_that("Approx NPI, no correction", {
   vec <- c(3,3,2,3,4,5,0,0)
-  pI <- probInterval(vec, ip, correction = "no")
+  pI <- probInterval(table = vec, iptype = ip, correction = "no", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(rep(0.1375,4), 0.15, 0.2, 0.05, 0.05),
                         c(0.2, 0.1, 0.05, 0.1, 0.25, 0.3, 0, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyBase)
 })
 
 test_that("Approx NPI, strobl correction", {
   vec <- c(3,3,2,3,4,5,0,0)
-  pI <- probInterval(vec, ip, correction = "strobl")
+  pI <- probInterval(table = vec, iptype = ip, correction = "strobl", 
+                     entropymin = TRUE, entropymax = TRUE)
   expected_vals <- list(vec,
                         c(rep(0.1375,4), 0.15, 0.2, 0.05, 0.05),
                         c(0.2, 0.1, 0.05, 0.1, 0.25, 0.3, 0, 0))
   
-  structure_tests(pI, length(vec))
   value_tests(pI, expected_vals, calcEntropyStrobl)
 })
 
 test_that("Approx NPI, abellan correction", {
   vec <- c(3,3,2,3,4,5,0,0)
   
-  expect_error(probInterval(vec, ip, correction = "abellan"), 
+  expect_error(
+    probInterval(table = vec, iptype = ip, correction = "abellan", 
+                 entropymin = TRUE, entropymax = TRUE), 
                sprintf("'correction' should be one of %s",
                        paste(dQuote(c("no","strobl")),
-                             collapse=", ")))
+                             collapse = ", ")))
 })
 

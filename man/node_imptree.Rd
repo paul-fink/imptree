@@ -59,6 +59,9 @@ of an imprecise tree.
 An existence check on the stored C++ object reference is 
 carried out at first. If the reference is not valid the 
 original call for \code{"x"} is printed as error.
+
+The function \code{`[[`} is a convenience wrapper function for 
+\code{node_imptree}.
 }
 \seealso{
 \code{\link{imptree}}, for global information on 

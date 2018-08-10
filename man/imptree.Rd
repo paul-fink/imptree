@@ -4,7 +4,7 @@
 \alias{imptree}
 \alias{imptree.formula}
 \alias{imptree.default}
-\title{Classification with Imprecise Probabilities}
+\title{Classification Trees with Imprecise Probabilities}
 \usage{
 \method{imptree}{formula}(formula, data = NULL, weights, control,
   method = c("IDM", "NPI", "NPIapprox"), method.param, ...)

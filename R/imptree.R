@@ -1,4 +1,4 @@
-#' @title Classification with Imprecise Probabilities
+#' @title Classification Trees with Imprecise Probabilities
 #' 
 #' @name imptree
 #' 
@@ -8,8 +8,6 @@
 #' Nonparametric Predictive Inference (NPI) to generate the
 #' imprecise probability distribution of the classification variable
 #' within a node.
-#' 
-#' @aliases imptree imptree.formula imptree.default
 #' 
 #' @param formula Formula describing the strucutre
 #' (class variable ~ featutre variables).
@@ -187,7 +185,3 @@ imptree.default <- function(x, y, ...) {
 imptree <- function(x, ...) {
   UseMethod("imptree")
 }
-
-#' @useDynLib imptree
-#' @importFrom Rcpp sourceCpp
-NULL
