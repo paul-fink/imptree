@@ -54,19 +54,18 @@ Rcpp::List predict_cpp(Rcpp::XPtr<Node> prootnode,
 }
 
 // [[Rcpp::export]]
-Rcpp::IntegerMatrix treeInformation_cpp(Rcpp::XPtr<Node> prootnode) {
+Rcpp::IntegerVector treeInformation_cpp(Rcpp::XPtr<Node> prootnode) {
   
-  Rcpp::IntegerVector tmpres = Rcpp::IntegerVector(3);
+  
   std::vector<int> * depths = new std::vector<int>();
   prootnode->addDepth(depths);
   std::vector<int>::iterator mresult = std::max_element(depths->begin(), depths->end());
-  tmpres[0] = *mresult;
+  Rcpp::IntegerVector result = Rcpp::IntegerVector::create(
+    Rcpp::Named("depth") = *mresult,
+    Rcpp::Named("nleaves") = prootnode->numLeaves(),
+    Rcpp::Named("nnodes") = prootnode->numNodes()
+  );
   delete depths;
-  tmpres[1] = prootnode->numLeaves();
-  tmpres[2] = prootnode->numNodes();
-  
-  Rcpp::IntegerMatrix result = Rcpp::IntegerMatrix(3,1, tmpres.begin());
-  Rcpp::rownames(result) = Rcpp::CharacterVector::create("depth", "nleaves", "nnodes");
   return result;
 }
 
@@ -80,7 +79,6 @@ Rcpp::List getNode_cpp(Rcpp::XPtr<Node> prootnode, Rcpp::IntegerVector idxs) {
   
   std::vector<int> stdidxs = Rcpp::as< std::vector<int> >(idxs);
   std::reverse(stdidxs.begin(), stdidxs.end());
-  //int idxvback = stdidxs.back();
   stdidxs.pop_back();
   return prootnode->getNodeByIndex(stdidxs);
 }

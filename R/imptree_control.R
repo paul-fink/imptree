@@ -12,8 +12,9 @@
 #' for splitting (Default: 2)
 #' @param gamma Weighting factor of the maximum entropy
 #' (default: 1)
-#' @param depth Integer limiting the tree to the given depth.
-#' If not supplied, \code{NULL} (default) or smaller than 1 the
+#' @param depth Integer limiting the tree to the given depth, with
+#' \code{0} indicating to perform no splitting at all.
+#' If not supplied, \code{NULL} (default) or negative the
 #' tree is grown to maximal size, the latter triggering a warning.
 #' @param minbucket Positive integer as minimal leaf size
 #' (default: 1)
@@ -91,7 +92,7 @@ imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 
   
   # dealing inconsitencies in 'depth'
   mydepth <- clist[["depth"]]
-  if(!is.null(mydepth) && mydepth < 1L) {
+  if(!is.null(mydepth) && mydepth < 0L) {
     warning(gettextf("ignoring supplied 'depth'=%d and use default instead",
                     mydepth, domain ="R-imptree"))
     mydepth <- NULL

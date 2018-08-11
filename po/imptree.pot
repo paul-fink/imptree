@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: imptree 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-09 21:07+0200\n"
+"POT-Creation-Date: 2018-08-11 13:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,12 @@ msgstr ""
 msgid "root: "
 msgstr ""
 
-#: node.cpp:415
+#: node.cpp:414
+#, c-format
+msgid "Queried index (%d) > child size (%d)"
+msgstr ""
+
+#: node.cpp:418
 msgid "Too deep recursion: No nodes available further down!"
 msgstr ""
 

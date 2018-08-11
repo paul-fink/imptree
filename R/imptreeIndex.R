@@ -39,9 +39,6 @@
 #' carried out at first. If the reference is not valid the 
 #' original call for \code{"x"} is printed as error.
 #' 
-#' The function \code{`[[`} is a convenience wrapper function for 
-#' \code{node_imptree}.
-#' 
 #' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}
 #' 
 #' @seealso \code{\link{imptree}}, for global information on 
@@ -107,10 +104,4 @@ print.node_imptree <- function(x, ...) {
               domain ="R-imptree"))
   print(x$probint, ...)
   invisible(x)
-}
-
-#' @rdname node_imptree
-#' @export
-`[[.imptree`  <- function(x, idx = NULL) {
-  node_imptree(x, idx)
 }

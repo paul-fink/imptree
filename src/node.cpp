@@ -48,7 +48,7 @@ void Node::makeChildren() {
   calculateProbinterval();
   
   // Abandon if there are already children present or max depth was reached
-  if(!children_.empty() || depth_ > configp_->maxdepth) {
+  if(!children_.empty() || depth_ >= configp_->maxdepth) {
     //#Rcpp::Rcout << "max depth reached" << std::endl;
     return; 
   }
@@ -410,9 +410,12 @@ Rcpp::List Node::getNodeByIndex(std::vector<int>& idxs) const {
   if(this->size() > 0 && idxs.size() > 0) {
     int idxc = idxs.back();
     idxs.pop_back();
+    if(idxc >= this->size()) {
+      Rcpp::stop(Rcpp::sprintf<75>(_("Queried index (%d) > child size (%d)"), idxc + 1, this->size()));
+    }
     return this->getChild(idxc)->getNodeByIndex(idxs);
   } else if (idxs.size() > 0 && this->size() == 0) {
-    throw Rcpp::exception(_("Too deep recursion: No nodes available further down!"));
+    Rcpp::stop(_("Too deep recursion: No nodes available further down!"));
   } else {
     Rcpp::NumericMatrix probint = this->probInt_.toMatrix();
     Rcpp::colnames(probint) = Rcpp::wrap<Rcpp::CharacterVector>(this->getData()->labels[this->getData()->classidx]);

@@ -3,14 +3,11 @@
 \name{node_imptree}
 \alias{node_imptree}
 \alias{print.node_imptree}
-\alias{[[.imptree}
 \title{Classification with Imprecise Probabilities}
 \usage{
 node_imptree(x, idx = NULL)
 
 \method{print}{node_imptree}(x, ...)
-
-\method{[[}{imptree}(x, idx = NULL)
 }
 \arguments{
 \item{x}{An object of class \code{imptree} or \code{node_imptree},
@@ -59,9 +56,6 @@ of an imprecise tree.
 An existence check on the stored C++ object reference is 
 carried out at first. If the reference is not valid the 
 original call for \code{"x"} is printed as error.
-
-The function \code{`[[`} is a convenience wrapper function for 
-\code{node_imptree}.
 }
 \seealso{
 \code{\link{imptree}}, for global information on 

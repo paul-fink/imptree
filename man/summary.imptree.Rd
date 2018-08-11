@@ -34,10 +34,10 @@ and supplied the utility and dominance criterion for evaluation.
 default value}
 \item{sizes}{List containing the overall number and number of 
 indeterminate predictions on training data}
-\item{acc}{1-column matrix containing the accuracy measures 
+\item{acc}{named vector containing the accuracy measures 
 on training data with nicer names (without size information)
 (see \code{\link{predict.imptree}})}
-\item{meta}{1-column matrix containing the tree's depth, 
+\item{meta}{named vector containing the tree's depth, 
 number of leaves and number of nodes}
 
 The printing function returns the

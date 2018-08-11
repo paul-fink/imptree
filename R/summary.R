@@ -22,10 +22,10 @@
 #' default value}
 #' \item{sizes}{List containing the overall number and number of 
 #' indeterminate predictions on training data}
-#' \item{acc}{1-column matrix containing the accuracy measures 
+#' \item{acc}{named vector containing the accuracy measures 
 #' on training data with nicer names (without size information)
 #' (see \code{\link{predict.imptree}})}
-#' \item{meta}{1-column matrix containing the tree's depth, 
+#' \item{meta}{named vector containing the tree's depth, 
 #' number of leaves and number of nodes}
 #' 
 #' @details
@@ -54,7 +54,6 @@ summary.imptree <- function(object, utility = 0.65,
   
   # get the tree information
   metaresult <- treeInformation_cpp(object$tree)
-  dimnames(metaresult) <- list(c("Depth", "Leaves", "Nodes"),"")
 
   dominance <- match.arg(dominance)
   
@@ -64,15 +63,13 @@ summary.imptree <- function(object, utility = 0.65,
   
   teval <- trainresult$evaluation
   
-  meval <- matrix(unlist(teval)[-c(1,3)], ncol = 1)
-  dimnames(meval) <- list(c("Determinacy",
-                            "Average indeterminate size",
-                            "Single-Set Accuracy",
-                            "Set-Accuracy",
-                            "Discounted Accuracy",
-                            sprintf("%.2f utility based Accuracy",
-                                     utility)),
-                          "")
+  meval <- unlist(teval)[-c(1,3)]
+  names(meval) <- c("Determinacy",
+                    "Average indeterminate size",
+                    "Single-Set Accuracy",
+                    "Set-Accuracy",
+                    "Discounted Accuracy",
+                    sprintf("%.2f utility based Accuracy", utility))
   res <- list(call = object$call,
               utility = utility,
               dominance = dominance,
@@ -95,7 +92,7 @@ print.summary.imptree <- function(x, ...) {
       "\n\n", sep = "")  
   cat(gettextf("%d observations in training data\n",
                as.integer(x$sizes$obs), domain = "R-imptree"))
-  meta <- x$meta
+  meta <- as.matrix(x$meta, ncol = 1)
   dimnames(meta) <- list(gettext("Depth", "Leaves", "Nodes", 
                                  domain ="R-imptree"),
                          "")
@@ -107,7 +104,7 @@ print.summary.imptree <- function(x, ...) {
     cat(gettextf("\t%d indeterminate predictions\n", 
                  as.integer(x$sizes$iobs), domain = "R-imptree"))
   }
-  acc <- x$acc
+  acc <- as.matrix(x$acc, ncol = 1)
   
   dimnames(acc) <- list(gettextf(c("Determinacy", 
                                    "Average indeterminate size", 

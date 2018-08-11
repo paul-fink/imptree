@@ -43,7 +43,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // treeInformation_cpp
-Rcpp::IntegerMatrix treeInformation_cpp(Rcpp::XPtr<Node> prootnode);
+Rcpp::IntegerVector treeInformation_cpp(Rcpp::XPtr<Node> prootnode);
 RcppExport SEXP _imptree_treeInformation_cpp(SEXP prootnodeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
