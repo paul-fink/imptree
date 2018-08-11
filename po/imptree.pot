@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: imptree 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-11 13:24+0200\n"
+"POT-Creation-Date: 2018-08-11 15:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,52 +17,52 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: node.cpp:23
+#: node.cpp:42
 msgid "other IPType is not implemented"
 msgstr ""
 
-#: node.cpp:301
+#: node.cpp:320
 msgid "evaluation only allowed from root node"
 msgstr ""
 
-#: node.cpp:387
+#: node.cpp:406
 msgid "root: "
 msgstr ""
 
-#: node.cpp:414
+#: node.cpp:433
 #, c-format
 msgid "Queried index (%d) > child size (%d)"
 msgstr ""
 
-#: node.cpp:418
+#: node.cpp:437
 msgid "Too deep recursion: No nodes available further down!"
 msgstr ""
 
-#: nodenpi.cpp:91
+#: nodenpi.cpp:110
 #, c-format
 msgid ""
 "MaxAppox: After all iterations (%i) not all mass has been assigned!\n"
 " Remaining mass is: %f\n"
 msgstr ""
 
-#: nodenpi.cpp:138 nodenpi.cpp:152
+#: nodenpi.cpp:157 nodenpi.cpp:171
 msgid "Something is wrong in calculation"
 msgstr ""
 
-#: nodenpi.cpp:188
+#: nodenpi.cpp:207
 #, c-format
 msgid ""
 "Max: After all iterations (%i) not all mass has been assigned!\n"
 " Remaining mass is: %f\n"
 msgstr ""
 
-#: nodenpi.cpp:233
+#: nodenpi.cpp:252
 #, c-format
 msgid ""
 "Min: After all iterations (%i) not all mass has been assigned!\n"
 " Remaining mass is: %f\n"
 msgstr ""
 
-#: nodenpi.cpp:255
+#: nodenpi.cpp:274
 msgid "Entropy correction 'abellan' not permitted for NPI\n"
 msgstr ""

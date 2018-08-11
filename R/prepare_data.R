@@ -1,7 +1,23 @@
+# Copyright (C) 2012 - 2018  Paul Fink
+#
+# This file is part of imptree.
+#
+# imptree is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# imptree is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with imptree.  If not, see <https://www.gnu.org/licenses/>.
+
 # Prepare data by given formula or imptree object
 # In case of supplied imptree object its formula is used for creating the
 # metadata of the Dataset object
-#' @importFrom stats na.fail
 prepare_data <- function(object, data, weights, subset, ...) {
   
   # constructing a data.frame according to the supplied formula and na.action
