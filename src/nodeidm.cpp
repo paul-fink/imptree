@@ -62,14 +62,14 @@ std::vector<double> IDMNode::minVals(const std::vector<double>& array) {
 std::vector<double> IDMNode::maxEntropyDist(const ProbInterval &probint, const bool /*exact*/) {
   
   std::vector<double> lower = probint.lower;
-  size_t lsize = lower.size();
+  int lsize = lower.size();
   
-	double nmin, minval, sminval;
+  double nmin, minval, sminval;
 	
-	// Due to the nature of IDM the intial free mass is s/(N+s)
-	double assignMass, freeMass = configp_->s / (static_cast<double>(probint.obs) + configp_->s);
+  // Due to the nature of IDM the intial free mass is s/(N+s)
+  double assignMass, freeMass = configp_->s / (static_cast<double>(probint.obs) + configp_->s);
 	
-	bool hasFree = true;
+  bool hasFree = true;
 	
   // Keep iterating till all assigned
 	while(hasFree) {
@@ -93,7 +93,7 @@ std::vector<double> IDMNode::maxEntropyDist(const ProbInterval &probint, const b
 	    freeMass -= (assignMass * nmin);
 	  }
 	  // Update lower
-	  for(size_t i = 0; i < lsize; ++i) {
+	  for(int i = 0; i < lsize; ++i) {
 	    if(lower[i] == minval) {
 	      lower[i] += assignMass;
 	    }

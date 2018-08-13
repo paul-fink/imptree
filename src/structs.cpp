@@ -31,10 +31,10 @@ Data::Data(const Rcpp::IntegerMatrix & mat) : data(mat)
 
 std::string ProbInterval::to_string(const int nsmall, const std::string &sep) const {
   
-  size_t ncat = freq.size();
+  int ncat = freq.size();
   std::ostringstream out;
   out << std::fixed << std::setprecision(nsmall);
-  for(size_t i = 0; i < ncat - 1; ++i) {
+  for(int i = 0; i < ncat - 1; ++i) {
     out << "[" << lower[i] << ";" << upper[i] << "]" << sep;
   }
   out << "[" << lower[ncat-1] << ";" << upper[ncat-1] << "]";

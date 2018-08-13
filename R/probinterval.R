@@ -1,4 +1,4 @@
-# Copyright (C) 2012 - 2018  Paul Fink
+# Copyright (C) 2018  Paul Fink
 #
 # This file is part of imptree.
 #

@@ -64,7 +64,7 @@ public:
 
   inline Node* getChild(const size_t i) {return children_.at(i);}
   inline Node* getChild(const size_t i) const {return children_.at(i);}
-  inline size_t size() const {return children_.size();}
+  inline int size() const {return children_.size();}
   
   virtual ProbInterval probabilityInterval(const std::vector<int>& classtable) = 0;
   virtual std::vector<double> maxEntropyDist(const ProbInterval& probint, const bool exact) = 0;

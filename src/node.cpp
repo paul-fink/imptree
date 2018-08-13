@@ -25,7 +25,7 @@ Node::Node(const std::shared_ptr<Data> datap, const std::shared_ptr<Config> conf
 }
 
 Node::~Node() {
-  for(size_t i = 0; i < children_.size(); ++i) {
+  for(int i = 0; i < size(); ++i) {
     delete (Node *) children_[i];
   }
 }
@@ -100,7 +100,7 @@ void Node::makeChildren() {
 
   }
   // Go into recursion
-  for(unsigned int i = 0; i < size(); ++i) {
+  for(int i = 0; i < size(); ++i) {
     getChild(i)->makeChildren();
   }
 }
@@ -416,7 +416,7 @@ void Node::printNode(int parentIdx, const int nsmall, const std::string & sep) c
   // Print end of line (stared for leave) and recurse
   if(splitvaridx_ > -1) {
     Rcpp::Rcout << std::endl;
-    for (size_t i = 0; i < size(); ++i) {
+    for (int i = 0; i < size(); ++i) {
       children_[i]->printNode(i, nsmall, sep);
     }
   } else {

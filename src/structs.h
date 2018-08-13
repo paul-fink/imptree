@@ -39,8 +39,8 @@ struct Config {
   double s; // strictly positive
   double gamma; // in (0;1)
   double tbase; // in [-1,2]
-  int minbucket; // positive int
-  int maxdepth; // strictly positive int
+  int minbucket; // non-negative int
+  int maxdepth; // non-negative int
   EntropyCorrection ec;
   SplitMetric sm;
   IpType ip;
