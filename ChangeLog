@@ -1,4 +1,4 @@
-2018-10-08
+2018-08-15
 * VERS:	0.5.0
 * CHG:	Rewritten most parts to C++:
 		entire tree creation algorithm (previously C + R)

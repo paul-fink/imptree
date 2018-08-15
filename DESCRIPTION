@@ -2,18 +2,18 @@ Package: imptree
 Type: Package
 Title: Classification Trees with Imprecise Probabilities
 Version: 0.5.0
-Date: 2018-08-13
+Date: 2018-08-15
 Authors@R: person("Paul", "Fink",
     email = "paul.fink@stat.uni-muenchen.de",
     role = c("aut", "cre"))
-Description: Creation of Imprecise classification trees. They rely on 
-    probability estimation within each node by means of either the 
-    Imprecise Dirichlet Model or the Nonparametric Predictive 
-    Inference approach. The splitting variable is selected by the 
-    strategy presented in Fink and Crossman (2013,
-    <http://www.sipta.org/isipta13/index.php?id=paper&paper=014.html>),
-    but also the original Imprecise Information Gain  of Abellan and 
-    Moral (2003, <doi:10.1002/int.10143>) is covered.
+Description: Creation of Imprecise classification trees. They rely on
+    probability estimation within each node by means of either the
+    Imprecise Dirichlet Model or the Nonparametric Predictive
+    Inference approach. The splitting variable is selected by the
+    strategy presented in Fink and Crossman (2013)
+    <http://www.sipta.org/isipta13/index.php?id=paper&paper=014.html>,
+    but also the original Imprecise Information Gain of Abellan and
+    Moral (2003) <doi:10.1002/int.10143> is covered.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports: Rcpp (>= 0.12.5)
