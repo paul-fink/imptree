@@ -52,6 +52,20 @@ An existence check on the stored C++ object reference is carried
 out at first. If the reference is not valid the original call
 for \code{"object"} is printed as error.
 }
+\examples{
+data("carEvaluation")
+
+## create a tree with IDM (s=1) to full size
+## carEvaluation, leaving the first 10 observations out
+ip <- imptree(acceptance~., data = carEvaluation[-(1:10),], 
+  method="IDM", method.param = list(splitmetric = "globalmax", s = 1), 
+  control = list(depth = NULL, minbucket = 1))
+
+## summary including prediction on training data
+summary(ip)                       # default prediction
+summary(ip, dominance = "max")    # different prediction parameter
+
+}
 \seealso{
 \code{\link{imptree}}, \code{\link{predict.imptree}},
 for information on a single node \code{\link{node_imptree}}

@@ -34,6 +34,19 @@ for \code{"object"} is printed as error.
 
 For a more detailed summary of the tree \code{\link{summary.imptree}}.
 }
+\examples{
+data("carEvaluation")
+
+## create a tree with IDM (s=1) to full size
+## carEvaluation, leaving the first 10 observations out
+ip <- imptree(acceptance~., data = carEvaluation[-(1:10),], 
+  method="IDM", method.param = list(splitmetric = "globalmax", s = 1), 
+  control = list(depth = NULL, minbucket = 1))
+
+ip                        ## standard printing; same as 'print(ip)'
+print(ip, sep = ";")      ## probability intervals are separated by ';'
+
+}
 \seealso{
 \code{\link{imptree}}, \code{\link{summary.imptree}}
 }

@@ -52,10 +52,23 @@
 #' entropy, as it is not necessarily unqiue there may be others}
 #' \item{minEntCorr}{The value of the (corrected) minimal entropy}
 #' 
+#' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}
+#' 
 #' @seealso \code{\link{imptree_params}}
 #' 
-#' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}
+#' @examples
+#' ## Artificial vector of absolute frequencies
+#' obs <- c(a = 1,b = 2, c = 10, d = 30, e = 5)
 #'
+#' ## probability interval by NPI, including only information on the
+#' ## mininum entropy distribution, using no entropy correction
+#' probInterval(obs, iptype = "NPI", entropymax = FALSE)
+#'
+#' ## probability interval by IDM, including information on the
+#' ## minimum and maximum entropy distribution with s = 2 and correction
+#' ## according to 'strobl'
+#' probInterval(obs, iptype = "IDM", correction = "strobl", s = 2)
+#' 
 #' @export
 probInterval <- function(table, 
                          iptype = c("IDM", "NPI", "NPIapprox"), 

@@ -9,14 +9,15 @@ imptree_control(splitmetric, controlList = NULL, tbase = 1,
   gamma = 1, depth = NULL, minbucket = 1L, ...)
 }
 \arguments{
-\item{splitmetric}{Choosen split metric. 
-See \code{\link{imptree}}}
+\item{splitmetric}{Choosen split metric as integer:
+\code{0} means \code{"globalmax"} and \code{1L} \code{"range"}, 
+repectively. See \code{\link{imptree_params}}}
 
 \item{controlList}{Named list containing the processed arguments.
 See details.}
 
 \item{tbase}{Value that needs to be at least attained to qualify
-for splitting (Default: 2)}
+for splitting (default: 1)}
 
 \item{gamma}{Weighting factor of the maximum entropy
 (default: 1)}
@@ -29,7 +30,7 @@ tree is grown to maximal size, the latter triggering a warning.}
 \item{minbucket}{Positive integer as minimal leaf size
 (default: 1)}
 
-\item{\dots}{Argument gobbling; will not processed}
+\item{\dots}{Argument gobbling; is not processed}
 }
 \value{
 A list containing the options. Missing options are set
@@ -49,10 +50,23 @@ arguments are checked.
 
 In case \code{controlList} contains an argument named
 \code{splitmetric}, this will be ignored.
-If \code{splitmetric} is 0L, i.e. \code{globalmax}, the values 
-for \code{gamma} and \code{tbase} 
-are set to their default values, even if the user supplied 
-different values.
+If \code{splitmetric} is \code{0L}, i.e. \code{"globalmax"}, 
+the values for \code{gamma} and \code{tbase} are set to their 
+default values, even if the user supplied different values.
+}
+\examples{
+## Check performed for splitmetric 'globalmax',
+## tbase' is default generated and 'gamma' is overwritten
+## (see Details), tree is grown to full depth and 
+## 5 observations are needed to be at least within each node
+imptree_control(splitmetric = 0, gamma = 0.5,
+                depth = NULL, minbucket = 5)
+
+## Passing some control arguments in a list
+## As splitmetric is 'range', gamma is respected
+imptree_control(splitmetric = 1, minbucket = 5,
+                controlList = list(gamma = 0.5, depth = NULL))
+
 }
 \seealso{
 \code{\link{imptree}}, \code{\link{imptree_params}}

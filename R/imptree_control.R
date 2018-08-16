@@ -21,12 +21,13 @@
 #' @description Initializing and validating 
 #' the tree generation parameters
 #' 
-#' @param splitmetric Choosen split metric. 
-#' See \code{\link{imptree}}
+#' @param splitmetric Choosen split metric as integer:
+#' \code{0} means \code{"globalmax"} and \code{1L} \code{"range"}, 
+#' repectively. See \code{\link{imptree_params}}
 #' @param controlList Named list containing the processed arguments.
 #' See details.
 #' @param tbase Value that needs to be at least attained to qualify
-#' for splitting (Default: 2)
+#' for splitting (default: 1)
 #' @param gamma Weighting factor of the maximum entropy
 #' (default: 1)
 #' @param depth Integer limiting the tree to the given depth, with
@@ -35,7 +36,7 @@
 #' tree is grown to maximal size, the latter triggering a warning.
 #' @param minbucket Positive integer as minimal leaf size
 #' (default: 1)
-#' @param \dots Argument gobbling; will not processed
+#' @param \dots Argument gobbling; is not processed
 #' 
 #' @return A list containing the options. Missing options are set
 #' to their default value.
@@ -50,10 +51,9 @@
 #' 
 #' In case \code{controlList} contains an argument named
 #' \code{splitmetric}, this will be ignored.
-#' If \code{splitmetric} is 0L, i.e. \code{globalmax}, the values 
-#' for \code{gamma} and \code{tbase} 
-#' are set to their default values, even if the user supplied 
-#' different values.
+#' If \code{splitmetric} is \code{0L}, i.e. \code{"globalmax"}, 
+#' the values for \code{gamma} and \code{tbase} are set to their 
+#' default values, even if the user supplied different values.
 #' 
 #' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}
 #' 
@@ -61,6 +61,19 @@
 #' 
 #' @keywords tree
 #' 
+#' @examples
+#' ## Check performed for splitmetric 'globalmax',
+#' ## tbase' is default generated and 'gamma' is overwritten
+#' ## (see Details), tree is grown to full depth and 
+#' ## 5 observations are needed to be at least within each node
+#' imptree_control(splitmetric = 0, gamma = 0.5,
+#'                 depth = NULL, minbucket = 5)
+#' 
+#' ## Passing some control arguments in a list
+#' ## As splitmetric is 'range', gamma is respected
+#' imptree_control(splitmetric = 1, minbucket = 5,
+#'                 controlList = list(gamma = 0.5, depth = NULL))
+#'
 #' @export
 imptree_control <- function(splitmetric, controlList = NULL, tbase = 1, gamma = 1,
                             depth = NULL, minbucket = 1L, ...) {

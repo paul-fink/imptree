@@ -26,43 +26,55 @@
 #' @return A list containing the sanitized and validated parameters.
 #'
 #' @details 
-#'  For all methods \code{args} takes the following inputs:
-#'  \itemize{
-#'  \item{s}{: Hyperparamter of the Imprecise Dirichlet Model
-#'    (\code{s >= 0}), see below.}
-#'  \item{correction}{: Entropy correction to be carried out
-#'    (Default \code{"no"}), see below.}
-#'  \item{splitmetric}{: Split criterion to use
-#'    (Default \code{"globalmax"}), see below.}
-#'  }
-#'  The hyperparamter \code{s} of the Imprecise Dirchlet Model (IDM) may
-#'  be given as any non-negative value.  It defines the impression the locally
-#'  applied IDMs introduce. With increasing values of \code{s} more impression is
-#'  added. For \code{s=0} the IDM collapses to a Precise Dirichlet Model.
-#'  This value is ignored for \code{method = "NPI"}.
-#'  
-#'  To account for a varying number of categories of the splitting candidates
-#'  Strobl proposed the use of a correction based on the Miller-entropy
-#'  correction: \code{correction = "strobl"}.
-#'  In their work Abellan and Moral favoured for the IDM the use of a
-#'  generalized Hartley measure such that the final measure may be viewed as
-#'  measure of total uncertainty: \code{correction = "abellan"}.
-#'  This correction method is not available for \code{method = "NPI"}.
-#'  
-#'  When deciding for split canditates a split criterion is applied.
-#'  \code{"globalmax"} splits on maximal entropy of local models (with a
-#'  global IDM parameter \code{s}).
-#'  For \code{"range"} the splitting variable is found by taking the whole
-#'  entropy interval into account.
-#'  \code{localmax} is only available for IDM and split on maximal entropy,
-#'  however with \code{s} dependent on the number of missing values in the class
-#'  variable in the node 
+#' For all methods \code{args} takes the following inputs:
+#' \itemize{
+#' \item{s}{: Hyperparamter of the Imprecise Dirichlet Model
+#'   (\code{s >= 0}), see below.}
+#' \item{correction}{: Entropy correction to be carried out
+#'   (Default \code{"no"}), see below.}
+#' \item{splitmetric}{: Split criterion to use
+#'   (Default \code{"globalmax"}), see below.}
+#' }
+#' The hyperparamter \code{s} of the Imprecise Dirchlet Model (IDM) may
+#' be given as any non-negative value.  It defines the impression the locally
+#' applied IDMs introduce. With increasing values of \code{s} more impression is
+#' added. For \code{s=0} the IDM collapses to a Precise Dirichlet Model.
+#' This value is ignored for \code{method = "NPI"}.
+#' 
+#' To account for a varying number of categories of the splitting candidates
+#' Strobl proposed the use of a correction based on the Miller-entropy
+#' correction: \code{correction = "strobl"}.
+#' In their work Abellan and Moral favoured for the IDM the use of a
+#' generalized Hartley measure such that the final measure may be viewed as
+#' measure of total uncertainty: \code{correction = "abellan"}.
+#' This correction method is not available for \code{method = "NPI"}.
+#' 
+#' When deciding for split canditates a split criterion is applied.
+#' \code{"globalmax"} splits on maximal entropy of local models (with a
+#' global IDM parameter \code{s}).
+#' For \code{"range"} the splitting variable is found by taking the whole
+#' entropy interval into account.
+#' \code{localmax} is only available for IDM and split on maximal entropy,
+#' however with \code{s} dependent on the number of missing values in the class
+#' variable in the node 
 #'  
 #' @author Paul Fink \email{Paul.Fink@@stat.uni-muenchen.de}
 #' 
 #' @seealso \code{\link{imptree}}, \code{\link{imptree_control}}
 #' 
-#' @keywords tree
+#' @examples
+#' ## Note: 
+#' ## The function is used internally by imptree (not exported).
+#' 
+#' ## default constructed for method IDM
+#' imptree:::imptree_params(NULL, method = "IDM")
+#' 
+#' ## passing arguments as list ('s' is not required for 'NPI')
+#' imptree:::imptree_params(args = list(correction = "strobl", 
+#'                                      splitmetric = "globalmax"),
+#'                          method = "NPI")
+#'
+#' @keywords internal
 imptree_params <- function(args, method) {
 
   # we expect a list or missing or null for 'args'
