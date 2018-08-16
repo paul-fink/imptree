@@ -32,10 +32,10 @@ converted into R format by Paul Fink.
 data(carEvaluation)
 }
 \description{
-This is the 'Car Evaluation' data set from 
+This data.frame contains the 'Car Evaluation' data set from 
 the UCI Machine Learning Repository.
 \cr
-The Car Evaluation Database gives the acceptance 
+The 'Car Evaluation data' set gives the acceptance 
 of a car directly related to the six input attributes:
 buying, maint, doors, persons, lug_boot, safety.
 }
@@ -44,16 +44,18 @@ Car Evaluation Database was derived from a simple hierarchical
 decision model originally developed for the demonstration of DEX. 
 
  The model evaluates cars according to the following concept structure:
- CAR                      car acceptability
- . PRICE                  overall price
- . . buying               buying price
- . . maint                price of the maintenance
- . TECH                   technical characteristics
- . . COMFORT              comfort
- . . . doors              number of doors
- . . . persons            capacity in terms of persons to carry
- . . . lug_boot           the size of luggage boot
- . . safety               estimated safety of the car
+ \tabular{ll}{
+ CAR                 \tab car acceptability\cr
+ . PRICE             \tab overall price\cr
+ . . buying          \tab buying price\cr
+ . . maint           \tab price of the maintenance\cr
+ . TECH              \tab technical characteristics\cr
+ . . COMFORT         \tab comfort\cr
+ . . . doors         \tab number of doors\cr
+ . . . persons       \tab capacity in terms of persons to carry\cr
+ . . . lug_boot      \tab the size of luggage boot\cr
+ . . safety          \tab estimated safety of the car
+ }
 
 Input attributes are printed in lowercase. Besides the target
 concept (CAR), the model includes three intermediate concepts:
@@ -62,6 +64,11 @@ PRICE, TECH, COMFORT.
 The Car Evaluation Database contains examples with the structural 
 information removed, i.e., directly relates CAR to the six input 
 attributes: buying, maint, doors, persons, lug_boot, safety.
+}
+\examples{
+data("carEvaluation")
+summary(carEvaluation)
+
 }
 \references{
 M. Bohanec and V. Rajkovic (1988), Knowledge acquisition and explanation for 

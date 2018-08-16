@@ -35,8 +35,8 @@
 #' \code{evaluation_imptree}, which is a named list containing 
 #' predicted classes, predicted probability distribution and  accuracy 
 #' evaluation
-#' \item{probintlist}{List of the Imprecise Probability Distribution of the
-#' class variable. One matrix per observation.}
+#' \item{probintlist}{List of the imprecise probability distributions of the
+#' class variable. One matrix per observation in the test data.}
 #' \item{classes}{Predicted class(es) of the observations as boolean matrix}
 #' \item{evaluation}{Result of accuracy evaluation
 #' \itemize{

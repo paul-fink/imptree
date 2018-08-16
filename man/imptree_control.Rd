@@ -58,7 +58,7 @@ default values, even if the user supplied different values.
 ## Check performed for splitmetric 'globalmax',
 ## tbase' is default generated and 'gamma' is overwritten
 ## (see Details), tree is grown to full depth and 
-## 5 observations are needed to be at least within each node
+## at least 5 observations are needed to be within each node
 imptree_control(splitmetric = 0, gamma = 0.5,
                 depth = NULL, minbucket = 5)
 

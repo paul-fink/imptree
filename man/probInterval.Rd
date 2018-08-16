@@ -12,9 +12,9 @@ probInterval(table, iptype = c("IDM", "NPI", "NPIapprox"),
 \item{table}{integer vector of absolute frequencies}
 
 \item{iptype}{method for calculating the probability
-intervals of \code{table}. \code{"IDM"} for the Imprecise
-Dirichlet Model (default), \code{"NPI"} for use of the 
-Nonparametric Predictive Inference approach and \code{"NPIapprox"}
+intervals of \code{table}. \code{"IDM"} for the imprecise
+Dirichlet model (default), \code{"NPI"} for use of the 
+nonparametric predictive inference approach and \code{"NPIapprox"}
 for use of the approximate algorithm obtaining maximal entropy of
 NPI generated probability intervals.}
 

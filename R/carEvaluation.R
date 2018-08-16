@@ -21,10 +21,10 @@
 #' @title Car Evaluation Database
 #' 
 #' @description
-#' This is the 'Car Evaluation' data set from 
+#' This data.frame contains the 'Car Evaluation' data set from 
 #' the UCI Machine Learning Repository.
 #' \cr
-#' The Car Evaluation Database gives the acceptance 
+#' The 'Car Evaluation data' set gives the acceptance 
 #' of a car directly related to the six input attributes:
 #' buying, maint, doors, persons, lug_boot, safety.
 #' 
@@ -56,16 +56,18 @@
 #' decision model originally developed for the demonstration of DEX. 
 #'
 #'  The model evaluates cars according to the following concept structure:
-#'  CAR                      car acceptability
-#'  . PRICE                  overall price
-#'  . . buying               buying price
-#'  . . maint                price of the maintenance
-#'  . TECH                   technical characteristics
-#'  . . COMFORT              comfort
-#'  . . . doors              number of doors
-#'  . . . persons            capacity in terms of persons to carry
-#'  . . . lug_boot           the size of luggage boot
-#'  . . safety               estimated safety of the car
+#'  \tabular{ll}{
+#'  CAR                 \tab car acceptability\cr
+#'  . PRICE             \tab overall price\cr
+#'  . . buying          \tab buying price\cr
+#'  . . maint           \tab price of the maintenance\cr
+#'  . TECH              \tab technical characteristics\cr
+#'  . . COMFORT         \tab comfort\cr
+#'  . . . doors         \tab number of doors\cr
+#'  . . . persons       \tab capacity in terms of persons to carry\cr
+#'  . . . lug_boot      \tab the size of luggage boot\cr
+#'  . . safety          \tab estimated safety of the car
+#'  }
 #'
 #' Input attributes are printed in lowercase. Besides the target
 #' concept (CAR), the model includes three intermediate concepts:
@@ -87,6 +89,10 @@
 #' @references D. Dua and E. Karra Taniskidou (2017), UCI Machine Learning Repository 
 #' \url{http://archive.ics.uci.edu/ml}. Irvine, CA: University of California, 
 #' School of Information and Computer Science.
+#'
+#' @examples
+#' data("carEvaluation")
+#' summary(carEvaluation)
 #' 
 #' @keywords datasets
 NULL

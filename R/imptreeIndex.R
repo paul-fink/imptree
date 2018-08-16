@@ -24,7 +24,7 @@
 #' @param idx numeric or integer vector of indices specifying
 #' the sequential node access from the root node.
 #' Numeric values are coerced to integer as
-#' by \code{\link{as.integer}}
+#' by \code{\link[base]{as.integer}}
 #' (and hence truncated towards zero). \cr
 #' If \code{NULL} the probability information of 
 #' the root node are accessed.
@@ -82,6 +82,7 @@
 #' \dontrun{
 #' node_imptree(x = ip, idx = c(1,10))  # no 10th node on 1st level
 #' }
+#'
 #' @export
 node_imptree <- function(x, idx = NULL)  {
   # Are the C++ object references still stored in the R object?

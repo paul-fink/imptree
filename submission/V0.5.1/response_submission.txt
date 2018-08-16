@@ -1,0 +1,11 @@
+Re-submission
+Requested changes:
+* Please do not capitalize "Imprecise", "Model", "Nonparametric Predictive Inference", and "Imprecise Information" in your Description text. 
++ The respective words are now no longer capitalized in the Description field of DESCRIPTION, as well as in all Rd files
+
+* Please add small executable examples in your Rd-files. 
++ All Rd files contain now examples displaying some calls to the documented functions. Main example (previously in imptree.Rd) moved to imptree-package.Rd
+
+Further (unrequested) changes:
++ Corrected the previously wrongly stated default value of 'tbase' in imptree_control.Rd (mismatch between code and documentation)
++ Explicit table format in the Details section in carEvaluation.Rd (was illegible in PDF-version)

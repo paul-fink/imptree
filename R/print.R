@@ -22,7 +22,7 @@
 #' @param x Object of class \code{imptree}. See details.
 #' @param digits a non-null value for digits specifies the minimum number
 #' of significant digits to be printed in values. The default uses 
-#' \code{\link{getOption}("digits")}. Non-integer values will be rounded down,
+#' \code{\link[base]{getOption}("digits")}. Non-integer values will be rounded down,
 #' and only values greater than or equal to 1 and 
 #' no greater than 17 are accepted.
 #' @param sep Separator between the displayed IPDistribution objects.

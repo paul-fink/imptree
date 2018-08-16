@@ -4,3 +4,4 @@
 ^tex-files/*/*
 ^testing/*
 ^oldcpp/*
+^submission/*

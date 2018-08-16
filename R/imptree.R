@@ -21,8 +21,8 @@
 #' 
 #' @description \code{imptree} implements Abellan and Moral's tree 
 #' algorithm (based on Quinlans ID3) for classification. It
-#' employes either the Imprecise Dirichlet Model (IDM) or the 
-#' Nonparametric Predictive Inference (NPI) to generate the
+#' employes either the imprecise Dirichlet model (IDM) or
+#' nonparametric predictive inference (NPI) to generate the
 #' imprecise probability distribution of the classification variable
 #' within a node.
 #' 
@@ -38,9 +38,9 @@
 #' @param control A named (partial) list according to the result of
 #' \code{\link{imptree_control}}.
 #' @param method Method applied for calculating the probability
-#' intervals of the class probability. \code{"IDM"} for the Imprecise
-#' Dirichlet Model (default), \code{"NPI"} for use of the 
-#' Nonparametric Predictive Inference approach and \code{"NPIapprox"}
+#' intervals of the class probability. \code{"IDM"} for the imprecise
+#' Dirichlet model (default), \code{"NPI"} for use of the 
+#' nonparametric predictive inference approach and \code{"NPIapprox"}
 #' for use of the approximate algorithm obtaining maximal entropy of
 #' NPI generated probability intervals.
 #' @param method.param Named list providing the method specific 
@@ -88,31 +88,27 @@
 #' J. Abell\ifelse{latex}{\out{\'{a}}}{\ifelse{html}{\out{&aacute;}}{a}}n
 #' and S. Moral for the IDM and R. M. Baker for the NPI approach.
 #' 
-#' @seealso \code{\link{predict.imptree}},
-#' \code{\link{summary.imptree}}, \code{\link{imptree_params}}, 
-#' \code{\link{imptree_control}}, \code{\link{node_imptree}}
+#' @seealso \code{\link{predict.imptree}} for prediction,
+#' \code{\link{summary.imptree}} for summary information, 
+#' \code{\link{imptree_params}} and \code{\link{imptree_control}} for
+#' arguments controlling the creation, \code{\link{node_imptree}} for
+#' accessing a specific node in the tree
 #' 
 #' @keywords tree
 #'
 #' @examples
 #' data("carEvaluation")
 #' 
-#' ## create a tree with IDM (s=1) to full size
+#' ## create a tree with IDM (s=1) to full size on
 #' ## carEvaluation, leaving the first 10 observations out
-#' ip <- imptree(acceptance~., data = carEvaluation[-(1:10),], 
+#' imptree(acceptance~., data = carEvaluation[-(1:10),], 
 #'   method="IDM", method.param = list(splitmetric = "globalmax", s = 1), 
-#'   control = list(depth = NULL, minbucket = 1))
+#'   control = list(depth = NULL, minbucket = 1)) # control args as list
 #' 
-#' ## summarize the tree and show performance on training data
-#' summary(ip)
-#' 
-#' ## predict the first 10 observations
-#' ## Note: The result of the prediction is return invisibly
-#' pp <- predict(ip, dominance = "max", data = carEvaluation[(1:10),])
-#' ## print the general evaluation statistics
-#' print(pp)
-#' ## display the predicted class labels
-#' pp$classes
+#' ## same setting as above, now passing control args in '...'
+#' imptree(acceptance~., data = carEvaluation[-(1:10),], 
+#'   method="IDM", method.param = list(splitmetric = "globalmax", s = 1), 
+#'   depth = NULL, minbucket = 1)
 #' 
 #' @importFrom stats terms
 #' @export

@@ -20,25 +20,27 @@
 #' @description Initializing and validating the essential probability method specific parameters
 #' 
 #' @param args Named list containing the arguments to be processed.
-#'  May be \code{NULL} for default values. See details.
+#' May be \code{NULL} for default values. See details.
 #' @param method Probability method as character, as supplied to \code{\link{imptree}}.
 #' 
 #' @return A list containing the sanitized and validated parameters.
 #'
-#' @details 
+#' @details
+#' \code{imptree_params()} is not exported into the user's namespace.
+#' 
 #' For all methods \code{args} takes the following inputs:
 #' \itemize{
-#' \item{s}{: Hyperparamter of the Imprecise Dirichlet Model
+#' \item{s}{: Hyperparamter of the imprecise Dirichlet model
 #'   (\code{s >= 0}), see below.}
 #' \item{correction}{: Entropy correction to be carried out
 #'   (Default \code{"no"}), see below.}
 #' \item{splitmetric}{: Split criterion to use
 #'   (Default \code{"globalmax"}), see below.}
 #' }
-#' The hyperparamter \code{s} of the Imprecise Dirchlet Model (IDM) may
+#' The hyperparamter \code{s} of the imprecise Dirchlet model (IDM) may
 #' be given as any non-negative value.  It defines the impression the locally
 #' applied IDMs introduce. With increasing values of \code{s} more impression is
-#' added. For \code{s=0} the IDM collapses to a Precise Dirichlet Model.
+#' added. For \code{s=0} the IDM collapses to a precise Dirichlet model.
 #' This value is ignored for \code{method = "NPI"}.
 #' 
 #' To account for a varying number of categories of the splitting candidates

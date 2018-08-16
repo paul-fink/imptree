@@ -23,8 +23,8 @@
 #' imprecise classification trees based on algorithm developed by 
 #' Abellan and Moral. 
 #' The credal sets of the classification variable within each node
-#' are estimated by either the Imprecise Dirichlet Model (IDM) or the 
-#' Nonparametric Predictive Inference (NPI).
+#' are estimated by either the imprecise Dirichlet model (IDM) or the 
+#' nonparametric predictive inference (NPI).
 #' As split possible split criteria serve the 'information gain', 
 #' based on the maximal entropy distribution, and the adaptable 
 #' entropy-range based criterion propsed by Fink and Crossman.
@@ -55,6 +55,26 @@
 #' @seealso
 #' \code{\link{imptree}} for tree creation, \code{\link{probInterval}} for the credal set
 #' and entropy estimation functionality
+#' 
+#' @examples
+#' data("carEvaluation")
+#' 
+#' ## create a tree with IDM (s=1) to full size
+#' ## carEvaluation, leaving the first 10 observations out
+#' ip <- imptree(acceptance~., data = carEvaluation[-(1:10),], 
+#'   method="IDM", method.param = list(splitmetric = "globalmax", s = 1), 
+#'   control = list(depth = NULL, minbucket = 1))
+#' 
+#' ## summarize the tree and show performance on training data
+#' summary(ip)
+#' 
+#' ## predict the first 10 observations
+#' ## Note: The result of the prediction is return invisibly
+#' pp <- predict(ip, dominance = "max", data = carEvaluation[(1:10),])
+#' ## print the general evaluation statistics
+#' print(pp)
+#' ## display the predicted class labels
+#' pp$classes
 #' 
 #' @keywords tree
 #' 

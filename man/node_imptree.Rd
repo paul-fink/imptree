@@ -16,7 +16,7 @@ respectively. See details.}
 \item{idx}{numeric or integer vector of indices specifying
 the sequential node access from the root node.
 Numeric values are coerced to integer as
-by \code{\link{as.integer}}
+by \code{\link[base]{as.integer}}
 (and hence truncated towards zero). \cr
 If \code{NULL} the probability information of 
 the root node are accessed.}
@@ -76,6 +76,7 @@ node_imptree(x = ip, idx = c(1, 2))
 \dontrun{
 node_imptree(x = ip, idx = c(1,10))  # no 10th node on 1st level
 }
+
 }
 \seealso{
 \code{\link{imptree}}, for global information on 
