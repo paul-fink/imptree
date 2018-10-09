@@ -2,6 +2,6 @@
 ^\.Rproj\.user$
 ^build/*
 ^tex-files/*/*
-^testing/*
+^playground/*
 ^oldcpp/*
 ^submission/*
