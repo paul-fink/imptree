@@ -19,6 +19,9 @@
 # Backup-files
 *~
 
+# Development area
+playground
+
 imptree/*
 imptree
 imptree_*
